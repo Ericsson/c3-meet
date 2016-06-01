@@ -3,6 +3,16 @@ import {connect} from 'react-redux'
 
 import Navigation from '../components/Navigation'
 import {toggleNavigationDrawer} from '../actions'
+import purpleBG from '../images/purple.png'
+
+const backgroundStyle = {
+  minHeight: '100vh',
+  minWidth: '100vw',
+  zIndex: -100,
+  position: 'absolute',
+  left: 0,
+  top: 0,
+}
 
 class App extends Component {
   render () {
@@ -12,6 +22,7 @@ class App extends Component {
         <Navigation
           drawerOpen={drawerOpen}
           onDrawerToggle={toggleDrawer}/>
+        <img src={purpleBG} style={backgroundStyle}/>
         {children}
       </div>
     )

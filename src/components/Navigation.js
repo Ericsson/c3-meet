@@ -5,7 +5,8 @@ const Navigation = ({drawerOpen, onDrawerToggle}) => (
   <div>
     <AppBar
       title="C3 Meet"
-      onLeftIconButtonTouchTap={onDrawerToggle} />
+      onLeftIconButtonTouchTap={onDrawerToggle}
+      style={{backgroundColor: 'rgba(0, 0, 0, 0.51)'}}/>
     <Drawer
       open={drawerOpen}
       docked={false}
