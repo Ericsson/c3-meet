@@ -1,18 +1,17 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+
+import Navigation from '../components/Navigation'
+import {toggleNavigationDrawer} from '../actions'
 
 class App extends Component {
   render () {
-    const {children} = this.props
+    const {children, drawerOpen, toggleDrawer} = this.props
     return (
       <div>
-        <h1>App Container</h1>
-        <div>
-          <Link to="/">Setup</Link>
-          <Link to="/about">About</Link>
-          <Link to="/room/123">Room</Link>
-        </div>
+        <Navigation
+          drawerOpen={drawerOpen}
+          onDrawerToggle={toggleDrawer}/>
         {children}
       </div>
     )
@@ -21,10 +20,17 @@ class App extends Component {
 
 App.propTypes = {
   children: PropTypes.node,
+  drawerOpen: PropTypes.bool,
+  toggleDrawer: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
-  return state
+  const {navigationDrawerOpen} = state
+  return {
+    drawerOpen: navigationDrawerOpen,
+  }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, {
+  toggleDrawer: toggleNavigationDrawer,
+})(App)
