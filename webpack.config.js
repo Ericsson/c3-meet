@@ -21,11 +21,16 @@ module.exports = {
       },
       {
         test: /\.png$/,
-        loader: 'url-loader?name=images/[name].[ext]&limit=1',
+        loader: 'url-loader?name=images/[name].[ext]',
       },
       {
         test: /\.ttf$/,
-        loader: 'url-loader?name=fonts/[name].[ext]&limit=1',
+        loader: 'url-loader?name=fonts/[name].[ext]',
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['style', 'css', 'sass'],
       },
     ],
   },
