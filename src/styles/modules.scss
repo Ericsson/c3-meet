@@ -1,3 +1,30 @@
+$big: 4vmin;
+$huge: 8vmin;
+
+.jumbotron {
+  position: absolute;
+  top: 30%;
+  width: 100vw;
+  text-align: center;
+  h1 {
+    font-size: $huge;
+    font-weight: 400;
+  }
+  h2 {
+    font-size: $big;
+    font-weight: 400;
+  }
+}
+
+.roomInput {
+  input {
+    background-color: transparent;
+    color: white;
+    font-size: $big;
+    border-style: dotted;
+  }
+}
+
 @font-face {
   font-family: Ericsson;
   src: url(../fonts/EricssonCapitalTT.ttf);
