@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {AppBar, Drawer, MenuItem} from 'material-ui'
+import {Link} from 'react-router'
 
 const Navigation = ({drawerOpen, onDrawerToggle}) => (
   <div>
@@ -11,7 +12,12 @@ const Navigation = ({drawerOpen, onDrawerToggle}) => (
       open={drawerOpen}
       docked={false}
       onRequestChange={onDrawerToggle}>
-      <MenuItem>Hello</MenuItem>
+      <Link to="/" style={{}}>
+        <MenuItem primaryText="Start"/>
+      </Link>
+      <Link to="/about" style={{}}>
+        <MenuItem primaryText="About"/>
+      </Link>
     </Drawer>
   </div>
 )
