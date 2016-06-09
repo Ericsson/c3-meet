@@ -7,7 +7,7 @@
   "scripts": {
     "build:dev": "webpack -d",
     "build:prod": "webpack -p",
-    "serve": "webpack-dev-server --progress --colors --inline --hot"
+    "serve": "webpack-dev-server --progress --colors --inline --hot --history-api-fallback"
   },
   "author": "Andreas Hallberg <andreas.hallberg@ericsson.com>",
   "license": "UNLICENSED",

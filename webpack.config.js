@@ -38,6 +38,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'meet',
       template: 'html!./src/index.html',
+      inject: false,
     }),
   ],
 }
