@@ -21,11 +21,11 @@ module.exports = {
       },
       {
         test: /\.png$/,
-        loader: 'url-loader?name=dist/images/[namel.[ext]&imit=8192',
+        loader: 'url-loader?name=images/[name].[ext]&limit=1',
       },
       {
         test: /\.ttf$/,
-        loader: 'file-loader?name=dist/fonts/[name].[ext]',
+        loader: 'url-loader?name=fonts/[name].[ext]&limit=1',
       },
     ],
   },
