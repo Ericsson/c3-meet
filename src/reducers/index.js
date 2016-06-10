@@ -2,16 +2,29 @@ import * as ActionTypes from '../actions'
 import {routerReducer as routing} from 'react-router-redux'
 import {combineReducers} from 'redux'
 
-const navigationDrawerOpen = (open=false, action) => {
-  if (action.type === ActionTypes.TOGGLE_NAVIGATION_DRAWER) {
-    return !open
+const switchSource = (state=null, action) => {
+  if (action.type === ActionTypes.MEDIA_SWITCHER) {
+    return action.switcher
   } else {
-    return open
+    return state
+  }
+}
+
+const videoBroadcastSources = (state=[], action) => {
+  if (action.type === ActionTypes.ADD_VIDEO_BROADCASTER) {
+    let {source, peer} = action
+    return state.filter(({peer: p}) => p !== peer).concat({
+      source,
+      peer,
+    })
+  } else {
+    return state
   }
 }
 
 const rootReducer = combineReducers({
-  navigationDrawerOpen,
+  switchSource,
+  videoBroadcastSources,
   routing,
 })
 

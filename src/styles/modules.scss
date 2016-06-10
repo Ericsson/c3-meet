@@ -25,6 +25,40 @@ $huge: 8vmin;
   }
 }
 
+.roomPage {
+  .mainVideoContainer {
+    .Video {
+      position: absolute;
+      top: 50%;
+      bottom: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      transform: translateY(-50%);
+      min-width: 100vw;
+      max-height: 100vh;
+    }
+  }
+  .thumbnailContainer {
+    position: absolute;
+    width: 90vmin;
+    top:5vmin;
+    left: 5vmin;
+    right: 5vmin;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .Video {
+      width: 16vw;
+      height: 9vw;
+      object-fit: cover;
+      border-style: solid;
+      border-color: white;
+      border-width: thin;
+      border-radius: 5px;
+    }
+  }
+}
+
 @font-face {
   font-family: Ericsson;
   src: url(../fonts/EricssonCapitalTT.ttf);
