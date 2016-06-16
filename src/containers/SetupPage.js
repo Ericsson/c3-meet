@@ -22,7 +22,7 @@ import RoomInput from '../components/RoomInput'
 
 class SetupPage extends Component {
   joinRoom (room) {
-    this.props.dispatch(push(`/room/${room}`))
+    this.props.dispatch(push(`/${room}`))
   }
   render () {
     return (
