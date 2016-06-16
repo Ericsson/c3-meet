@@ -48,8 +48,10 @@ class AudioSwitcher extends MediaSwitcher {
 
   handleInterval () {
     let shouldHandleSwitching = this.liveMembers.sort()[0] === this.selfId
+    const isAlive = ({peer}) => this.liveMembers.includes(peer)
+    const byAudioLevelDesc = (a, b) => b.meter.filtered - a.meter.filtered
     if (shouldHandleSwitching) {
-      let loudest = this.audioMeters.filter(am => this.liveMembers.includes(am.peer)).sort((a, b) => a.meter.filtered - b.meter.filtered)[0]
+      let loudest = this.audioMeters.filter(isAlive).sort(byAudioLevelDesc)[0]
       if (loudest) {
         this.setActive(loudest.peer)
       }
