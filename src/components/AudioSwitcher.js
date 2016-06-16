@@ -51,10 +51,7 @@ class AudioSwitcher extends MediaSwitcher {
     if (shouldHandleSwitching) {
       let loudest = this.audioMeters.filter(am => this.liveMembers.includes(am.peer)).sort((a, b) => a.meter.filtered - b.meter.filtered)[0]
       if (loudest) {
-        console.log('SWITCHING TO ' + loudest.peer)
         this.setActive(loudest.peer)
-      } else {
-        console.log('THERE IS NO LOUDEST')
       }
     }
   }
