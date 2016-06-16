@@ -55,5 +55,10 @@ module.exports = {
       inject: false,
     }),
     new webpack.BannerPlugin(fs.readFileSync('./LICENSE', 'utf-8')),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
   ],
 }
