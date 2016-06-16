@@ -32,7 +32,7 @@ import {
   HQ_CONSTRAINTS,
   LQ_CONSTRAINTS,
   AUDIO_CONSTRAINTS,
-} from '../constants'
+} from '../utils/constants'
 
 const MEDIA_SWITCHER = 'meet_switcher'
 const VIDEO_BROADCASTER = 'meet_broadcaster_video'
