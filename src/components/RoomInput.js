@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, {PropTypes, Component} from 'react'
+import namegen from '../utils/namegen'
 
 class RoomInput extends Component {
   constructor (props) {
@@ -24,7 +25,7 @@ class RoomInput extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      inputText: '',
+      inputText: namegen(),
     }
   }
 
