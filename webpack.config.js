@@ -42,10 +42,6 @@ module.exports = {
         loader: 'url-loader?name=images/[name].[ext]',
       },
       {
-        test: /\.ttf$/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      },
-      {
         test: /\.scss$/,
         exclude: /node_modules/,
         loaders: ['style', 'css', 'sass'],

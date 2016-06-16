@@ -19,7 +19,6 @@ import {render} from 'react-dom'
 import {browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import './images/purple.png'
-import './fonts/EricssonCapitalTT.ttf'
 import './styles/modules.scss'
 
 import configureStore from './store/configureStore'
