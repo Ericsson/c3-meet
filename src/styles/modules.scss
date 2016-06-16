@@ -58,7 +58,7 @@ $huge: 8vmin;
   }
   .thumbnailContainer {
     position: absolute;
-    width: 90vmin;
+    width: 90vw;
     top:5vmin;
     left: 5vmin;
     right: 5vmin;
@@ -68,6 +68,7 @@ $huge: 8vmin;
     .Video {
       width: 16vw;
       height: 9vw;
+      margin: 5px;
       object-fit: cover;
       border-style: solid;
       border-color: white;
