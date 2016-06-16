@@ -26,30 +26,13 @@ import {
   webRtcReady,
   MediaBroadcaster,
 } from '@cct/libcct'
-
-const AUTH_OPTS = {
-  serverUrl: 'http://192.168.99.100:8008',
-}
-
-const HQ_CONSTRAINTS = {
-  video: {
-    width: {ideal: 640},
-    height: {ideal: 360},
-    frameRate: {ideal: 20},
-  },
-}
-
-const LQ_CONSTRAINTS = {
-  video: {
-    width: {ideal: 160},
-    height: {ideal: 90},
-    frameRate: {max: 10},
-  },
-}
-
-const AUDIO_CONSTRAINTS = {
-  audio: true,
-}
+import {
+  AUTH_OPTS,
+  ICE_SERVERS,
+  HQ_CONSTRAINTS,
+  LQ_CONSTRAINTS,
+  AUDIO_CONSTRAINTS,
+} from '../constants'
 
 const MEDIA_SWITCHER = 'meet_switcher'
 const VIDEO_BROADCASTER = 'meet_broadcaster_video'
@@ -65,7 +48,9 @@ class RoomPage extends Component {
       videoBroadcasters: [],
       audioBroadcasters: [],
     }
-    this.client = new Client()
+    this.client = new Client({
+      iceServers: ICE_SERVERS,
+    })
   }
 
   componentWillMount () {
