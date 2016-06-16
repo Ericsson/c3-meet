@@ -2,15 +2,14 @@
   "name": "@cct/meet",
   "private": true,
   "version": "1.0.0",
-  "description": "Meet, greet etc.",
-  "main": "index.js",
+  "description": "Meetings with the C3 SDK",
   "scripts": {
     "build:dev": "webpack -d",
     "build:prod": "webpack -p",
     "serve": "webpack-dev-server --progress --colors --inline --hot --history-api-fallback"
   },
   "author": "Andreas Hallberg <andreas.hallberg@ericsson.com>",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "devDependencies": {
     "babel-core": "^6.8.0",
     "babel-loader": "^6.2.4",
