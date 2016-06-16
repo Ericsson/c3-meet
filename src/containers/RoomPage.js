@@ -18,12 +18,12 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Video from '../components/Video'
 import Audio from '../components/Audio'
+import AudioSwitcher from '../components/AudioSwitcher'
 import {
   Client,
   DeviceSource,
   Auth,
   webRtcReady,
-  MediaSwitcher,
   MediaBroadcaster,
 } from '@cct/libcct'
 
@@ -82,11 +82,19 @@ class RoomPage extends Component {
       alias: roomName,
     }))
     .then(room => {
-      const hdCamera = this.hdCamera = new DeviceSource(HQ_CONSTRAINTS)
       const conference = this.conference =  room.startConferenceCall()
-      const switcher = new MediaSwitcher()
+
+      const microphone = this.microphone = new DeviceSource(AUDIO_CONSTRAINTS)
+      const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
+      audioBroadcaster.source = microphone
+      audioBroadcaster.on('remoteSource', this.handleAudioBroadcastSource)
+      conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
+
+      const hdCamera = this.hdCamera = new DeviceSource(HQ_CONSTRAINTS)
+      const switcher = new AudioSwitcher(audioBroadcaster, this.client.user.id)
       switcher.source = hdCamera
       conference.attach(MEDIA_SWITCHER, switcher)
+      switcher.setActive()
       this.setState({switcher})
 
       const sdCamera = this.sdCamera = new DeviceSource(LQ_CONSTRAINTS)
@@ -94,12 +102,6 @@ class RoomPage extends Component {
       videoBroadcaster.source = sdCamera
       videoBroadcaster.on('remoteSource', this.handleVideoBroadcastSource)
       conference.attach(VIDEO_BROADCASTER, videoBroadcaster)
-
-      const microphone = this.microphone = new DeviceSource(AUDIO_CONSTRAINTS)
-      const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
-      audioBroadcaster.source = microphone
-      audioBroadcaster.on('remoteSource', this.handleAudioBroadcastSource)
-      conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
     })
   }
 
