@@ -55,6 +55,7 @@ class RoomPage extends Component {
 
   componentWillMount () {
     let roomName = this.props.params.roomName
+    document.title = `Meet - ${roomName}`
     const client = this.client
     webRtcReady()
     .then(() => Auth.anonymous(AUTH_OPTS))
@@ -91,6 +92,7 @@ class RoomPage extends Component {
   }
 
   componentWillUnmount () {
+    document.title = 'Meet'
     this.videoBroadcaster.off('remoteSource', this.handleVideoBroadcastSource)
     this.hdCamera.stop()
     this.sdCamera.stop()

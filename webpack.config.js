@@ -52,7 +52,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'meet',
       template: 'html!./src/index.html',
-      inject: false,
+      inject: true,
+      favicon: './src/images/favicon.ico',
     }),
     new webpack.BannerPlugin(fs.readFileSync('./LICENSE', 'utf-8')),
     new webpack.DefinePlugin({
