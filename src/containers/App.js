@@ -16,12 +16,14 @@ limitations under the License.
 
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import GithubCorner from '../components/GithubCorner'
 
 class App extends Component {
   render () {
     const {children} = this.props
     return (
       <div>
+        <GithubCorner url="https://github.com/Ericsson/c3-meet"/>
         {children}
       </div>
     )

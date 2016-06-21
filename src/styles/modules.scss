@@ -18,6 +18,13 @@ limitations under the License.
 $big: 4vmin;
 $huge: 8vmin;
 
+.GithubCorner {
+  position: absolute;
+  top: 10;
+  right: 10;
+  z-index: 100;
+}
+
 .jumbotron {
   position: absolute;
   top: 30%;
