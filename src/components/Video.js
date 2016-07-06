@@ -15,6 +15,9 @@ limitations under the License.
 */
 
 import React, {Component, PropTypes} from 'react'
+import {media} from '@cct/libcct'
+
+const {HtmlSink} = media
 
 class Video extends Component {
   constructor() {
@@ -46,7 +49,7 @@ class Video extends Component {
 
   componentWillUpdate(newProps) {
     if (newProps.source) {
-      newProps.source.sink = this.video
+      newProps.source.connect(this.sink)
     } else if (this.video) {
       // TODO add support for this in libcct
       this.video.src = ''
@@ -54,9 +57,10 @@ class Video extends Component {
   }
 
   handleRef(ref) {
+    this.sink = new HtmlSink({target: ref})
     this.video = ref
     if (this.props.source) {
-      this.props.source.sink = ref
+      this.props.source.connect(this.sink)
     } else if (this.video) {
       this.video.src = ''
     }

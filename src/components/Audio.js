@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import React, {Component, PropTypes} from 'react'
+import {media} from '@cct/libcct'
+const {HtmlSink} = media
 
 class Audio extends Component {
   constructor() {
@@ -28,16 +30,17 @@ class Audio extends Component {
 
   componentWillUpdate(newProps) {
     if (newProps.source) {
-      newProps.source.sink = this.audio
+      newProps.source.connect(this.sink)
     } else if (this.audio) {
       this.audio.src = ''
     }
   }
 
   handleRef(ref) {
+    this.sink = new HtmlSink({target: ref})
     this.audio = ref
     if (this.props.source) {
-      this.props.source.sink = ref
+      this.props.source.connect(this.sink)
     } else if (this.audio) {
       this.audio.src = ''
     }
