@@ -41,8 +41,8 @@ const AUDIO_BROADCASTER = 'meet_broadcaster_audio'
 class RoomPage extends Component {
   constructor (props) {
     super(props)
-    this.handleVideoBroadcastSource = this.handleVideoBroadcastSource.bind(this)
-    this.handleAudioBroadcastSource = this.handleAudioBroadcastSource.bind(this)
+    this.handleVideoBroadcastSources = this.handleVideoBroadcastSources.bind(this)
+    this.handleAudioBroadcastSources = this.handleAudioBroadcastSources.bind(this)
     this.state = {
       switcher: {},
       videoBroadcasters: [],
@@ -68,60 +68,62 @@ class RoomPage extends Component {
       alias: roomName,
     }))
     .then(room => {
-      const conference = this.conference =  room.startConferenceCall()
+      const conference = this.conference =  room.startConference()
 
       const microphone = this.microphone = new DeviceSource(AUDIO_CONSTRAINTS)
       const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
-      audioBroadcaster.source = microphone
-      audioBroadcaster.on('remoteSource', this.handleAudioBroadcastSource)
+      microphone.connect(audioBroadcaster)
+      audioBroadcaster.on('remoteSources', this.handleAudioBroadcastSources)
       conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
 
       const hdCamera = this.hdCamera = new DeviceSource(HQ_CONSTRAINTS)
-      const switcher = new AudioSwitcher(audioBroadcaster, this.client.user.id)
-      switcher.source = hdCamera
+      const switcher = new AudioSwitcher(audioBroadcaster)
+      hdCamera.connect(switcher)
       conference.attach(MEDIA_SWITCHER, switcher)
-      switcher.setActive()
       this.setState({switcher})
 
       const sdCamera = this.sdCamera = new DeviceSource(LQ_CONSTRAINTS)
       const videoBroadcaster = this.videoBroadcaster = new MediaBroadcaster()
-      videoBroadcaster.source = sdCamera
-      videoBroadcaster.on('remoteSource', this.handleVideoBroadcastSource)
+      sdCamera.connect(videoBroadcaster)
+      videoBroadcaster.on('remoteSources', this.handleVideoBroadcastSources)
       conference.attach(VIDEO_BROADCASTER, videoBroadcaster)
     })
   }
 
   componentWillUnmount () {
     document.title = 'Meet'
-    this.videoBroadcaster.off('remoteSource', this.handleVideoBroadcastSource)
+    this.videoBroadcaster.off('remoteSources', this.handleVideoBroadcastSources)
+    this.audioBroadcaster.off('remoteSources', this.handleAudioBroadcastSources)
     this.hdCamera.stop()
     this.sdCamera.stop()
     this.microphone.stop()
     this.conference.detach(MEDIA_SWITCHER)
     this.conference.detach(VIDEO_BROADCASTER)
     this.conference.detach(AUDIO_BROADCASTER)
-    this.conference.leave()
+    this.conference.close()
     this.client.logout()
   }
 
-  handleVideoBroadcastSource ({source, peer}) {
-    source.on('stream', stream => {
-      let videoBroadcasters = this.state.videoBroadcasters
-      .filter(bc => bc.peer !== peer)
-
-      if (stream !== null) videoBroadcasters.push({source, peer})
-      this.setState({videoBroadcasters})
-    })
+  handleVideoBroadcastSources (sources) {
+    let videoBroadcasters = []
+    for (let peer in sources) {
+      videoBroadcasters.push({
+        peer,
+        source: sources[peer],
+      })
+    }
+    this.setState({videoBroadcasters})
   }
 
-  handleAudioBroadcastSource ({source, peer}) {
-    source.on('stream', stream => {
-      let audioBroadcasters = this.state.audioBroadcasters
-      .filter(bc => bc.peer !== peer)
-
-      if (stream !== null) audioBroadcasters.push({source, peer})
-      this.setState({audioBroadcasters})
-    })
+  handleAudioBroadcastSources (sources) {
+    let audioBroadcasters = []
+    for (let peer in sources) {
+      audioBroadcasters.push({
+        peer,
+        source: sources[peer],
+      })
+    }
+    this.setState({audioBroadcasters})
   }
 
   render () {
