@@ -14,41 +14,53 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {MediaSwitcher, AudioMeter} from '@cct/libcct'
+import {MediaSwitcher, media} from '@cct/libcct'
+const {AudioMeter} = media
 
 const SWITCHING_INTERVAL_MS = 3000
 
 class AudioSwitcher extends MediaSwitcher {
-  constructor(audioBroadcaster, selfId) {
+  constructor(audioBroadcaster) {
     super()
     this.handleRemoteSource = this.handleRemoteSource.bind(this)
     this.handleInterval = this.handleInterval.bind(this)
 
-    this.selfId = selfId
     this.audioBroadcaster = audioBroadcaster
+  }
+
+  rtcComponentWillAttach (attachPoint) {
     this.audioMeters = []
     let meter = new AudioMeter()
-    meter.source = audioBroadcaster.source
+    this.audioBroadcaster.input.connect(meter)
     this.audioMeters.push({
-      peer: selfId,
+      peer: attachPoint.ownId,
       meter,
     })
-    audioBroadcaster.on('remoteSource', this.handleRemoteSource)
+    this.audioBroadcaster.on('remoteSource', this.handleRemoteSource)
     this.interval = setInterval(this.handleInterval, SWITCHING_INTERVAL_MS)
   }
 
   handleRemoteSource ({source, peer}) {
-    let audioMeter = new AudioMeter()
-    audioMeter.source = source
-    this.audioMeters.push({
-      peer,
-      meter: audioMeter,
-    })
+    if (source) {
+      let audioMeter = new AudioMeter()
+      audioMeter.source = source
+      this.audioMeters.push({
+        peer,
+        meter: audioMeter,
+      })
+    } else {
+      let {meter} = this.audioMeters.find(m => m.peer === peer)
+      meter.stop()
+      this.audioMeters = this.audioMeters.filter(m => m.peer !== peer)
+    }
   }
 
   handleInterval () {
-    let shouldHandleSwitching = this.liveMembers.sort()[0] === this.selfId
-    const isAlive = ({peer}) => this.liveMembers.includes(peer)
+    let members = [this.attachPoint.ownId]
+    this.attachPoint.peers.forEach((_, peer) => members.push(peer))
+
+    let shouldHandleSwitching = members.sort()[0] === this.attachPoint.ownId
+    const isAlive = ({peer}) => members.includes(peer)
     const byAudioLevelDesc = (a, b) => b.meter.filtered - a.meter.filtered
     if (shouldHandleSwitching) {
       let loudest = this.audioMeters.filter(isAlive).sort(byAudioLevelDesc)[0]
