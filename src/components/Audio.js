@@ -15,8 +15,7 @@ limitations under the License.
 */
 
 import React, {Component, PropTypes} from 'react'
-import {media} from '@cct/libcct'
-const {HtmlSink} = media
+import {HtmlSink} from '@cct/libcct'
 
 class Audio extends Component {
   constructor() {
