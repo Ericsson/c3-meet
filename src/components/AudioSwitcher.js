@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {MediaSwitcher, media} from '@cct/libcct'
-const {AudioMeter} = media
+import {MediaSwitcher, AudioMeter} from '@cct/libcct'
 
 const SWITCHING_INTERVAL_MS = 3000
 
@@ -49,8 +48,6 @@ class AudioSwitcher extends MediaSwitcher {
         meter: audioMeter,
       })
     } else {
-      let {meter} = this.audioMeters.find(m => m.peer === peer)
-      meter.stop()
       this.audioMeters = this.audioMeters.filter(m => m.peer !== peer)
     }
   }
