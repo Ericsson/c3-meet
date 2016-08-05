@@ -39,6 +39,11 @@ class AudioSwitcher extends MediaSwitcher {
     this.interval = setInterval(this.handleInterval, SWITCHING_INTERVAL_MS)
   }
 
+  rtcComponentWillDetach () {
+    clearInterval(this.interval)
+    this.audioBroadcaster.off('remoteSource', this.handleRemoteSource)
+  }
+
   handleRemoteSource ({source, peer}) {
     if (source) {
       let audioMeter = new AudioMeter()
