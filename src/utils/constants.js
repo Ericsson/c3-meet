@@ -40,7 +40,7 @@ export const ICE_SERVERS = [
 ]
 
 export const AUTH_OPTS = {
-  serverUrl: 'https://webrtc-test.cct.ericsson.net',
+  serverUrl: 'https://demo.cct.ericsson.net',
 }
 
 export const HQ_CONSTRAINTS = {
