@@ -1,7 +1,7 @@
 # C3 Meet
-Simple peer-to-peer video conferencing.
+Minimalistic peer-to-peer video conferencing supporting multiple participants.
 
-Powered by Ericsson Contextual Communication Cloud (C3).
+Powered by [Ericsson Contextual Communication Cloud (C3)](https://discuss.c3.ericsson.net).
 
 ![Setting up a room](./screenshot-setup.png)
 
