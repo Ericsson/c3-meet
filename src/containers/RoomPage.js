@@ -19,6 +19,7 @@ import {connect} from 'react-redux'
 import Video from '../components/Video'
 import Audio from '../components/Audio'
 import AudioSwitcher from '../components/AudioSwitcher'
+import MuteToggle from '../components/MuteToggle'
 import {
   Client,
   DeviceSource,
@@ -143,6 +144,7 @@ class RoomPage extends Component {
         {audioBroadcasters.map(({source, peer}) => (
           <Audio key={peer} source={source}/>
         ))}
+        <MuteToggle source={this.microphone}/>
       </div>
     )
   }
