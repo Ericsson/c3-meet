@@ -14,26 +14,57 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import {HtmlSink} from '@cct/libcct';
 import React, {Component, PropTypes} from 'react'
-import {HtmlSink} from '@cct/libcct'
 
 class Video extends Component {
-  constructor() {
-    super()
-    this.handleRef = this.handleRef.bind(this)
-    this.handleVideoUpdate = this.handleVideoUpdate.bind(this)
+  constructor(props) {
+    super(props)
+    this._videoElement = null
+    this._sink = new HtmlSink()
+    this._handleRef = this._handleRef.bind(this)
+    this._handleVideoUpdate = this._handleVideoUpdate.bind(this)
+    if (props.source) {
+      props.source.connect(this._sink)
+    }
   }
 
-  handleVideoUpdate() {
+  componentWillReceiveProps(newProps) {
+    if (newProps.source !== this.props.source) {
+      if (newProps.source) {
+        newProps.source.connect(this._sink)
+      } else if (this.source) {
+        this.props.source.disconnect(this._sink)
+      }
+    }
+  }
+
+  _handleRef(ref) {
+    if (this.props.onResize && this._videoElement) {
+      this._videoElement.removeEventListener('loadedmetadata', this._handleVideoUpdate)
+      this._videoElement.removeEventListener('emptied', this._handleVideoUpdate)
+    }
+    this._sink.target = ref
+    this._videoElement = ref
+    if (this.props.onResize) {
+      if (ref) {
+        ref.addEventListener('loadedmetadata', this._handleVideoUpdate)
+        ref.addEventListener('emptied', this._handleVideoUpdate)
+      }
+      this._handleVideoUpdate()
+    }
+  }
+
+  _handleVideoUpdate() {
     let width = 0
     let height = 0
     let aspectRatio = 0
 
-    if (this.video) {
-      width = this.video.videoWidth
-      height = this.video.videoHeight
+    if (this._videoElement) {
+      width = this._videoElement.videoWidth
+      height = this._videoElement.videoHeight
 
-      if (width) {
+      if (height) {
         aspectRatio = width / height
       }
     }
@@ -41,44 +72,19 @@ class Video extends Component {
     this.props.onResize({width, height, aspectRatio})
   }
 
-  shouldComponentUpdate(newProps) {
-    return newProps.source !== this.props.source
-  }
-
-  componentWillUpdate(newProps) {
-    if (newProps.source) {
-      newProps.source.connect(this.sink)
-    } else if (this.video) {
-      // TODO add support for this in libcct
-      this.video.src = ''
-    }
-  }
-
-  handleRef(ref) {
-    this.sink = new HtmlSink({target: ref})
-    this.video = ref
-    if (this.props.source) {
-      this.props.source.connect(this.sink)
-    } else if (this.video) {
-      this.video.src = ''
-    }
-    if (this.props.onResize) {
-      if (ref) {
-        ref.addEventListener('loadedmetadata', this.handleVideoUpdate)
-        ref.addEventListener('emptied', this.handleVideoUpdate)
-      }
-      this.handleVideoUpdate()
-    }
-  }
-
   render() {
+    let props = Object.assign({}, this.props)
+    let className = `${props.className || ''} Video`
+    delete props.source
+    delete props.onResize
     return (
-      <video className='Video' ref={this.handleRef} muted={this.props.muted} autoPlay />
+      <video {...props} className={className} ref={this._handleRef} autoPlay/>
     )
   }
 }
 
 Video.propTypes = {
+  className: PropTypes.string,
   source: PropTypes.object,
   onResize: PropTypes.func,
   muted: PropTypes.bool,
