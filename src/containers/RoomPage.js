@@ -44,7 +44,7 @@ class RoomPage extends Component {
     this.handleVideoBroadcastSources = this.handleVideoBroadcastSources.bind(this)
     this.handleAudioBroadcastSources = this.handleAudioBroadcastSources.bind(this)
     this.state = {
-      switcher: {},
+      switcher: null,
       videoBroadcasters: [],
       audioBroadcasters: [],
     }
