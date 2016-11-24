@@ -35,7 +35,7 @@ const MuteToggle = class extends Component {
   render() {
     return (
       <button className='muteToggle' onClick={() => this.setState({muted: !this.state.muted})}>
-        {this.state.muted ? 'Mute' : 'Unmute'}
+        {this.state.muted ? 'Unmute' : 'Mute'}
       </button>
     )
   }
