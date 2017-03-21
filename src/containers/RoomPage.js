@@ -81,13 +81,17 @@ class RoomPage extends Component {
       const switcher = new AudioSwitcher(audioBroadcaster)
       hdCamera.connect(switcher)
       conference.attach(MEDIA_SWITCHER, switcher)
-      this.setState({switcher})
 
       const sdCamera = this.sdCamera = new DeviceSource(LQ_CONSTRAINTS)
       const videoBroadcaster = this.videoBroadcaster = new MediaBroadcaster()
       sdCamera.connect(videoBroadcaster)
       videoBroadcaster.on('remoteSources', this.handleVideoBroadcastSources)
       conference.attach(VIDEO_BROADCASTER, videoBroadcaster)
+
+      this.setState({
+        switcher,
+        videoBroadcasters: [{source: sdCamera}],
+      })
     })
   }
 
@@ -106,7 +110,7 @@ class RoomPage extends Component {
   }
 
   handleVideoBroadcastSources (sources) {
-    let videoBroadcasters = []
+    let videoBroadcasters = [{source: this.sdCamera}]
     for (let peer in sources) {
       videoBroadcasters.push({
         peer,
@@ -134,13 +138,15 @@ class RoomPage extends Component {
         <div className="mainVideoContainer">
           <Video source={switcher}/>
         </div>
-        {videoBroadcasters.length < 2 ? null :
-          <div className="thumbnailContainer">
-          {videoBroadcasters.map(({source, peer}) => (
-            <Video key={peer} source={source}/>
-          ))}
-          </div>
-        }
+        <div className="thumbnailContainer">
+        {videoBroadcasters.map(({source, peer}) => {
+          if (peer) {
+            return <Video key={peer} source={source}/>
+          } else {
+            return <Video key='' source={source} className='thumbnailSelfView'/>
+          }
+        })}
+        </div>
         {audioBroadcasters.map(({source, peer}) => (
           <Audio key={peer} source={source}/>
         ))}
