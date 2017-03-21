@@ -20,8 +20,10 @@ import Video from '../components/Video'
 import Audio from '../components/Audio'
 import AudioSwitcher from '../components/AudioSwitcher'
 import MuteToggle from '../components/MuteToggle'
+import parseUa from 'vigour-ua'
 import {
   Client,
+  DataShare,
   DeviceSource,
   Auth,
   webRtcReady,
@@ -38,6 +40,31 @@ import {
 const MEDIA_SWITCHER = 'meet_switcher'
 const VIDEO_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'
+const DATA_SHARE = 'data_share'
+
+const Thumbnail = ({source, peer, userAgent}) => {
+  var video
+  if (peer) {
+    video = <Video key={peer} source={source}/>
+  } else {
+    video = <Video key='' source={source} className='thumbnailSelfView'/>
+  }
+  var userAgentText = null
+  if (userAgent) {
+    let {browser, version, platform, device} = userAgent
+    userAgentText = (
+      <div className='userAgentText'>
+        {`${browser} ${version}, ${device} ${platform}`}
+      </div>
+    )
+  }
+  return (
+    <div className='thumbnailContainer'>
+      {video}
+      {userAgentText}
+    </div>
+  )
+}
 
 class RoomPage extends Component {
   constructor (props) {
@@ -88,15 +115,22 @@ class RoomPage extends Component {
       videoBroadcaster.on('remoteSources', this.handleVideoBroadcastSources)
       conference.attach(VIDEO_BROADCASTER, videoBroadcaster)
 
+      const userAgent = this.userAgent = parseUa(navigator.userAgent)
+      const dataShare = this.dataShare = new DataShare({ownerId: this.client.user.id})
+      conference.attach(DATA_SHARE, dataShare)
+      dataShare.set(this.client.user.id, userAgent)
+      dataShare.on('update', this.handleVideoBroadcastSources)
+
       this.setState({
         switcher,
-        videoBroadcasters: [{source: sdCamera}],
+        videoBroadcasters: [{source: sdCamera, userAgent}],
       })
     })
   }
 
   componentWillUnmount () {
     document.title = 'Meet'
+    this.dataShare.off('update', this.handleVideoBroadcastSources)
     this.videoBroadcaster.off('remoteSources', this.handleVideoBroadcastSources)
     this.audioBroadcaster.off('remoteSources', this.handleAudioBroadcastSources)
     this.hdCamera.stop()
@@ -105,16 +139,19 @@ class RoomPage extends Component {
     this.conference.detach(MEDIA_SWITCHER)
     this.conference.detach(VIDEO_BROADCASTER)
     this.conference.detach(AUDIO_BROADCASTER)
+    this.conference.detach(DATA_SHARE)
     this.conference.close()
     this.client.logout()
   }
 
-  handleVideoBroadcastSources (sources) {
-    let videoBroadcasters = [{source: this.sdCamera}]
-    for (let peer in sources) {
+  handleVideoBroadcastSources () {
+    let videoBroadcasters = [{source: this.sdCamera, userAgent: this.userAgent}]
+    for (let peer in this.videoBroadcaster.remoteSources) {
+      let userAgent = this.dataShare.get(peer)
       videoBroadcasters.push({
         peer,
-        source: sources[peer],
+        source: this.videoBroadcaster.remoteSources[peer],
+        userAgent,
       })
     }
     this.setState({videoBroadcasters})
@@ -133,19 +170,14 @@ class RoomPage extends Component {
 
   render () {
     const {switcher, videoBroadcasters, audioBroadcasters} = this.state
+
     return (
       <div className="roomPage">
         <div className="mainVideoContainer">
           <Video source={switcher}/>
         </div>
-        <div className="thumbnailContainer">
-        {videoBroadcasters.map(({source, peer}) => {
-          if (peer) {
-            return <Video key={peer} source={source}/>
-          } else {
-            return <Video key='' source={source} className='thumbnailSelfView'/>
-          }
-        })}
+        <div className="thumbnailRow">
+          {videoBroadcasters.map(props => <Thumbnail {...props}/>)}
         </div>
         {audioBroadcasters.map(({source, peer}) => (
           <Audio key={peer} source={source}/>
