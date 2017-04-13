@@ -29,6 +29,9 @@ import {
   webRtcReady,
   MediaBroadcaster,
 } from '@cct/libcct'
+import * as cct from '@cct/libcct'
+import {devtools} from '@cct/libcct/devtools'
+const {RelayTreeVisualization} = devtools
 import {
   AUTH_OPTS,
   CLIENT_OPTS,
@@ -42,7 +45,39 @@ const VIDEO_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'
 const DATA_SHARE = 'data_share'
 
-const Thumbnail = ({source, peer, userAgent}) => {
+window.cct = cct
+
+class Visualization extends Component {
+  constructor(props) {
+    super(props)
+    this._onSvgRef = this._onSvgRef.bind(this)
+    this._onRelayLinksUpdate = this._onRelayLinksUpdate.bind(this)
+  }
+
+  _onSvgRef(svg) {
+    if (svg) {
+      this._visualization = new RelayTreeVisualization({width: 400, height: 400, svg})
+      this._visualization.setRelayLinks(conference.switcher._relayLinks)
+      this._visualization.start()
+      conference.switcher.on('_relayLinks', this._onRelayLinksUpdate)
+      window.visualization = this._visualization
+    } else {
+      conference.switcher.off('_relayLinks', this._onRelayLinksUpdate)
+      this._visualization.setRelayLinks({ids: [], parents: []})
+      window.visualization = null
+    }
+  }
+
+  _onRelayLinksUpdate() {
+    this._visualization.setRelayLinks(conference.switcher._relayLinks)
+  }
+
+  render() {
+    return <svg className='relayTreeVisualization' ref={this._onSvgRef}/>
+  }
+}
+
+const Thumbnail = ({source, peer, userAgent, onClick}) => {
   var video
   if (peer) {
     video = <Video key={peer} source={source}/>
@@ -59,7 +94,7 @@ const Thumbnail = ({source, peer, userAgent}) => {
     )
   }
   return (
-    <div className='thumbnailContainer'>
+    <div className='thumbnailContainer' onClick={onClick}>
       {video}
       {userAgentText}
     </div>
@@ -69,12 +104,15 @@ const Thumbnail = ({source, peer, userAgent}) => {
 class RoomPage extends Component {
   constructor (props) {
     super(props)
+    this._onKeyDown = this._onKeyDown.bind(this)
+
     this.handleVideoBroadcastSources = this.handleVideoBroadcastSources.bind(this)
     this.handleAudioBroadcastSources = this.handleAudioBroadcastSources.bind(this)
     this.state = {
       switcher: null,
       videoBroadcasters: [],
       audioBroadcasters: [],
+      showVisualizer: false,
     }
     this.client = new Client(CLIENT_OPTS)
   }
@@ -94,7 +132,10 @@ class RoomPage extends Component {
       alias: roomName,
     }))
     .then(room => {
-      const conference = this.conference =  room.startConference()
+      const conference = this.conference =  room.startConference({switcherMode: 'manual/follow'})
+      conference.switcher._setDefaultMode('manual/follow')
+      window.room = room
+      window.conference = conference
 
       const microphone = this.microphone = new DeviceSource(AUDIO_CONSTRAINTS)
       const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
@@ -103,9 +144,10 @@ class RoomPage extends Component {
       conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
 
       const hdCamera = this.hdCamera = new DeviceSource(HQ_CONSTRAINTS)
-      const switcher = new AudioSwitcher(audioBroadcaster)
-      hdCamera.connect(switcher)
-      conference.attach(MEDIA_SWITCHER, switcher)
+      // const switcher = new AudioSwitcher(audioBroadcaster)
+      // hdCamera.connect(switcher)
+      // conference.attach(MEDIA_SWITCHER, switcher)
+      hdCamera.connect(conference.switcher)
 
       const sdCamera = this.sdCamera = new DeviceSource(LQ_CONSTRAINTS)
       const videoBroadcaster = this.videoBroadcaster = new MediaBroadcaster()
@@ -120,10 +162,12 @@ class RoomPage extends Component {
       dataShare.on('update', this.handleVideoBroadcastSources)
 
       this.setState({
-        switcher,
+        switcher: conference.switcher,
         videoBroadcasters: [{source: sdCamera, userAgent}],
       })
     })
+
+    document.addEventListener('keydown', this._onKeyDown)
   }
 
   componentWillUnmount () {
@@ -140,16 +184,28 @@ class RoomPage extends Component {
     this.conference.detach(DATA_SHARE)
     this.conference.close()
     this.client.logout()
+    document.removeEventListener('keydown', this._onKeyDown)
   }
 
   handleVideoBroadcastSources () {
-    let videoBroadcasters = [{source: this.sdCamera, userAgent: this.userAgent}]
+    let videoBroadcasters = [{
+      source: this.sdCamera,
+      userAgent: this.userAgent,
+      onClick: () => {
+        console.log(`Set active speaker: ${this.conference.ownId}`)
+        this.conference.switcher.requestPrimarySpeaker(this.conference.ownId)
+      }
+    }]
     for (let peer in this.videoBroadcaster.remoteSources) {
       let userAgent = this.dataShare.get(peer)
       videoBroadcasters.push({
         peer,
         source: this.videoBroadcaster.remoteSources[peer],
         userAgent,
+        onClick: () => {
+          console.log(`Set active speaker: ${peer}`)
+          this.conference.switcher.requestPrimarySpeaker(peer)
+        }
       })
     }
     this.setState({videoBroadcasters})
@@ -166,8 +222,14 @@ class RoomPage extends Component {
     this.setState({audioBroadcasters})
   }
 
+  _onKeyDown(event) {
+    if (event.key === 'v') {
+      this.setState({showVisualizer: !this.state.showVisualizer})
+    }
+  }
+
   render () {
-    const {switcher, videoBroadcasters, audioBroadcasters} = this.state
+    const {switcher, videoBroadcasters, audioBroadcasters, showVisualizer} = this.state
 
     return (
       <div className="roomPage">
@@ -181,6 +243,7 @@ class RoomPage extends Component {
           <Audio key={peer} source={source}/>
         ))}
         <MuteToggle source={this.microphone}/>
+        {showVisualizer && switcher && <Visualization switcher={switcher}/>}
       </div>
     )
   }

@@ -109,6 +109,15 @@ $huge: 8vmin;
     right: 0;
     bottom: 60px;
   }
+  .relayTreeVisualization {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+    display: block;
+    background: #ddd;
+  }
 }
 
 @font-face {
