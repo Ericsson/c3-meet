@@ -28,25 +28,13 @@ export const CLIENT_OPTS = {
 }
 
 export const AUTH_OPTS = {
+  // serverUrl: 'http://147.214.70.132:7008/2',
   serverUrl: 'https://demo.c3.ericsson.net',
 }
 
-export const HQ_CONSTRAINTS = {
+export const MEDIA_CONSTRAINTS = {
   video: {
-    width: {ideal: 640},
-    height: {ideal: 360},
-    frameRate: {ideal: 20},
+    aspectRatio: 16 / 9,
   },
-}
-
-export const LQ_CONSTRAINTS = {
-  video: {
-    width: {ideal: 160},
-    height: {ideal: 90},
-    frameRate: {max: 10},
-  },
-}
-
-export const AUDIO_CONSTRAINTS = {
   audio: true,
 }
