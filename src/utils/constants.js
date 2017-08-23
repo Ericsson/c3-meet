@@ -14,15 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export const ICE_SERVERS = [{
-  urls: 'turn:turn.demo.c3.ericsson.net:443?transport=udp',
-  username: 'c3-turn',
-  credential: 'see-three',
-}, {
-  urls: 'turn:turn.demo.c3.ericsson.net:443?transport=tcp',
-  username: 'c3-turn',
-  credential: 'see-three',
-}]
+export const CLIENT_OPTS = {
+  statsUrl: 'https://data.c3.ericsson.net/stats/',
+  iceServers: [{
+    urls: 'turn:turn.demo.c3.ericsson.net:443?transport=udp',
+    username: 'c3-turn',
+    credential: 'see-three',
+  }, {
+    urls: 'turn:turn.demo.c3.ericsson.net:443?transport=tcp',
+    username: 'c3-turn',
+    credential: 'see-three',
+  }],
+}
 
 export const AUTH_OPTS = {
   serverUrl: 'https://demo.c3.ericsson.net',

@@ -31,7 +31,7 @@ import {
 } from '@cct/libcct'
 import {
   AUTH_OPTS,
-  ICE_SERVERS,
+  CLIENT_OPTS,
   HQ_CONSTRAINTS,
   LQ_CONSTRAINTS,
   AUDIO_CONSTRAINTS,
@@ -76,9 +76,7 @@ class RoomPage extends Component {
       videoBroadcasters: [],
       audioBroadcasters: [],
     }
-    this.client = new Client({
-      iceServers: ICE_SERVERS,
-    })
+    this.client = new Client(CLIENT_OPTS)
   }
 
   componentWillMount () {
