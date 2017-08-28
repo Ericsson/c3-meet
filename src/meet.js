@@ -19,7 +19,7 @@ import {render} from 'react-dom'
 import {browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import './images/purple.png'
-import './styles/modules.scss'
+import './styles/modules.css'
 
 import configureStore from './store/configureStore'
 
