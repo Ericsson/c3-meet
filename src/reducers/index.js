@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import * as ActionTypes from '../actions'
+import * as ActionTypes from 'actions'
 import {routerReducer as routing} from 'react-router-redux'
 import {combineReducers} from 'redux'
 

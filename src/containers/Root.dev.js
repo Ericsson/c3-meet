@@ -19,7 +19,7 @@ import {Provider} from 'react-redux'
 import routes from '../routes'
 import {Router} from 'react-router'
 
-import DevTools from './DevTools'
+import DevTools from 'containers/DevTools'
 
 const Root = ({store, history}) => (
   <Provider store={store}>

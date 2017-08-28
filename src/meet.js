@@ -16,17 +16,17 @@ limitations under the License.
 
 import React from 'react'
 import {render} from 'react-dom'
-import {browserHistory} from 'react-router'
+import {hashHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
-import './images/purple.png'
-import './styles/modules.css'
+import 'images/purple.png'
+import 'styles/modules.css'
 
-import configureStore from './store/configureStore'
+import configureStore from 'store/configureStore'
 
-import Root from './containers/Root'
+import Root from 'containers/Root'
 
 const store = configureStore()
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(hashHistory, store)
 
 render(
   <Root store={store} history={history}/>,

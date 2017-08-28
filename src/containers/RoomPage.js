@@ -16,8 +16,8 @@ limitations under the License.
 
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Video from '../components/Video'
-import MuteToggle from '../components/MuteToggle'
+import Video from 'components/Video'
+import MuteToggle from 'components/MuteToggle'
 import parseUa from 'vigour-ua'
 import {
   log,
@@ -38,7 +38,7 @@ import {
   AUTH_OPTS,
   CLIENT_OPTS,
   MEDIA_CONSTRAINTS,
-} from '../utils/constants'
+} from 'utils/constants'
 
 const THUMBNAIL_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'

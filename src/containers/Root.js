@@ -16,7 +16,7 @@ limitations under the License.
 
 /* eslint-env node */
 
-import DevRoot from './Root.dev'
-import ProdRoot from './Root.prod'
+import DevRoot from 'containers/Root.dev'
+import ProdRoot from 'containers/Root.prod'
 
 export default process.env.NODE_ENV === 'production' ? ProdRoot : DevRoot

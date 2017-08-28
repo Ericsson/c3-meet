@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, {PropTypes} from 'react'
-import GithubLogo from '../images/GitHub-Mark-Light-64px.png'
+import GithubLogo from 'images/GitHub-Mark-Light-64px.png'
 
 const SIZE_DEFAULT = 60
 const TITLE_DEFAULT = 'Fork me on GitHub'

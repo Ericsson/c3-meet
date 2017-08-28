@@ -16,7 +16,7 @@ limitations under the License.
 
 /* eslint-env node */
 
-import DevStore from './configureStore.dev'
-import ProdStore from './configureStore.prod'
+import DevStore from 'store/configureStore.dev'
+import ProdStore from 'store/configureStore.prod'
 
 export default process.env.NODE_ENV === 'production' ? ProdStore : DevStore

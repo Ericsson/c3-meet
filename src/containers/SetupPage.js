@@ -17,8 +17,8 @@ limitations under the License.
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
-import Jumbotron from '../components/Jumbotron'
-import RoomInput from '../components/RoomInput'
+import Jumbotron from 'components/Jumbotron'
+import RoomInput from 'components/RoomInput'
 
 class SetupPage extends Component {
   joinRoom (room) {

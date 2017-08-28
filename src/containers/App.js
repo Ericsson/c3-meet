@@ -16,7 +16,7 @@ limitations under the License.
 
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import GithubCorner from '../components/GithubCorner'
+import GithubCorner from 'components/GithubCorner'
 
 class App extends Component {
   render () {
