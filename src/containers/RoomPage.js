@@ -38,7 +38,7 @@ import {
   AUTH_OPTS,
   CLIENT_OPTS,
   MEDIA_CONSTRAINTS,
-} from 'utils/constants'
+} from 'modules/constants'
 
 const THUMBNAIL_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'

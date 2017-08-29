@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {adjectives, nouns, nouner} from 'utils/namegen/words'
+import {adjectives, nouns, nouner} from 'modules/namegen-words'
 
 const randomWord = dictionary => dictionary[
   Math.floor(Math.random() * (dictionary.length))

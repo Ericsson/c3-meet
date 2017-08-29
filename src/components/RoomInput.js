@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, {PropTypes, Component} from 'react'
-import namegen from 'utils/namegen'
+import namegen from 'modules/namegen'
 
 class RoomInput extends Component {
   constructor (props) {
