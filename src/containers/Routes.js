@@ -14,15 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {Route, IndexRoute} from 'react-router'
 import App from 'containers/App'
 import SetupPage from 'containers/SetupPage'
 import RoomPage from 'containers/RoomPage'
 
-export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={SetupPage}/>
-    <Route path="/:roomName" component={RoomPage}/>
-  </Route>
+const Routes = ({history}) => (
+  <Router history={history}>
+    <Route path="/" component={App}>
+      <IndexRoute component={SetupPage}/>
+      <Route path="/:roomName" component={RoomPage}/>
+    </Route>
+  </Router>
 )
+
+Routes.propTypes = {
+  history: PropTypes.object.isRequired,
+}
+
+export default Routes
