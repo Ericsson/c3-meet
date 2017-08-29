@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import Jumbotron from 'components/Jumbotron'
@@ -39,6 +40,7 @@ class SetupPage extends Component {
 }
 
 SetupPage.propTypes = {
+  history: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => {

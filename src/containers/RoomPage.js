@@ -58,24 +58,28 @@ class Visualization extends Component {
   _onSvgRef(svg) {
     if (svg) {
       this._visualization = new RelayTreeVisualization({width: 400, height: 400, svg})
-      this._visualization.setRelayLinks(conference.switcher._relayLinks)
+      this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
       this._visualization.start()
-      conference.switcher.on('_relayLinks', this._onRelayLinksUpdate)
+      this.props.conference.switcher.on('_relayLinks', this._onRelayLinksUpdate)
       window.visualization = this._visualization
     } else {
-      conference.switcher.off('_relayLinks', this._onRelayLinksUpdate)
+      this.props.conference.switcher.off('_relayLinks', this._onRelayLinksUpdate)
       this._visualization.setRelayLinks({ids: [], parents: []})
       window.visualization = null
     }
   }
 
   _onRelayLinksUpdate() {
-    this._visualization.setRelayLinks(conference.switcher._relayLinks)
+    this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
   }
 
   render() {
     return <svg className='relayTreeVisualization' ref={this._onSvgRef}/>
   }
+}
+
+Visualization.propTypes = {
+  conference: PropTypes.object.isRequired,
 }
 
 class PeerConnectionState extends Component {
@@ -100,6 +104,10 @@ class PeerConnectionState extends Component {
   }
 }
 
+PeerConnectionState.propTypes = {
+  peer: PropTypes.object.isRequired,
+}
+
 class ElementHolder extends Component {
   constructor(props) {
     super(props)
@@ -112,9 +120,6 @@ class ElementHolder extends Component {
         .catch(error => log('meet', `thumbnail play error, ${error}`))
     }
   }
-  shouldComponentUpdate(nextProps) {
-    return this.props.element !== nextProps.element
-  }
   componentWillReceiveProps(nextProps) {
     this._ref.removeChild(this.props.element)
     this._ref.appendChild(nextProps.element)
@@ -122,6 +127,9 @@ class ElementHolder extends Component {
       nextProps.element.play()
         .catch(error => log('meet', `thumbnail play error, ${error}`))
     }
+  }
+  shouldComponentUpdate(nextProps) {
+    return this.props.element !== nextProps.element
   }
   componentWillUnmount() {
     if (this._ref.children.length) {
@@ -136,6 +144,10 @@ class ElementHolder extends Component {
   }
 }
 
+ElementHolder.propTypes = {
+  element: PropTypes.instanceOf(HTMLElement).isRequired,
+}
+
 const Thumbnail = ({element, peer, userAgent}) => {
   var userAgentText = null
   if (userAgent) {
@@ -147,12 +159,6 @@ const Thumbnail = ({element, peer, userAgent}) => {
     )
   }
 
-  let onContainerRef = ref => {
-    if (ref) {
-      ref.appendChild(element)
-    }
-  }
-
   return (
     <div className='thumbnailContainer'>
       {peer && <PeerConnectionState peer={peer}/>}
@@ -161,6 +167,12 @@ const Thumbnail = ({element, peer, userAgent}) => {
       {userAgentText}
     </div>
   )
+}
+
+Thumbnail.propTypes = {
+  element: PropTypes.element.isRequired,
+  peer: PropTypes.object.isRequired,
+  userAgent: PropTypes.string,
 }
 
 class RoomPage extends Component {
@@ -180,9 +192,10 @@ class RoomPage extends Component {
   }
 
   componentWillMount() {
-    let roomName = this.props.match.params.roomName
+    let {roomName} = this.props.match.params
     document.title = `Meet - ${roomName}`
     const client = this.client
+
     webRtcReady()
       .then(() => Auth.anonymous(AUTH_OPTS))
       .then(client.auth)
@@ -254,6 +267,9 @@ class RoomPage extends Component {
           thumbnails: [{source: this.videoSource, userAgent}],
         })
       })
+      .catch(error => {
+        console.error(`Failed to enter meeting: ${error.stack}`)
+      })
 
     document.addEventListener('keydown', this._onKeyDown)
   }
@@ -312,7 +328,7 @@ class RoomPage extends Component {
   }
 
   render() {
-    const {switcher, thumbnails, audioBroadcasters, showVisualizer} = this.state
+    const {switcher, thumbnails, showVisualizer} = this.state
 
     return (
       <div className='roomPage'>
@@ -320,17 +336,17 @@ class RoomPage extends Component {
           <Video source={switcher}/>
         </div>
         <div className='thumbnailRow'>
-          {thumbnails.map(props => <Thumbnail {...props}/>)}
+          {thumbnails.map((props, index) => <Thumbnail key={index} {...props}/>)}
         </div>
         <MuteToggle source={this.mutableAudioSource}/>
-        {showVisualizer && switcher && <Visualization switcher={switcher}/>}
+        {showVisualizer && switcher && <Visualization conference={this.conference} switcher={switcher}/>}
       </div>
     )
   }
 }
 
 RoomPage.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object.isRequired,
   switchSource: PropTypes.object,
   videoBroadcastSources: PropTypes.arrayOf(PropTypes.object),
 }

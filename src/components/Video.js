@@ -87,9 +87,10 @@ class Video extends Component {
 
 Video.propTypes = {
   className: PropTypes.string,
-  source: PropTypes.object,
-  onResize: PropTypes.func,
   muted: PropTypes.bool,
+  source: PropTypes.object,
+
+  onResize: PropTypes.func,
 }
 
 export default Video

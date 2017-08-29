@@ -17,7 +17,7 @@ limitations under the License.
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
-const MuteToggle = class extends Component {
+class MuteToggle extends Component {
   constructor(props) {
     super(props)
     this.state = {muted: false}
