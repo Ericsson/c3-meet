@@ -17,6 +17,7 @@ limitations under the License.
 import {combineReducers} from 'redux'
 
 const rootReducer = combineReducers({
+  id: () => 'id',
 })
 
 export default rootReducer
