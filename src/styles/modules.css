@@ -16,29 +16,29 @@ limitations under the License.
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-.GithubCorner {
+:global .GithubCorner {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 100;
 }
 
-.jumbotron {
+:global .jumbotron {
   position: absolute;
   top: 30%;
   width: 100vw;
   text-align: center;
 }
-.jumbotron h1 {
+:global .jumbotron h1 {
   font-size: 8vmin;
   font-weight: 400;
 }
-.jumbotron h2 {
+:global .jumbotron h2 {
   font-size: 4vmin;
   font-weight: 400;
 }
 
-.roomInput input {
+:global .roomInput input {
   background-color: transparent;
   color: white;
   font-family: 'Roboto', sans-serif;
@@ -46,7 +46,7 @@ limitations under the License.
   border-style: dotted;
 }
 
-.roomPage .mainVideoContainer .Video {
+:global .roomPage .mainVideoContainer .Video {
   position: absolute;
   top: 50%;
   bottom: 50%;
@@ -56,7 +56,7 @@ limitations under the License.
   min-width: 100vw;
   max-height: 100vh;
 }
-.roomPage .thumbnailRow {
+:global .roomPage .thumbnailRow {
   position: absolute;
   width: 90vw;
   top:5vmin;
@@ -66,13 +66,13 @@ limitations under the License.
   flex-direction: row;
   flex-wrap: wrap;
 }
-.roomPage .thumbnailRow .thumbnailContainer {
+:global .roomPage .thumbnailRow .thumbnailContainer {
   width: 16vw;
   height: 9vw;
   margin: 5px;
   position: relative;
 }
-.roomPage .thumbnailRow .thumbnailContainer .Video {
+:global .roomPage .thumbnailRow .thumbnailContainer .Video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -81,18 +81,18 @@ limitations under the License.
   border-width: thin;
   border-radius: 5px;
 }
-.roomPage .thumbnailRow .thumbnailContainer .thumbnailHolder {
+:global .roomPage .thumbnailRow .thumbnailContainer .thumbnailHolder {
   width: 100%;
   height: 100%;
 }
-.roomPage .thumbnailRow .thumbnailContainer .thumbnail {
+:global .roomPage .thumbnailRow .thumbnailContainer .thumbnail {
   width: 100%;
   height: 100%;
 }
-.roomPage .thumbnailRow .thumbnailContainer .thumbnailSelfView {
+:global .roomPage .thumbnailRow .thumbnailContainer .thumbnailSelfView {
   border-color: #385;
 }
-.roomPage .thumbnailRow .thumbnailContainer .peerConnectionState {
+:global .roomPage .thumbnailRow .thumbnailContainer .peerConnectionState {
   text-align: center;
   position: absolute;
   top: 0;
@@ -102,7 +102,7 @@ limitations under the License.
   color: #f8f8f8;
   font-size: 1.1rem;
 }
-.roomPage .thumbnailRow .thumbnailContainer .userIdText {
+:global .roomPage .thumbnailRow .thumbnailContainer .userIdText {
   position: absolute;
   top: 2px;
   left: 4px;
@@ -110,7 +110,7 @@ limitations under the License.
   color: #f8f8f8;
   font-size: 1.0rem;
 }
-.roomPage .thumbnailRow .thumbnailContainer .userAgentText {
+:global .roomPage .thumbnailRow .thumbnailContainer .userAgentText {
   text-align: center;
   position: absolute;
   bottom: 0;
@@ -120,7 +120,7 @@ limitations under the License.
   color: #f8f8f8;
   font-size: 0.8rem;
 }
-.roomPage .muteToggle {
+:global .roomPage .muteToggle {
   position: absolute;
   margin: 0 auto;
   width: 60px;
@@ -128,7 +128,7 @@ limitations under the License.
   right: 0;
   bottom: 60px;
 }
-.roomPage .relayTreeVisualization {
+:global .roomPage .relayTreeVisualization {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -138,11 +138,11 @@ limitations under the License.
   background: #ddd;
 }
 
-@font-face {
+:global @font-face {
   font-family: 'Roboto', sans-serif;
 }
 
-body {
+:global body {
   font-family: 'Roboto', sans-serif;
   color: white;
   margin: 0;
