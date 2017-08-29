@@ -16,15 +16,10 @@ limitations under the License.
 
 import {adjectives, nouns, nouner} from 'modules/namegen-words'
 
-const randomWord = dictionary => dictionary[
-  Math.floor(Math.random() * (dictionary.length))
-]
+function randomWord(list) {
+  return list[Math.floor(Math.random() * list.length)]
+}
 
-const capitalize = word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`
-
-export default () => {
-  let w1 = capitalize(randomWord(adjectives))
-  let w2 = capitalize(randomWord(nouns))
-  let w3 = capitalize(randomWord(nouner))
-  return `${w1}${w2}${w3}`
+export default function generateName() {
+  return randomWord(adjectives) + randomWord(nouns) + randomWord(nouner)
 }
