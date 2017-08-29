@@ -6,8 +6,8 @@
   "scripts": {
     "fix": "eslint --fix .",
     "build": "webpack -p",
-    "serve": "webpack-dev-server --progress --colors --host 0.0.0.0",
-    "serve:https": "webpack-dev-server --progress --colors --host 0.0.0.0 --https"
+    "serve": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0",
+    "serve:https": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0 --https"
   },
   "author": "Andreas Hallberg <andreas.hallberg@ericsson.com>",
   "license": "Apache-2.0",
