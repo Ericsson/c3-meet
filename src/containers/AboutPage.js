@@ -20,7 +20,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 class AboutPage extends Component {
-  render () {
+  render() {
     return (
       <div>
         <h1>About Page</h1>
@@ -32,7 +32,7 @@ class AboutPage extends Component {
 AboutPage.propTypes = {
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state
 }
 

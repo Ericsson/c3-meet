@@ -18,7 +18,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const Jumbotron = ({header, subheader, children}) => (
-  <div className="jumbotron">
+  <div className='jumbotron'>
     <h1>{header}</h1>
     <h2>{subheader}</h2>
     {children}

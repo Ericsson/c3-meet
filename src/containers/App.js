@@ -26,8 +26,8 @@ import SetupPage from 'containers/SetupPage'
 const App = ({children}) => (
   <div>
     <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
-    <Route path="/" component={SetupPage}/>
-    <Route path="/:roomName" component={RoomPage}/>
+    <Route path='/' component={SetupPage}/>
+    <Route path='/:roomName' component={RoomPage}/>
   </div>
 )
 

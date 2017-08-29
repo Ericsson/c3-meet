@@ -88,7 +88,7 @@ const cssProcessors = [
         cascade: true,
         remove: true,
       }),
-    ]
+    ],
   }},
 ]
 

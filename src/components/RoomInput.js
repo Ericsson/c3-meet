@@ -19,7 +19,7 @@ import PropTypes from 'prop-types'
 import namegen from 'modules/namegen'
 
 class RoomInput extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.handleChange = this.handleChange.bind(this)
@@ -30,13 +30,13 @@ class RoomInput extends Component {
     }
   }
 
-  handleChange (event) {
+  handleChange(event) {
     this.setState({
       inputText: event.target.value,
     })
   }
 
-  handleSubmit (event) {
+  handleSubmit(event) {
     event.preventDefault()
     let input = this.state.inputText
     if (input.length > 0) {
@@ -45,21 +45,22 @@ class RoomInput extends Component {
     return false
   }
 
-  render () {
+  render() {
     const {inputText} = this.state
     return (
-      <form className="roomInput" onSubmit={this.handleSubmit}>
+      <form className='roomInput' onSubmit={this.handleSubmit}>
         <input
-          type="text"
+          type='text'
           value={inputText}
           onChange={this.handleChange}
-          name="room"
-          autoFocus="true"
-          placeholder="EnterRoomName123"
-          maxLength="30"
-          size="30"
-          title="At least 5 letters and numbers, a-z A-Z 0-9"
-          pattern="[a-zA-Z0-9]{5,30}" />
+          name='room'
+          autoFocus='true'
+          placeholder='EnterRoomName123'
+          maxLength='30'
+          size='30'
+          title='At least 5 letters and numbers, a-z A-Z 0-9'
+          pattern='[a-zA-Z0-9]{5,30}'
+        />
       </form>
     )
   }

@@ -164,7 +164,7 @@ const Thumbnail = ({element, peer, userAgent}) => {
 }
 
 class RoomPage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this._onKeyDown = this._onKeyDown.bind(this)
 
@@ -179,86 +179,86 @@ class RoomPage extends Component {
     this.client = new Client(CLIENT_OPTS)
   }
 
-  componentWillMount () {
+  componentWillMount() {
     let roomName = this.props.match.params.roomName
     document.title = `Meet - ${roomName}`
     const client = this.client
     webRtcReady()
-    .then(() => Auth.anonymous(AUTH_OPTS))
-    .then(client.auth)
-    .then(() => client.fetchRoomByAlias(roomName))
-    .then(room => room.join())
-    .catch(() => client.createRoom({
-      name: roomName,
-      joinRule: 'open',
-      alias: roomName,
-    }))
-    .then(room => {
-      log.setLogLevel('thumbnail-broadcaster', log.ALL)
+      .then(() => Auth.anonymous(AUTH_OPTS))
+      .then(client.auth)
+      .then(() => client.fetchRoomByAlias(roomName))
+      .then(room => room.join())
+      .catch(() => client.createRoom({
+        name: roomName,
+        joinRule: 'open',
+        alias: roomName,
+      }))
+      .then(room => {
+        log.setLogLevel('thumbnail-broadcaster', log.ALL)
 
-      console.log('CONFERENCE SETUP!')
-      const conference = room.startConference({switcherMode: 'automatic'})
-      this.conference = conference
-      window.room = room
-      window.conference = conference
+        console.log('CONFERENCE SETUP!')
+        const conference = room.startConference({switcherMode: 'automatic'})
+        this.conference = conference
+        window.room = room
+        window.conference = conference
 
-      this.mediaSource = new DeviceSource(MEDIA_CONSTRAINTS)
-      this.streamSplitter = new StreamSplitter()
-      this.mediaSource.connect(this.streamSplitter)
-      this.videoSource = this.streamSplitter.videoOutput
-      this.audioSource = this.streamSplitter.audioOutput
-      this.mutableAudioSource = new MuteFilter()
-      this.audioSource.connect(this.mutableAudioSource)
+        this.mediaSource = new DeviceSource(MEDIA_CONSTRAINTS)
+        this.streamSplitter = new StreamSplitter()
+        this.mediaSource.connect(this.streamSplitter)
+        this.videoSource = this.streamSplitter.videoOutput
+        this.audioSource = this.streamSplitter.audioOutput
+        this.mutableAudioSource = new MuteFilter()
+        this.audioSource.connect(this.mutableAudioSource)
 
-      // set up thumbnails
-      this.thumbnailBroadcaster = new ThumbnailBroadcaster({
-        projectionConfiguration: {
-          width: 100,
-          aspectRatio: 16/9,
-          contentMode: 'aspectFill',
-        },
-        videoFrameRate: 10,
-        imageFrameRate: 2,
+        // set up thumbnails
+        this.thumbnailBroadcaster = new ThumbnailBroadcaster({
+          projectionConfiguration: {
+            width: 100,
+            aspectRatio: 16 / 9,
+            contentMode: 'aspectFill',
+          },
+          videoFrameRate: 10,
+          imageFrameRate: 2,
+        })
+        this.videoSource.connect(this.thumbnailBroadcaster)
+        this.thumbnailRenderer = this.thumbnailBroadcaster.createRenderer({
+          elementClass: 'thumbnail',
+        })
+        conference.attach(THUMBNAIL_BROADCASTER, this.thumbnailBroadcaster)
+        this.thumbnailRenderer.on('elements', this.handleThumbnailUpdate)
+        window.thumbnails = this.thumbnailBroadcaster
+
+        const userAgent = this.userAgent = parseUa(navigator.userAgent)
+        const dataShare = this.dataShare = new DataShare({ownerId: this.client.user.id})
+        conference.attach(DATA_SHARE, dataShare)
+        dataShare.set(this.client.user.id, userAgent)
+        dataShare.on('update', this.handleThumbnailUpdate)
+
+        this.peers = conference.peers
+        this.peers.on('update', this.handleThumbnailUpdate)
+
+        // set up audio
+        const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
+        this.mutableAudioSource.connect(audioBroadcaster)
+        audioBroadcaster.on('added', this.handleAudioBroadcastSources)
+        conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
+
+        // set up switcher
+        this.videoSource.connect(conference.switcher)
+        conference.switcher.on('speaker', speaker => {
+          console.log('speaker set: ', speaker)
+        })
+
+        this.setState({
+          switcher: conference.switcher,
+          thumbnails: [{source: this.videoSource, userAgent}],
+        })
       })
-      this.videoSource.connect(this.thumbnailBroadcaster)
-      this.thumbnailRenderer = this.thumbnailBroadcaster.createRenderer({
-        elementClass: 'thumbnail',
-      })
-      conference.attach(THUMBNAIL_BROADCASTER, this.thumbnailBroadcaster)
-      this.thumbnailRenderer.on('elements', this.handleThumbnailUpdate)
-      window.thumbnails = this.thumbnailBroadcaster
-
-      const userAgent = this.userAgent = parseUa(navigator.userAgent)
-      const dataShare = this.dataShare = new DataShare({ownerId: this.client.user.id})
-      conference.attach(DATA_SHARE, dataShare)
-      dataShare.set(this.client.user.id, userAgent)
-      dataShare.on('update', this.handleThumbnailUpdate)
-
-      this.peers = conference.peers
-      this.peers.on('update', this.handleThumbnailUpdate)
-
-      // set up audio
-      const audioBroadcaster = this.audioBroadcaster = new MediaBroadcaster()
-      this.mutableAudioSource.connect(audioBroadcaster)
-      audioBroadcaster.on('added', this.handleAudioBroadcastSources)
-      conference.attach(AUDIO_BROADCASTER, audioBroadcaster)
-
-      // set up switcher
-      this.videoSource.connect(conference.switcher)
-      conference.switcher.on('speaker', speaker => {
-        console.log('speaker set: ', speaker)
-      })
-
-      this.setState({
-        switcher: conference.switcher,
-        thumbnails: [{source: this.videoSource, userAgent}],
-      })
-    })
 
     document.addEventListener('keydown', this._onKeyDown)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.title = 'Meet'
     this.peers.off('update', this.handleThumbnailUpdate)
     this.dataShare.off('update', this.handleThumbnailUpdate)
@@ -275,7 +275,7 @@ class RoomPage extends Component {
     document.removeEventListener('keydown', this._onKeyDown)
   }
 
-  handleThumbnailUpdate (elements) {
+  handleThumbnailUpdate(elements) {
     if (Array.isArray(elements)) {
       this.elements = elements
     } else {
@@ -311,15 +311,15 @@ class RoomPage extends Component {
     }
   }
 
-  render () {
+  render() {
     const {switcher, thumbnails, audioBroadcasters, showVisualizer} = this.state
 
     return (
-      <div className="roomPage">
-        <div className="mainVideoContainer">
+      <div className='roomPage'>
+        <div className='mainVideoContainer'>
           <Video source={switcher}/>
         </div>
-        <div className="thumbnailRow">
+        <div className='thumbnailRow'>
           {thumbnails.map(props => <Thumbnail {...props}/>)}
         </div>
         <MuteToggle source={this.mutableAudioSource}/>
@@ -335,7 +335,7 @@ RoomPage.propTypes = {
   videoBroadcastSources: PropTypes.arrayOf(PropTypes.object),
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {switchSource, videoBroadcastSources} = state
   return {
     switchSource,

@@ -24,12 +24,12 @@ class SetupPage extends Component {
   joinRoom(room) {
     this.props.history.push(`/${room}`)
   }
-  render () {
+  render() {
     return (
       <div>
         <Jumbotron
-          header="C3 Meet"
-          subheader="Conferencing made simple"
+          header='C3 Meet'
+          subheader='Conferencing made simple'
         >
           <RoomInput onSubmit={room => this.joinRoom(room)}/>
         </Jumbotron>
@@ -41,7 +41,7 @@ class SetupPage extends Component {
 SetupPage.propTypes = {
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state
 }
 
