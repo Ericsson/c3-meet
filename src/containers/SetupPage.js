@@ -16,13 +16,13 @@ limitations under the License.
 
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
+import {withRouter} from 'react-router-dom'
 import Jumbotron from 'components/Jumbotron'
 import RoomInput from 'components/RoomInput'
 
 class SetupPage extends Component {
-  joinRoom (room) {
-    this.props.dispatch(push(`/${room}`))
+  joinRoom(room) {
+    this.props.history.push(`/${room}`)
   }
   render () {
     return (
@@ -45,4 +45,4 @@ const mapStateToProps = (state) => {
   return state
 }
 
-export default connect(mapStateToProps)(SetupPage)
+export default connect(mapStateToProps)(withRouter(SetupPage))

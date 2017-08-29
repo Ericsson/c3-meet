@@ -16,6 +16,7 @@ limitations under the License.
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import Video from 'components/Video'
 import MuteToggle from 'components/MuteToggle'
@@ -179,7 +180,7 @@ class RoomPage extends Component {
   }
 
   componentWillMount () {
-    let roomName = this.props.params.roomName
+    let roomName = this.props.match.params.roomName
     document.title = `Meet - ${roomName}`
     const client = this.client
     webRtcReady()
@@ -342,4 +343,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(RoomPage)
+export default connect(mapStateToProps)(withRouter(RoomPage))

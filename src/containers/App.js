@@ -17,12 +17,17 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {Route} from 'react-router-dom'
+
 import GithubCorner from 'components/GithubCorner'
+import RoomPage from 'containers/RoomPage'
+import SetupPage from 'containers/SetupPage'
 
 const App = ({children}) => (
   <div>
     <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
-    {children}
+    <Route path="/" component={SetupPage}/>
+    <Route path="/:roomName" component={RoomPage}/>
   </div>
 )
 
