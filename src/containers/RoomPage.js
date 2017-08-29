@@ -18,8 +18,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import Video from 'components/Video'
-import MuteToggle from 'components/MuteToggle'
 import parseUa from 'vigour-ua'
 import {
   log,
@@ -34,146 +32,23 @@ import {
   MediaBroadcaster,
 } from '@cct/libcct'
 import * as cct from '@cct/libcct'
-import {devtools} from '@cct/libcct/devtools'
-const {RelayTreeVisualization} = devtools
+
 import {
   AUTH_OPTS,
   CLIENT_OPTS,
   MEDIA_CONSTRAINTS,
 } from 'modules/constants'
 
+import MuteToggle from 'components/MuteToggle'
+import Video from 'components/Video'
+import ConferenceVisualization from 'components/ConferenceVisualization'
+import Thumbnail from 'components/Thumbnail'
+
 const THUMBNAIL_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'
 const DATA_SHARE = 'data_share'
 
 window.cct = cct
-
-class Visualization extends Component {
-  constructor(props) {
-    super(props)
-    this._onSvgRef = this._onSvgRef.bind(this)
-    this._onRelayLinksUpdate = this._onRelayLinksUpdate.bind(this)
-  }
-
-  _onSvgRef(svg) {
-    if (svg) {
-      this._visualization = new RelayTreeVisualization({width: 400, height: 400, svg})
-      this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
-      this._visualization.start()
-      this.props.conference.switcher.on('_relayLinks', this._onRelayLinksUpdate)
-      window.visualization = this._visualization
-    } else {
-      this.props.conference.switcher.off('_relayLinks', this._onRelayLinksUpdate)
-      this._visualization.setRelayLinks({ids: [], parents: []})
-      window.visualization = null
-    }
-  }
-
-  _onRelayLinksUpdate() {
-    this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
-  }
-
-  render() {
-    return <svg className='relayTreeVisualization' ref={this._onSvgRef}/>
-  }
-}
-
-Visualization.propTypes = {
-  conference: PropTypes.object.isRequired,
-}
-
-class PeerConnectionState extends Component {
-  constructor(props) {
-    super(props)
-    this._onChange = this._onChange.bind(this)
-    this.state = {
-      connectionState: this.props.peer.connectionState,
-    }
-  }
-  componentWillMount() {
-    this.props.peer.on('connectionState', this._onChange)
-  }
-  componentWillUnmount() {
-    this.props.peer.off('connectionState', this._onChange)
-  }
-  _onChange(connectionState) {
-    this.setState({connectionState})
-  }
-  render() {
-    return <span className='peerConnectionState'>{this.state.connectionState}</span>
-  }
-}
-
-PeerConnectionState.propTypes = {
-  peer: PropTypes.object.isRequired,
-}
-
-class ElementHolder extends Component {
-  constructor(props) {
-    super(props)
-    this._onContainerRef = this._onContainerRef.bind(this)
-  }
-  componentDidMount() {
-    this._ref.appendChild(this.props.element)
-    if (this.props.element.play) {
-      this.props.element.play()
-        .catch(error => log('meet', `thumbnail play error, ${error}`))
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    this._ref.removeChild(this.props.element)
-    this._ref.appendChild(nextProps.element)
-    if (nextProps.element.play) {
-      nextProps.element.play()
-        .catch(error => log('meet', `thumbnail play error, ${error}`))
-    }
-  }
-  shouldComponentUpdate(nextProps) {
-    return this.props.element !== nextProps.element
-  }
-  componentWillUnmount() {
-    if (this._ref.children.length) {
-      this._ref.removeChild(this.props.element)
-    }
-  }
-  _onContainerRef(ref) {
-    this._ref = ref
-  }
-  render() {
-    return <div {...this.props} ref={this._onContainerRef}/>
-  }
-}
-
-ElementHolder.propTypes = {
-  element: PropTypes.instanceOf(HTMLElement).isRequired,
-}
-
-const Thumbnail = ({element, peer, userAgent}) => {
-  var userAgentText = null
-  if (userAgent) {
-    let {browser, version, platform, device} = userAgent
-    userAgentText = (
-      <div className='userAgentText'>
-        {`${browser} ${version}, ${device} ${platform}`}
-      </div>
-    )
-  }
-
-  return (
-    <div className='thumbnailContainer'>
-      {peer && <PeerConnectionState peer={peer}/>}
-      {element && <ElementHolder className='thumbnailHolder' element={element}/>}
-      {element && <div className='userIdText'>{element.peerId}</div>}
-      {userAgentText}
-    </div>
-  )
-}
-
-Thumbnail.propTypes = {
-  element: PropTypes.element.isRequired,
-  peer: PropTypes.object.isRequired,
-  userAgent: PropTypes.string,
-}
 
 class RoomPage extends Component {
   constructor(props) {
@@ -339,7 +214,7 @@ class RoomPage extends Component {
           {thumbnails.map((props, index) => <Thumbnail key={index} {...props}/>)}
         </div>
         <MuteToggle source={this.mutableAudioSource}/>
-        {showVisualizer && switcher && <Visualization conference={this.conference} switcher={switcher}/>}
+        {showVisualizer && switcher && <ConferenceVisualization conference={this.conference}/>}
       </div>
     )
   }
