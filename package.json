@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Meetings with the C3 SDK",
   "scripts": {
+    "fix": "eslint --fix .",
     "build": "webpack -p",
     "serve": "webpack-dev-server --progress --colors --host 0.0.0.0",
     "serve:https": "webpack-dev-server --progress --colors --host 0.0.0.0 --https"
