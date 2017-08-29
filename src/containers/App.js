@@ -14,21 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component, PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import GithubCorner from 'components/GithubCorner'
 
-class App extends Component {
-  render () {
-    const {children} = this.props
-    return (
-      <div>
-        <GithubCorner url="https://github.com/Ericsson/c3-meet"/>
-        {children}
-      </div>
-    )
-  }
-}
+const App = ({children}) => (
+  <div>
+    <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
+    {children}
+  </div>
+)
 
 App.propTypes = {
   children: PropTypes.node,

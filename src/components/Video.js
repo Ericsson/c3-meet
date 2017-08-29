@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
 import {HtmlSink} from '@cct/libcct';
-import React, {Component, PropTypes} from 'react'
 
 class Video extends Component {
   constructor(props) {

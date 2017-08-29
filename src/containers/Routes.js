@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {PropTypes} from 'react'
-import {Route, IndexRoute} from 'react-router'
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Route, IndexRoute} from 'react-router-dom'
 import App from 'containers/App'
 import SetupPage from 'containers/SetupPage'
 import RoomPage from 'containers/RoomPage'

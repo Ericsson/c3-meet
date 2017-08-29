@@ -15,20 +15,33 @@ limitations under the License.
 */
 
 import React from 'react'
-import {render} from 'react-dom'
-import {hashHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
-import 'images/purple.png'
-import 'styles/modules.css'
-
-import configureStore from 'store/configureStore'
+import ReactDOM from 'react-dom'
+import {AppContainer} from 'react-hot-loader'
 
 import Root from 'containers/Root'
 
-const store = configureStore()
-const history = syncHistoryWithStore(hashHistory, store)
+import configureStore from 'store/configureStore'
 
-render(
-  <Root store={store} history={history}/>,
-  document.getElementById('root')
-)
+import 'styles/modules.css'
+
+const store = configureStore()
+
+const root = document.createElement('div')
+document.body.appendChild(root)
+
+const render = Component => {
+  let app = (
+    <AppContainer>
+      <Component store={store}/>
+    </AppContainer>
+  )
+  ReactDOM.render(app, root)
+}
+
+render(Root)
+
+if (module.hot) {
+  module.hot.accept('containers/Root', () => {
+    render(Root)
+  })
+}

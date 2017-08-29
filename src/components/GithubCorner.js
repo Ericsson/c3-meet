@@ -14,21 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import GithubLogo from 'images/GitHub-Mark-Light-64px.png'
 
 const SIZE_DEFAULT = 60
 const TITLE_DEFAULT = 'Fork me on GitHub'
 
-const GithubCorner = ({url, title, size}) =>
-  <a className="GithubCorner" href={url} target="_blank" title={title || TITLE_DEFAULT}>
+const GithubCorner = ({url, title, size}) => (
+  <a className='GithubCorner' href={url} target='_blank' title={title || TITLE_DEFAULT}>
     <img src={GithubLogo} width={size || SIZE_DEFAULT} height={size || SIZE_DEFAULT}/>
   </a>
+)
 
 GithubCorner.propTypes = {
   url: PropTypes.string.isRequired,
+  size: PropTypes.number,
   title: PropTypes.string,
-  size : PropTypes.number,
 }
 
 export default GithubCorner

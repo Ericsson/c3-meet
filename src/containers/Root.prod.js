@@ -14,19 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
-import Routes from 'containers/Routes'
+import {HashRouter} from 'react-router-dom'
+import App from 'containers/App'
 
-const Root = ({store, history}) => (
+const Root = ({store}) => (
   <Provider store={store}>
-    <Routes history={history}/>
+    <HashRouter>
+      <App/>
+    </HashRouter>
   </Provider>
 )
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 }
 
 export default Root
