@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './ConferencePeerConnectionState.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
@@ -35,7 +36,7 @@ class ConferencePeerConnectionState extends Component {
     this.setState({connectionState})
   }
   render() {
-    return <span className='peerConnectionState'>{this.state.connectionState}</span>
+    return <span className={styles.main}>{this.state.connectionState}</span>
   }
 }
 

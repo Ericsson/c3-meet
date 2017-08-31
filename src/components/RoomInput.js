@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './RoomInput.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import namegen from 'modules/namegen'
@@ -48,8 +49,9 @@ class RoomInput extends Component {
   render() {
     const {inputText} = this.state
     return (
-      <form className='roomInput' onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
         <input
+          className={styles.input}
           type='text'
           value={inputText}
           onChange={this.handleChange}

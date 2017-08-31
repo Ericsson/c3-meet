@@ -48,7 +48,7 @@ class Audio extends Component {
 
   render() {
     return (
-      <audio className='Audio' ref={this.handleRef} muted={this.props.muted} autoPlay/>
+      <audio ref={this.handleRef} muted={this.props.muted} autoPlay/>
     )
   }
 }

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './MuteToggle.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
@@ -35,7 +36,7 @@ class MuteToggle extends Component {
   }
   render() {
     return (
-      <button className='muteToggle' onClick={() => this.setState({muted: !this.state.muted})}>
+      <button className={styles.button} onClick={() => this.setState({muted: !this.state.muted})}>
         {this.state.muted ? 'Unmute' : 'Mute'}
       </button>
     )

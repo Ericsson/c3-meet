@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './ConferenceVisualization.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {devtools} from '@cct/libcct/devtools'
@@ -45,7 +46,7 @@ class ConferenceVisualization extends Component {
   }
 
   render() {
-    return <svg className='relayTreeVisualization' ref={this._onSvgRef}/>
+    return <svg className={styles.main} ref={this._onSvgRef}/>
   }
 }
 

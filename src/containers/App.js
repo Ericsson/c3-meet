@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './App.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
@@ -24,7 +25,7 @@ import RoomPage from 'containers/RoomPage'
 import SetupPage from 'containers/SetupPage'
 
 const App = ({children}) => (
-  <div>
+  <div className={styles.app}>
     <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
     <Switch>
       <Route exact path='/' component={SetupPage}/>

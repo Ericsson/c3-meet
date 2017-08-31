@@ -51,7 +51,9 @@ class ElementHolder extends Component {
     this._ref = ref
   }
   render() {
-    return <div {...this.props} ref={this._onContainerRef}/>
+    let props = Object.assign({}, this.props)
+    delete props.element
+    return <div {...props} ref={this._onContainerRef}/>
   }
 }
 

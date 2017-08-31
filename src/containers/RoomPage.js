@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './RoomPage.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
@@ -184,6 +185,7 @@ class RoomPage extends Component {
     let thumbnails = elements.map(element => {
       let userAgent = this.dataShare.get(element.peerId)
       let peer = this.conference.peers.get(element.peerId)
+      element.classList.add(styles.thumbnailElement)
       return {element, peer, userAgent}
     })
 
@@ -206,11 +208,9 @@ class RoomPage extends Component {
     const {switcher, thumbnails, showVisualizer} = this.state
 
     return (
-      <div className='roomPage'>
-        <div className='mainVideoContainer'>
-          <Video source={switcher}/>
-        </div>
-        <div className='thumbnailRow'>
+      <div>
+        <Video className={styles.mainVideo} source={switcher}/>
+        <div className={styles.thumbnails}>
           {thumbnails.map((props, index) => <Thumbnail key={index} {...props}/>)}
         </div>
         <MuteToggle source={this.mutableAudioSource}/>

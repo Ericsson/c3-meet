@@ -1,0 +1,16 @@
+
+.app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  background-image: url(../images/purple.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}

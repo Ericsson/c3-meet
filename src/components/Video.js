@@ -76,11 +76,10 @@ class Video extends Component {
 
   render() {
     let props = Object.assign({}, this.props)
-    let className = `${props.className || ''} Video`
     delete props.source
     delete props.onResize
     return (
-      <video {...props} className={className} ref={this._handleRef} autoPlay/>
+      <video {...props} ref={this._handleRef} autoPlay/>
     )
   }
 }

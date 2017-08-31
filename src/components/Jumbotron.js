@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './Jumbotron.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 
 const Jumbotron = ({header, subheader, children}) => (
-  <div className='jumbotron'>
-    <h1>{header}</h1>
-    <h2>{subheader}</h2>
+  <div className={styles.container}>
+    <h1 className={styles.header}>{header}</h1>
+    <h2 className={styles.subheader}>{subheader}</h2>
     {children}
   </div>
 )

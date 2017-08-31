@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import styles from './Thumbnail.css'
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import ConferencePeerConnectionState from 'components/ConferencePeerConnectionState'
 import ElementHolder from 'components/ElementHolder'
 
@@ -24,26 +26,26 @@ const Thumbnail = ({element, peer, userAgent}) => {
   if (userAgent) {
     let {browser, version, platform, device} = userAgent
     userAgentText = (
-      <div className='userAgentText'>
+      <div className={styles.userAgent}>
         {`${browser} ${version}, ${device} ${platform}`}
       </div>
     )
   }
 
   return (
-    <div className='thumbnailContainer'>
+    <div className={styles.container}>
       {peer && <ConferencePeerConnectionState peer={peer}/>}
-      {element && <ElementHolder className='thumbnailHolder' element={element}/>}
-      {element && <div className='userIdText'>{element.peerId}</div>}
+      {element && <ElementHolder className={styles.holder} element={element}/>}
+      {element && <div className={styles.userId}>{element.peerId}</div>}
       {userAgentText}
     </div>
   )
 }
 
 Thumbnail.propTypes = {
-  element: PropTypes.element.isRequired,
-  peer: PropTypes.object.isRequired,
-  userAgent: PropTypes.string,
+  element: PropTypes.object,
+  peer: PropTypes.object,
+  userAgent: PropTypes.object,
 }
 
 export default Thumbnail
