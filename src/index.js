@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
@@ -21,8 +22,6 @@ import {AppContainer} from 'react-hot-loader'
 import Root from 'containers/Root'
 
 import configureStore from 'store/configureStore'
-
-import 'styles/modules.css'
 
 const store = configureStore()
 

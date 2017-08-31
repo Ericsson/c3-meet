@@ -41,7 +41,7 @@ function getVersion() {
 
 // Entry
 
-var entry = path.join(__dirname, 'src', 'meet.js')
+var entry = path.join(__dirname, 'src')
 
 if (isDev) {
   entry = [
@@ -159,7 +159,6 @@ module.exports = {
       modules: path.resolve(__dirname, 'src/modules/'),
       reducers: path.resolve(__dirname, 'src/reducers/'),
       store: path.resolve(__dirname, 'src/store/'),
-      styles: path.resolve(__dirname, 'src/styles/'),
     },
   },
   module: {
