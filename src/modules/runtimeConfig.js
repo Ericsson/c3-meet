@@ -65,7 +65,7 @@ class EnvReader {
     }
     let match = value.match(/^(.+):(.+)@(.+)$/)
     if (match) {
-      let [_, username, credential, host] = match
+      let [username, credential, host] = match.slice(1)
       return [{
         username,
         credential,
@@ -82,7 +82,6 @@ class EnvReader {
 }
 
 export function getRuntimeConfig() {
-  var reader
   if (injectedConfig[0] !== '{') { // No config injected
     if (process.env.RUNTIME_CONFIG) {
       // This is injected in webpack.config.js with DefinePlugin for dev builds
@@ -99,5 +98,3 @@ export function getRuntimeConfig() {
     }
   }
 }
-
-
