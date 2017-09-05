@@ -14,6 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export * from 'actions/constants'
+import {SET_CLIENT, UPDATE_OWN_USER, UPDATE_CLIENT_CONNECTION_STATE} from 'actions/constants'
 
-export * from 'actions/client'
+export function setClient(client) {
+  return {type: SET_CLIENT, client}
+}
+
+export function updateOwnUser(ownUser) {
+  return {type: UPDATE_OWN_USER, ownUser}
+}
+
+export function updateClientConnectionState(connectionState) {
+  return {type: UPDATE_CLIENT_CONNECTION_STATE, connectionState}
+}

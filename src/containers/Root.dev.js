@@ -21,15 +21,18 @@ import {BrowserRouter} from 'react-router-dom'
 
 import App from 'containers/App'
 import DevTools from 'containers/DevTools'
+import ClientProvider from 'containers/ClientProvider'
 
-const Root = ({store}) => (
+const Root = ({client, store}) => (
   <Provider store={store}>
-    <BrowserRouter>
-      <div>
-        <App/>
-        <DevTools/>
-      </div>
-    </BrowserRouter>
+    <ClientProvider client={client}>
+      <BrowserRouter>
+        <div>
+          <App/>
+          <DevTools/>
+        </div>
+      </BrowserRouter>
+    </ClientProvider>
   </Provider>
 )
 

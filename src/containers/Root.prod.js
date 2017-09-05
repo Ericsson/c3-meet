@@ -18,13 +18,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
-import App from 'containers/App'
 
-const Root = ({store}) => (
+import App from 'containers/App'
+import ClientProvider from 'containers/ClientProvider'
+
+const Root = ({client, store}) => (
   <Provider store={store}>
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
+    <ClientProvider client={client}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ClientProvider>
   </Provider>
 )
 

@@ -22,8 +22,10 @@ import {AppContainer} from 'react-hot-loader'
 import Root from 'containers/Root'
 
 import configureStore from 'store/configureStore'
+import configureClient from './store/configureClient'
 
 const store = configureStore()
+const client = configureClient()
 
 const root = document.createElement('div')
 document.body.appendChild(root)
@@ -31,7 +33,7 @@ document.body.appendChild(root)
 const render = Component => {
   let app = (
     <AppContainer>
-      <Component store={store}/>
+      <Component store={store} client={client}/>
     </AppContainer>
   )
   ReactDOM.render(app, root)
