@@ -100,6 +100,15 @@ if (isDev) {
       {loader: 'style-loader'},
       ...cssProcessors,
     ],
+    include: path.join(__dirname, 'src'),
+  })
+  rules.push({
+    test: /\.css$/,
+    use: [
+      {loader: 'style-loader'},
+      {loader: 'css-loader'},
+    ],
+    exclude: path.join(__dirname, 'src'),
   })
 }
 
@@ -107,6 +116,12 @@ if (isProd) {
   rules.push({
     test: /\.css$/,
     use: ExtractTextPlugin.extract(cssProcessors),
+    include: path.join(__dirname, 'src'),
+  })
+  rules.push({
+    test: /\.css$/,
+    use: ExtractTextPlugin.extract({loader: 'css-loader'}),
+    exclude: path.join(__dirname, 'src'),
   })
 }
 
