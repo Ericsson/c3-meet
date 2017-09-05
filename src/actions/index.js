@@ -13,3 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+
+export * from 'actions/constants'
+
+export function setClient(client) {
+  return {type: SET_CLIENT, client}
+}
+
+export function updateOwnUser(ownUser) {
+  return {type: UPDATE_OWN_USER, ownUser}
+}
+
+export function updateClientConnectionState(connectionState) {
+  return {type: UPDATE_CLIENT_CONNECTION_STATE, connectionState}
+}

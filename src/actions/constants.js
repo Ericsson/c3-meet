@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {combineReducers} from 'redux'
-import client from 'reducers/client'
-
-export default combineReducers({
-  client,
-})
+export const SET_CLIENT = 'SET_CLIENT'
+export const UPDATE_OWN_USER = 'UPDATE_OWN_USER'
+export const UPDATE_CLIENT_CONNECTION_STATE = 'UPDATE_CLIENT_CONNECTION_STATE'
