@@ -20,6 +20,7 @@ const path = require('path')
 const webpack = require('webpack')
 const AutoPrefixer = require('autoprefixer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CompressionPlugin = require("compression-webpack-plugin")
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -135,6 +136,13 @@ if (isProd) {
       comments: false,
       screw_ie8: true,
     },
+  }))
+  plugins.push(new CompressionPlugin({
+    asset: '[path].gz[query]',
+    algorithm: 'gzip',
+    test: /\.js$|\.html|\.css|\.eot|\.svg|\.ttf$/, /* no point gzipping woff and woff2 */
+    threshold: 1024,
+    minRatio: 0.8,
   }))
 }
 
