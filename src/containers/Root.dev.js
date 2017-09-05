@@ -37,6 +37,7 @@ const Root = ({client, store}) => (
 )
 
 Root.propTypes = {
+  client: PropTypes.object.isRequired,
   store: PropTypes.object.isRequired,
 }
 

@@ -1,45 +1,40 @@
 
-import React, {Component} from 'react'
+import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 import {setClient, updateOwnUser, updateClientConnectionState} from 'actions'
 
 class ClientProvider extends Component {
-  static childContextTypes = {
-    client: PropTypes.object,
-  }
-
   constructor(props) {
     super(props)
     this._onStateChange = this._onStateChange.bind(this)
   }
 
-  componentWillMount() {
-    this.props.setClient(this.props.client)
-    this.props.onOwnUser(this.props.client.user)
-    this.props.onConnectionState(this.props.client.state)
+  getChildContext() {
+    return {client: this.props.client}
   }
 
+  componentWillMount() {
+    this.props.setClient(this.props.client)
+    this.props.updateOwnUser(this.props.client.user)
+    this.props.updateConnectionState(this.props.client.state)
+  }
 
   componentWillUnmount() {
     this.props.client.off('state')
     this.props.setClient(null)
-    this.props.onOwnUser(null)
-    this.props.onConnectionState(null)
+    this.props.updateOwnUser(null)
+    this.props.updateConnectionState(null)
   }
 
   _onStateChange(connectionState) {
     if (connectionState === 'connected') {
-      this.props.onOwnUser(this.props.client.user)
+      this.props.updateOwnUser(this.props.client.user)
     } else {
-      this.props.onOwnUser(null)
+      this.props.updateOwnUser(null)
     }
-    this.props.onConnectionState(connectionState)
-  }
-
-  getChildContext() {
-    return {client: this.props.client}
+    this.props.updateConnectionState(connectionState)
   }
 
   render() {
@@ -47,15 +42,22 @@ class ClientProvider extends Component {
   }
 }
 
-ClientProvider.propTypes = {
+ClientProvider.childContextTypes = {
   client: PropTypes.object,
+}
+
+ClientProvider.propTypes = {
   children: PropTypes.element.isRequired,
+  client: PropTypes.object.isRequired,
+  setClient: PropTypes.func.isRequired,
+  updateConnectionState: PropTypes.func.isRequired,
+  updateOwnUser: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = dispatch => ({
   setClient: client => dispatch(setClient(client)),
-  onOwnUser: user => dispatch(updateOwnUser(user)),
-  onConnectionState: connectionState => dispatch(updateClientConnectionState(connectionState)),
+  updateOwnUser: user => dispatch(updateOwnUser(user)),
+  updateConnectionState: connectionState => dispatch(updateClientConnectionState(connectionState)),
 })
 
 export default connect(null, mapDispatchToProps)(ClientProvider)
