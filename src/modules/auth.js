@@ -114,32 +114,3 @@ export function logout(client) {
   client.logout()
   return sessionStore.clear()
 }
-
-// Keeping login and register here for now, not used atm
-export function loginWithPassword({client, username, password}) {
-  log.info(LOG_TAG, `attempting to log in user: '${username}'`)
-  return Auth.loginWithPassword({
-    serverUrl, username, password,
-  }).then(client.auth)
-    .then(() => {
-      sessionStore.store(client.authInfo)
-    })
-}
-
-export function register({client, displayName, username, password}) {
-  log.info('Register', `attempting to register user: '${username}' with display name '${displayName}'`)
-
-  let name = username
-
-  return Auth.registerWithPassword({
-    serverUrl: serverUrl,
-    username: username,
-    password: password,
-  }).then(() => {
-    log.info(LOG_TAG, `registration successful for '${username}'`)
-
-    return client.setName(name)
-  }).catch(error => {
-    log.error(LOG_TAG, `failed to register user, ${error}`)
-  })
-}
