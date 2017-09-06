@@ -18,8 +18,12 @@ import {LOG_TAG} from 'modules/config'
 import {log} from '@cct/libcct'
 import argCheck from '@cct/arg-check'
 
-const MEETING_STORE_KEY = 'meet-session'
-const meetingStore = localStorage
+import {SingleValueStore} from 'modules/storage'
+
+const meetingStore = new SingleValueStore({
+  store: localStorage,
+  key: 'meet-stored-meetings',
+})
 
 export function addMeeting({meetingId, meetingName, meetingTime}) {
   if (!meetingId) {
@@ -32,11 +36,11 @@ export function addMeeting({meetingId, meetingName, meetingTime}) {
     throw new TypeError(`Invalid meetingTime: '${meetingTime}'`)
   }
 
-  let meetings = loadMeetings()
+  let meetings = meetingStore.load()
 
   meetings[meetingId] = {meetingName, meetingTime}
 
-  storeMeetings(meetings)
+  meetingStore.store(meetings)
 }
 
 export function removeMeeting(meetingId) {
@@ -44,11 +48,11 @@ export function removeMeeting(meetingId) {
     throw new TypeError(`Invalid meetingId: '${meetingId}'`)
   }
 
-  let meetings = loadMeetings()
+  let meetings = meetingStore.load()
 
   let deleted = delete(meetings[meetingId])
   if (deleted) {
-    storeMeetings(meetings)
+    meetingStore.store(meetings)
   }
   return deleted
 }
@@ -84,11 +88,11 @@ export function listMeetingsByName(ascending) {
 }
 
 export function clear() {
-  meetingStore.removeItem(MEETING_STORE_KEY)
+  meetingStore.clear()
 }
 
 function listMeetings() {
-  let obj = loadMeetings()
+  let obj = meetingStore.load()
   let meetingList = []
 
   for (let meeting of Object.values(obj)) {
@@ -96,33 +100,4 @@ function listMeetings() {
   }
 
   return meetingList
-}
-
-function loadMeetings() {
-  let json = meetingStore.getItem(MEETING_STORE_KEY)
-  if (!json) {
-    return null
-  }
-
-  try {
-    let meetings = JSON.parse(json)
-    argCheck.object('loadMeetings', 'meetings', meetings)
-    return meetings
-  } catch (error) {
-    if (error) {
-      log.error(LOG_TAG, `failed to load meeting list, ${error}`)
-    }
-    return null
-  }
-}
-
-// Store an object of {[meetingId]: {meetingName, meetingTime}}
-function storeMeetings(meetings) {
-  argCheck.object('storeMeetings', 'meetings', meetings)
-  try {
-    let json = JSON.stringify(meetings)
-    meetingStore.setItem(MEETING_STORE_KEY, json)
-  } catch (error) {
-    log.error(LOG_TAG, `failed to store meeting list, ${error}`)
-  }
 }
