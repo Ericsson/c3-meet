@@ -25,3 +25,5 @@ export const iceServers = [{
   username: 'c3-turn',
   credential: 'see-three',
 }]
+
+export const LOG_TAG = 'meet'
