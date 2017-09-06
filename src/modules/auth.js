@@ -18,46 +18,29 @@ import {serverUrl, LOG_TAG} from 'modules/config'
 import {log, Auth} from '@cct/libcct'
 import argCheck from '@cct/arg-check'
 
-const SESSION_STORE_KEY = 'meet-session'
-const sessionStore = sessionStorage
+import {
+  AnonymousAuthError,
+  AuthRequestError,
+  AuthResponseError,
+  NameRequestError,
+  UnknownError,
+} from 'modules/errors'
 
+import {SingleValueStore} from 'modules/storage'
 
-function loadSession() {
-  let json = sessionStore.getItem(SESSION_STORE_KEY)
-  if (!json) {
-    return null
-  }
+const sessionStore = new SingleValueStore({
+  store: sessionStorage,
+  key: 'meet-session',
+})
 
-  try {
-    let session = JSON.parse(json)
-    argCheck.object('loadSession', 'session', session)
-    return session
-  } catch (error) {
-    if (error) {
-      log.error(LOG_TAG, `failed to load session, ${error}`)
-    }
-    return null
-  }
-}
-
-// Store an object of {[meetingId]: {meetingName, meetingTime}}
-function storeSession(session) {
-  argCheck.object('storeSession', 'session', session)
-  try {
-    let json = JSON.stringify(session)
-    sessionStore.setItem(SESSION_STORE_KEY, json)
-  } catch (error) {
-    log.error(LOG_TAG, `failed to store session, ${error}`)
-  }
-}
-
-function clearSession() {
-  sessionStore.removeItem(SESSION_STORE_KEY)
-}
+const displayNameStore = new SingleValueStore({
+  store: localStorage,
+  key: 'meet-display-name',
+})
 
 function trySavedSession(client) {
   return Promise.resolve().then(() => {
-    let session = loadSession()
+    let session = sessionStore.load()
     if (!session) {
       throw new Error('no saved session')
     }
@@ -65,30 +48,71 @@ function trySavedSession(client) {
   })
 }
 
-export function login({client, displayName}) {
+export function clientAnonymousAuth({client}) {
   return trySavedSession().catch(error => {
     log.info(LOG_TAG, `did not use saved session: ${error}`)
-    return Auth.anonymous({serverUrl}).then(client.auth)
+    return Auth.anonymous({serverUrl}).then(authInfo => {
+      return client.auth(authInfo).catch(error => {
+        if (error.name === 'RequestError') {
+          throw new AuthRequestError(error.message)
+        } else if (error.name === 'NotAllowedError') {
+          throw new AuthResponseError(error.message)
+        } else {
+          throw new UnknownError(error.message)
+        }
+      })
+    }, error => {
+      if (error.name === 'AuthenticationError') {
+        throw new AnonymousAuthError(error.message)
+      } else if (error.name === 'RequestError') {
+        throw new AuthRequestError(error.message)
+      } else if (error.name === 'NotAllowedError') {
+        throw new AnonymousAuthError(error.message)
+      } else {
+        throw new UnknownError(error.message)
+      }
+    })
   }).then(client => {
-    // Check if name should not be set, or if it is already set
-    if ((!displayName && !client.user.name) || displayName === client.user.name) {
-      return client
-    } else {
-      return client.setName(displayName).catch(error => {
-        log.error(LOG_TAG, `failed to set display name, ${error}`)
-      }).then(() => client)
-    }
+    sessionStore.store(client.authInfo)
+
+    // Try to set the stored display name
+    let displayName = displayNameStore.load()
+    return setDisplayName({client, displayName})
   })
 }
 
+// Client should be authenticated when this is called
+export function setDisplayName({client, displayName}) {
+  argCheck.optString('setDisplayName', 'displayName', displayName)
+  // Check if name should not be set, or if it is already set
+  displayNameStore.store(displayName)
+  if ((!displayName && !client.user.name) || displayName === client.user.name) {
+    return client
+  } else {
+    return client.setName(displayName).catch(error => {
+      log.error(LOG_TAG, `failed to set display name, ${error}`)
+      if (error.name === 'RequestError') {
+        throw new NameRequestError(error.message)
+      } else {
+        throw new UnknownError(error.message)
+      }
+    }).then(() => client)
+  }
+}
+
+export function getStoredDisplayName() {
+  return displayNameStore.load()
+}
+
 export function logout(client) {
+  argCheck.object('logout', 'client', client)
   if (client.user) {
     log.info(LOG_TAG, `logging out user: '${client.user.id}'`)
   } else {
-    log.info(LOG_TAG, `logging client without user`)
+    log.info(LOG_TAG, 'logging client without user')
   }
   client.logout()
-  return clearSession()
+  return sessionStore.clear()
 }
 
 // Keeping login and register here for now, not used atm
@@ -96,10 +120,9 @@ export function loginWithPassword({client, username, password}) {
   log.info(LOG_TAG, `attempting to log in user: '${username}'`)
   return Auth.loginWithPassword({
     serverUrl, username, password,
-  })
-    .then(client.auth)
+  }).then(client.auth)
     .then(() => {
-      saveAuthInfo(client.authInfo)
+      sessionStore.store(client.authInfo)
     })
 }
 
@@ -111,11 +134,9 @@ export function register({client, displayName, username, password}) {
   return Auth.registerWithPassword({
     serverUrl: serverUrl,
     username: username,
-    password: password
+    password: password,
   }).then(() => {
-    log.info(info)
     log.info(LOG_TAG, `registration successful for '${username}'`)
-    log.info('Client', 'Signing in user')
 
     return client.setName(name)
   }).catch(error => {
