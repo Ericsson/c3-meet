@@ -40,6 +40,15 @@ function getVersion() {
   return {commit, version}
 }
 
+function getRuntimeConfig() {
+  return Object.entries(process.env).reduce((env, [key, value]) => {
+    if (key.startsWith('APP_CONFIG_')) {
+      env[key.slice('APP_CONFIG_'.length)] = value
+    }
+    return env
+  }, {})
+}
+
 // Entry
 
 var entry = path.join(__dirname, 'src')
@@ -131,7 +140,13 @@ const plugins = []
 
 plugins.push(new webpack.NamedModulesPlugin())
 plugins.push(new HtmlWebpackPlugin({title: 'Ericsson C3 Meet', hash: true}))
-plugins.push(new webpack.DefinePlugin({'process.env.VERSION': JSON.stringify(getVersion())}))
+plugins.push(new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: JSON.stringify(isProd ? 'production' : 'development'),
+    VERSION: JSON.stringify(getVersion()),
+    RUNTIME_CONFIG: isProd ? undefined : JSON.stringify(getRuntimeConfig()),
+  },
+}))
 
 if (isDev) {
   plugins.push(new webpack.HotModuleReplacementPlugin())
