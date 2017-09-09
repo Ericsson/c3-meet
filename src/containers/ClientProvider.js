@@ -3,12 +3,13 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import {setClient, updateOwnUser, updateDisplayName, updateClientConnectionState} from 'actions/client'
+import {updateClient} from 'actions/client'
 
 class ClientProvider extends Component {
   constructor(props) {
     super(props)
-    this._onStateChange = this._onStateChange.bind(this)
+    this.handleStateChange = this.handleStateChange.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
   }
 
   getChildContext() {
@@ -16,30 +17,33 @@ class ClientProvider extends Component {
   }
 
   componentWillMount() {
-    this.props.setClient(this.props.client)
-    this.props.updateOwnUser(this.props.client.user)
-    this.props.updateConnectionState(this.props.client.state)
-    this.props.client.on('state', this.props.updateConnectionState)
+    this.props.client.on('state', this.handleStateChange)
+    this.handleStateChange(this.props.client.state)
   }
 
   componentWillUnmount() {
-    this.props.client.off('state', this.props.updateConnectionState)
-    this.props.setClient(null)
-    this.props.updateOwnUser(null)
-    this.props.updateConnectionState(null)
+    this.props.client.off('state', this.handleStateChange)
+    this.props.client.logout()
+    this.props.updateClient(null)
   }
 
-  _onStateChange(connectionState) {
-    if (connectionState === 'connected') {
-      let {user} = this.props.client
-      this.props.updateOwnUser(user)
-      user.on('name', this.props.updateDisplayName)
-      this.props.updateDisplayName(user.name)
-    } else {
-      this.props.updateDisplayName(null)
-      this.props.updateOwnUser(null)
+  handleStateChange() {
+    if (this.unsubscribe) {
+      this.unsubscribe()
     }
-    this.props.updateConnectionState(connectionState)
+    if (this.props.client.connectionState === 'connected') {
+      let {user} = this.props.client
+      user.on('name', this.handleNameChange)
+      this.unsubscribe = () => {
+        user.off('name', this.handleNameChange)
+      }
+    }
+    this.props.updateClient(this.props.client)
+  }
+
+  handleNameChange() {
+    let {user} = this.props.client
+    this.props.updateClient(this.props.client)
   }
 
   render() {
@@ -54,17 +58,11 @@ ClientProvider.childContextTypes = {
 ClientProvider.propTypes = {
   children: PropTypes.element.isRequired,
   client: PropTypes.object.isRequired,
-  setClient: PropTypes.func.isRequired,
-  updateConnectionState: PropTypes.func.isRequired,
-  updateDisplayName: PropTypes.func.isRequired,
-  updateOwnUser: PropTypes.func.isRequired,
+  updateClient: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = dispatch => ({
-  setClient: client => dispatch(setClient(client)),
-  updateOwnUser: user => dispatch(updateOwnUser(user)),
-  updateDisplayName: ownUserName => dispatch(updateDisplayName(ownUserName)),
-  updateConnectionState: connectionState => dispatch(updateClientConnectionState(connectionState)),
+  updateClient: user => dispatch(updateClient(user)),
 })
 
 export default connect(null, mapDispatchToProps)(ClientProvider)
