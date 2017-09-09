@@ -20,17 +20,20 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Switch, Route, withRouter} from 'react-router-dom'
 
-import GithubCorner from 'components/GithubCorner'
-import RoomPage from 'containers/RoomPage'
-import SetupPage from 'containers/SetupPage'
+import BootstrapPage from 'containers/BootstrapPage'
+const StartPage = () => <div>Start</div> // import StartPage from 'containers/StartPage'
+const MeetingPage = () => <div>Meeting</div> // import MeetingPage from 'containers/MeetingPage'
+const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
 
 const App = ({children}) => (
   <div className={styles.app}>
-    <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
-    <Switch>
-      <Route exact path='/' component={SetupPage}/>
-      <Route path='/:roomName' component={RoomPage}/>
-    </Switch>
+    <BootstrapPage>
+      <Switch>
+        <Route exact path='/' component={StartPage}/>
+        <Route exact path='/:meetingId' component={MeetingPage}/>
+        <Route path='/' component={NotFoundPage}/>
+      </Switch>
+    </BootstrapPage>
   </div>
 )
 
