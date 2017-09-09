@@ -24,11 +24,10 @@ import WhiteBox from 'components/WhiteBox'
 
 import DisplayNameInput from 'containers/DisplayNameInput'
 
-import {authenticateClient, checkForStoredDisplayName} from 'actions/client'
+import {authenticateClient} from 'actions/client'
 
 class BootstrapPage extends Component {
   componentWillMount() {
-    this.props.checkForStoredDisplayName()
     this.props.authenticateClient(this.props.client)
   }
 
@@ -38,7 +37,7 @@ class BootstrapPage extends Component {
   render() {
     let {props} = this
 
-    if (!props.hasStoredDisplayName) {
+    if (!props.storedDisplayName) {
       return (
         <WhiteBox>
           <DisplayNameInput/>
@@ -68,8 +67,7 @@ class BootstrapPage extends Component {
 BootstrapPage.propTypes = {
   authenticateClient: PropTypes.func.isRequired,
   client: PropTypes.object.isRequired,
-  checkForStoredDisplayName: PropTypes.func.isRequired,
-  hasStoredDisplayName: PropTypes.bool.isRequired,
+  storedDisplayName: PropTypes.string.isRequired,
 
   children: PropTypes.element,
   connectionState: PropTypes.string,
@@ -80,7 +78,7 @@ const mapStateToProps = state => ({
   client: state.client.client,
   connectionState: state.client.connectionState,
   displayName: state.client.displayName,
-  hasStoredDisplayName: state.client.hasStoredDisplayName,
+  storedDisplayName: state.client.storedDisplayName,
   authenticateInProgress: state.client.authenticateInProgress,
   authenticateError: state.client.authenticateClientError,
   // authenticateError: new Error('derp'),
@@ -90,7 +88,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   authenticateClient: client => dispatch(authenticateClient(client)),
-  checkForStoredDisplayName: client => dispatch(checkForStoredDisplayName(client)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BootstrapPage)

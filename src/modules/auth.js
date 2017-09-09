@@ -81,17 +81,13 @@ export function clientAnonymousAuth({client}) {
     })
   }).then(client => {
     sessionStore.store(client.authInfo)
-
-    // Try to set the stored display name
-    let displayName = displayNameStore.load()
-    return setDisplayName({client, displayName})
+    return client
   })
 }
 
 // Client should be authenticated when this is called
 export function setDisplayName({client, displayName}) {
   argCheck.optString('setDisplayName', 'displayName', displayName)
-  displayNameStore.store(displayName)
 
   // Check if name should not be set, or if it is already set
   if (!displayName && !client.user.name) {
@@ -113,8 +109,12 @@ export function setDisplayName({client, displayName}) {
   }
 }
 
+export function storeDisplayName(displayName) {
+  displayNameStore.store(displayName)
+}
+
 export function getStoredDisplayName() {
-  return displayNameStore.load()
+  return displayNameStore.load() || ''
 }
 
 export function logout(client) {

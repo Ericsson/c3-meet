@@ -4,7 +4,7 @@ import {
   AUTHENTICATE_CLIENT_STARTED,
   AUTHENTICATE_CLIENT_COMPLETE,
   AUTHENTICATE_CLIENT_FAILED,
-  SET_HAS_STORED_DISPLAY_NAME,
+  SET_STORED_DISPLAY_NAME,
   UPDATE_DISPLAY_NAME_INPUT,
   SET_DISPLAY_NAME_STARTED,
   SET_DISPLAY_NAME_COMPLETE,
@@ -21,7 +21,7 @@ const initialState = {
   authenticateInProgress: false,
   authenticateClientError: null,
 
-  hasStoredDisplayName: false,
+  storedDisplayName: '',
   displayNameInput: '',
   setDisplayNameInProgress: false,
   setDisplayNameError: null,
@@ -43,9 +43,9 @@ export default function client(state = initialState, action) {
       let {error} = action
       return {...state, authenticateInProgress: false, authenticateClientError: error}
     }
-    case SET_HAS_STORED_DISPLAY_NAME: {
-      let {hasStoredDisplayName} = action
-      return {...state, hasStoredDisplayName}
+    case SET_STORED_DISPLAY_NAME: {
+      let {storedDisplayName} = action
+      return {...state, storedDisplayName}
     }
     case UPDATE_DISPLAY_NAME_INPUT: {
       let {displayName} = action

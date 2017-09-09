@@ -19,14 +19,14 @@ import {
   AUTHENTICATE_CLIENT_STARTED,
   AUTHENTICATE_CLIENT_COMPLETE,
   AUTHENTICATE_CLIENT_FAILED,
-  SET_HAS_STORED_DISPLAY_NAME,
+  SET_STORED_DISPLAY_NAME,
   UPDATE_DISPLAY_NAME_INPUT,
   SET_DISPLAY_NAME_STARTED,
   SET_DISPLAY_NAME_COMPLETE,
   SET_DISPLAY_NAME_FAILED,
 } from 'actions/constants'
 
-import {clientAnonymousAuth, setDisplayName, getStoredDisplayName} from 'modules/auth'
+import {clientAnonymousAuth, setDisplayName, storeDisplayName, getStoredDisplayName} from 'modules/auth'
 
 export function updateClient(client) {
   let user = client ? client.user : null
@@ -43,18 +43,24 @@ export function authenticateClient(client) {
   return (dispatch, getState) => {
     let {client} = getState().client
 
+    let storedDisplayName = getStoredDisplayName()
+
+    dispatch({type: SET_STORED_DISPLAY_NAME, storedDisplayName})
     dispatch({type: AUTHENTICATE_CLIENT_STARTED})
+
     clientAnonymousAuth({client}).then(() => {
       dispatch({type: AUTHENTICATE_CLIENT_COMPLETE})
+
+      // If we had a stored display name or it was set before we got here, then we can
+      // set it directly, otherwise we let submitDisplayName be called elsewhere.
+      let {storedDisplayName} = getState().client
+      if (storedDisplayName) {
+        submitDisplayName(storedDisplayName)(dispatch, getState)
+      }
     }).catch(error => {
       dispatch({type: AUTHENTICATE_CLIENT_FAILED, error})
     })
   }
-}
-
-export function checkForStoredDisplayName() {
-  let hasStoredDisplayName = !!getStoredDisplayName()
-  return {type: SET_HAS_STORED_DISPLAY_NAME, hasStoredDisplayName}
 }
 
 export function updateDisplayNameInput(displayName) {
@@ -63,11 +69,12 @@ export function updateDisplayNameInput(displayName) {
 
 export function submitDisplayName(displayName) {
   return (dispatch, getState) => {
-    let {client, authenticated} = getState().client
+    let {client} = getState().client
 
-    dispatch({type: SET_HAS_STORED_DISPLAY_NAME, hasStoredDisplayName: true})
+    storeDisplayName(displayName)
+    dispatch({type: SET_STORED_DISPLAY_NAME, storedDisplayName: displayName})
 
-    if (authenticated) {
+    if (client.authInfo) {
       dispatch({type: SET_DISPLAY_NAME_STARTED})
       setDisplayName({client, displayName}).then(() => {
         dispatch({type: SET_DISPLAY_NAME_COMPLETE, displayName})
