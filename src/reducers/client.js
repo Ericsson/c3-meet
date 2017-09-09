@@ -18,6 +18,7 @@ const initialState = {
   connectionState: null,
 
   authenticated: false,
+  authenticateInProgress: false,
   authenticateClientError: null,
 
   hasStoredDisplayName: false,
@@ -33,14 +34,14 @@ export default function client(state = initialState, action) {
       return {...state, client, ownUser, displayName, connectionState}
     }
     case AUTHENTICATE_CLIENT_STARTED: {
-      return {...state, authenticated: false, authenticateClientError: null}
+      return {...state, authenticateInProgress: true, authenticateClientError: null}
     }
     case AUTHENTICATE_CLIENT_COMPLETE: {
-      return {...state, authenticated: true, authenticateClientError: null}
+      return {...state, authenticateInProgress: false, authenticateClientError: null}
     }
     case AUTHENTICATE_CLIENT_FAILED: {
       let {error} = action
-      return {...state, authenticated: false, authenticateClientError: error}
+      return {...state, authenticateInProgress: false, authenticateClientError: error}
     }
     case SET_HAS_STORED_DISPLAY_NAME: {
       let {hasStoredDisplayName} = action
