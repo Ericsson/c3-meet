@@ -15,14 +15,12 @@ limitations under the License.
 */
 
 import {
-  SET_CLIENT,
-  SET_STORED_DISPLAY_NAME,
-  UPDATE_OWN_USER,
-  UPDATE_DISPLAY_NAME,
-  UPDATE_CLIENT_CONNECTION_STATE,
+  UPDATE_CLIENT,
   AUTHENTICATE_CLIENT_STARTED,
   AUTHENTICATE_CLIENT_COMPLETE,
   AUTHENTICATE_CLIENT_FAILED,
+  SET_HAS_STORED_DISPLAY_NAME,
+  UPDATE_DISPLAY_NAME_INPUT,
   SET_DISPLAY_NAME_STARTED,
   SET_DISPLAY_NAME_COMPLETE,
   SET_DISPLAY_NAME_FAILED,
@@ -30,25 +28,15 @@ import {
 
 import {clientAnonymousAuth, setDisplayName, getStoredDisplayName} from 'modules/auth'
 
-export function setClient(client) {
-  return {type: SET_CLIENT, client}
-}
-
-export function loadStoredDisplayName() {
-  let storedDisplayName = getStoredDisplayName()
-  return {type: SET_STORED_DISPLAY_NAME, storedDisplayName}
-}
-
-export function updateOwnUser(ownUser) {
-  return {type: UPDATE_OWN_USER, ownUser}
-}
-
-export function updateDisplayName(displayName) {
-  return {type: UPDATE_DISPLAY_NAME, displayName}
-}
-
-export function updateClientConnectionState(connectionState) {
-  return {type: UPDATE_CLIENT_CONNECTION_STATE, connectionState}
+export function updateClient(client) {
+  let user = client ? client.user : null
+  return {
+    type: UPDATE_CLIENT,
+    client: client,
+    ownUser: user,
+    displayName: user ? user.name : null,
+    connectionState: client ? client.state : null,
+  }
 }
 
 export function authenticateClient(client) {
@@ -64,16 +52,28 @@ export function authenticateClient(client) {
   }
 }
 
-export function setClientDisplayName(displayName = null) {
+export function checkForStoredDisplayName() {
+  let hasStoredDisplayName = !!getStoredDisplayName()
+  return {type: SET_HAS_STORED_DISPLAY_NAME, hasStoredDisplayName}
+}
+
+export function updateDisplayNameInput(displayName) {
+  return {type: UPDATE_DISPLAY_NAME_INPUT, displayName}
+}
+
+export function submitDisplayName(displayName) {
   return (dispatch, getState) => {
-    let {client} = getState().client
+    let {client, authenticated} = getState().client
 
-    dispatch({type: SET_DISPLAY_NAME_STARTED, displayName})
+    dispatch({type: SET_HAS_STORED_DISPLAY_NAME, hasStoredDisplayName: true})
 
-    setDisplayName({client, displayName}).then(() => {
-      dispatch({type: SET_DISPLAY_NAME_COMPLETE, displayName})
-    }).catch(error => {
-      dispatch({type: SET_DISPLAY_NAME_FAILED, error})
-    })
+    if (authenticated) {
+      dispatch({type: SET_DISPLAY_NAME_STARTED})
+      setDisplayName({client, displayName}).then(() => {
+        dispatch({type: SET_DISPLAY_NAME_COMPLETE, displayName})
+      }).catch(error => {
+        dispatch({type: SET_DISPLAY_NAME_FAILED, error})
+      })
+    }
   }
 }
