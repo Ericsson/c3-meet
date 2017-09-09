@@ -20,8 +20,6 @@ limitations under the License.
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-
-  font-size: 20px;
 }
 
 .icon {
@@ -37,29 +35,4 @@ limitations under the License.
   font-size: 1.6em;
   font-weight: 400;
   flex: 1 1 auto;
-}
-
-
-@media (max-width: 767px) {
-  .message {
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 768px) {
-  .message {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 992px) {
-  .message {
-    font-size: 20px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .message {
-    font-size: 24px;
-  }
 }
