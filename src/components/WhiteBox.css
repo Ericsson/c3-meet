@@ -29,8 +29,7 @@ limitations under the License.
   max-height: 95%;
 
   background: linear-gradient(to bottom, #fff 0%, #ddd 100%);
-  border: 1ps solid rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
+  border-radius: 3px;
   box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.7), inset 0px -5px 15px -2px rgba(0,0,0,0.3);
 
   color: #030C2B;
