@@ -14,14 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './BootstrapPage.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import Spinner from 'react-spinkit'
-
 import ErrorMessage from 'components/ErrorMessage'
+import LoadingPage from 'components/LoadingPage'
 import WhiteBox from 'components/WhiteBox'
 
 import DisplayNameInput from 'containers/DisplayNameInput'
@@ -30,7 +28,6 @@ import {authenticateClient, checkForStoredDisplayName} from 'actions/client'
 
 class BootstrapPage extends Component {
   componentWillMount() {
-    localStorage.clear()
     this.props.checkForStoredDisplayName()
     this.props.authenticateClient(this.props.client)
   }
@@ -62,7 +59,7 @@ class BootstrapPage extends Component {
       )
     }
     if (props.authenticateInProgress || props.setDisplayNameInProgress) {
-      return <Spinner name='cube-grid' fadeIn='half' className={styles.spinner}/>
+      return <LoadingPage/>
     }
     return props.children
   }
@@ -84,7 +81,7 @@ const mapStateToProps = state => ({
   connectionState: state.client.connectionState,
   displayName: state.client.displayName,
   hasStoredDisplayName: state.client.hasStoredDisplayName,
-  authenticateInProgress: state.client.authenticateClientInProgress,
+  authenticateInProgress: state.client.authenticateInProgress,
   authenticateError: state.client.authenticateClientError,
   // authenticateError: new Error('derp'),
   setDisplayNameInProgress: state.client.setDisplayNameInProgress,
