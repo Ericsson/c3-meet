@@ -1,0 +1,77 @@
+/*
+Copyright 2016 Ericsson AB.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.container {
+  color: #0F2057;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+}
+
+.title {
+  margin: 0.8em 1.2em 0 1.2em;
+
+  font-size: 2.4em;
+  font-weight: 600;
+  text-align: center;
+}
+
+.input {
+  flex: 0;
+  max-width: 90%;
+  align-self: center;
+  margin: 1.6em 0 1.5em 0;
+
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #0F2057;
+
+  transition: ease-out 200ms all;
+
+  font-size: 1.6em;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #0F2057;
+  text-align: center;
+}
+
+.input:focus {
+  border-bottom: 2px solid #2f62a4;
+}
+
+.button {
+  align-self: stretch;
+  background: #2f62a4;
+  border: none;
+  outline: none;
+  padding: 0.2em 0;
+
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.6em;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.button:hover, .button:focus {
+  background: #3976c6;
+}
+
+/*
+Animation: "Welcome to Ericsson C3 Meet" -> "Choose your display name" [Continue]
+
+ */
