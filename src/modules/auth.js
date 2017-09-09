@@ -39,17 +39,24 @@ const displayNameStore = new SingleValueStore({
 })
 
 function trySavedSession(client) {
+  if (client.state === 'connected') {
+    log.info(LOG_TAG, `client is already connected as '${client.user.id}'`)
+    return Promise.resolve(client)
+  }
   return Promise.resolve().then(() => {
     let session = sessionStore.load()
     if (!session) {
       throw new Error('no saved session')
     }
-    return client.auth(session)
+    return client.auth(session).then(client => {
+      log.info(LOG_TAG, `used saved session for '${client.user.id}'`)
+      return client
+    })
   })
 }
 
 export function clientAnonymousAuth({client}) {
-  return trySavedSession().catch(error => {
+  return trySavedSession(client).catch(error => {
     log.info(LOG_TAG, `did not use saved session: ${error}`)
     return Auth.anonymous({serverUrl}).then(authInfo => {
       return client.auth(authInfo).catch(error => {
@@ -84,11 +91,17 @@ export function clientAnonymousAuth({client}) {
 // Client should be authenticated when this is called
 export function setDisplayName({client, displayName}) {
   argCheck.optString('setDisplayName', 'displayName', displayName)
-  // Check if name should not be set, or if it is already set
   displayNameStore.store(displayName)
-  if ((!displayName && !client.user.name) || displayName === client.user.name) {
-    return client
+
+  // Check if name should not be set, or if it is already set
+  if (!displayName && !client.user.name) {
+    log.debug(LOG_TAG, `no need to set display name, none was requested and none was set`)
+    return Promise.resolve(client)
+  } else if (displayName === client.user.name) {
+    log.debug(LOG_TAG, `no need to set display name, already equal to the requested one`)
+    return Promise.resolve(client)
   } else {
+    log.debug(LOG_TAG, `setting display name to ${displayName}, was ${client.user.name}`)
     return client.setName(displayName).catch(error => {
       log.error(LOG_TAG, `failed to set display name, ${error}`)
       if (error.name === 'RequestError') {
