@@ -38,7 +38,10 @@ export function addMeeting({meetingId, meetingName, meetingTime}) {
 
   let meetings = meetingStore.load()
 
-  meetings[meetingId] = {meetingName, meetingTime}
+  meetings[meetingId] = {
+    name: meetingName,
+    time: meetingTime.toISOString(),
+  }
 
   meetingStore.store(meetings)
 
@@ -59,18 +62,29 @@ export function removeMeeting(meetingId) {
   return deleted ? meetings : null
 }
 
-export function listMeetingsByTime(descending) {
+// Mutates the meetings array
+export function sortMeetings({meetings, orderBy = 'name', descending = true}) {
+  if (orderBy === 'name') {
+    return sortMeetingsByName(meetings, descending)
+  } else if (orderBy === 'time') {
+    return sortMeetingsByTime(meetings, descending)
+  } else {
+    throw new TypeError(`unknown orderBy parameters for sortMeetings: '${orderBy}'`)
+  }
+}
+
+function sortMeetingsByTime(meetings, descending = true) {
   let order = Math.sign(descending - 0.5)
-  let sorted = listMeetings().sort((a, b) => {
-    return a.meetingTime - b.meetingTime * order
+  let sorted = meetings.sort((a, b) => {
+    return a.meetingTime.getTime() - b.meetingTime.getTime() * order
   })
 
   return sorted
 }
 
-export function listMeetingsByName(descending) {
+function sortMeetingsByName(meetings, descending = true) {
   let order = Math.sign(descending - 0.5)
-  let sorted = listMeetings().sort((a, b) => {
+  let sorted = meetings.sort((a, b) => {
     if (a.meetingName < b.meetingName) {
       return -1 * order
     }
@@ -87,15 +101,23 @@ export function clear() {
   meetingStore.clear()
 }
 
-function listMeetings() {
+export function loadMeetingsList() {
   let obj = meetingStore.load()
   let meetingList = []
 
   if (typeof(obj) !== 'object' || obj === null) {
     return meetingList
   }
-  for (let meeting of Object.values(obj)) {
-    meetingList.push(meeting)
+  for (let meetingId of Object.keys(obj)) {
+    let {name, date} = obj[meetingId]
+
+    let meetingDate = new Date(date)
+    if (isNaN(meetingDate.getTime())) {
+      log.error(LOG_TAG, `failed to load meeting '${id}'/'${name}', invalid date: '${date}'`)
+      continue
+    }
+
+    meetingList.push({meetingId, meetingName: name, meetingDate})
   }
 
   return meetingList
