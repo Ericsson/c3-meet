@@ -14,6 +14,7 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   color: #333;
+  text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.3);
 
   background-image: linear-gradient(190deg, #0F2057 0%, #030C2B 100%);
 }
