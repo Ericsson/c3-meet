@@ -56,6 +56,21 @@ NameRequestError.displayMessage = 'Failed to set display name'
 export class EnterMeetingError extends CustomError {}
 EnterMeetingError.displayMessage = 'Failed to enter meeting'
 
+export class MeetingNotFoundError extends CustomError {}
+MeetingNotFoundError.displayMessage = 'Meeting does not exist'
+
+export class MeetingNameConflictError extends CustomError {}
+MeetingNameConflictError.displayMessage = 'A meeting with that name already exists'
+
+export class InvalidMeetingNameError extends CustomError {}
+InvalidMeetingNameError.displayMessage = 'Meeting name contains invalid characters'
+
+export class ForbiddenMeetingError extends CustomError {}
+ForbiddenMeetingError.displayMessage = 'You are not allowed to join that meeting'
+
+export class SessionLostError extends CustomError {}
+SessionLostError.displayMessage = 'Login session has timed out'
+
 export class UserMediaError extends CustomError {
   static fromError(error) {
     if (error.name === 'NotAllowedError') {
