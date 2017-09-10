@@ -18,7 +18,8 @@ limitations under the License.
   background: #005799;
   border: none;
   outline: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2em 1.0em;
+  border-radius: 5px;
 
   cursor: pointer;
   color: #fff;
