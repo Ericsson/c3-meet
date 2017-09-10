@@ -19,7 +19,7 @@ limitations under the License.
   box-shadow: none;
   outline: none;
   border: none;
-  border-bottom: 2px solid #005799;
+  border-bottom: 2px solid rgba(0, 87, 153, 0.2);
 
   transition: ease-out 200ms all;
 
