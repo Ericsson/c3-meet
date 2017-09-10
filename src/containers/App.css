@@ -11,11 +11,9 @@
   justify-content: center;
   align-items: center;
 
-  color: #0F2057;
-
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  color: white;
+  color: #002664;
 
   background-image: linear-gradient(190deg, #0F2057 0%, #030C2B 100%);
 }

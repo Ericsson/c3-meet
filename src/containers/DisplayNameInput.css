@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 .container {
-  color: #0F2057;
   display: flex;
   flex-flow: column nowrap;
   align-items: flex-start;
