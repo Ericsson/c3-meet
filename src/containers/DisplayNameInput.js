@@ -38,8 +38,8 @@ class DisplayNameInput extends Component {
   }
 
   handleSubmit(event) {
-    this.props.onSubmit(this.props.displayName)
     event.preventDefault()
+    this.props.onSubmit(this.props.displayName)
   }
 
   render() {
