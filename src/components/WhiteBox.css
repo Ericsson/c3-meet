@@ -16,7 +16,7 @@ limitations under the License.
 
 .box {
   flex: 0 1 auto;
-  margin: 0 auto;
+  margin: 0.66em;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
