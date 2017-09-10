@@ -16,7 +16,9 @@ limitations under the License.
 
 import {combineReducers} from 'redux'
 import client from 'reducers/client'
+import meetingHistory from 'reducers/meetingHistory'
 
 export default combineReducers({
   client,
+  meetingHistory,
 })
