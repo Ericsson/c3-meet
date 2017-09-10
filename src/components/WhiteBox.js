@@ -28,8 +28,20 @@ const WhiteBox = ({children, className, ...props}) => {
 }
 
 WhiteBox.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
   className: PropTypes.string,
 }
+
+const Divider = ({children, className, ...props}) => {
+  return (
+    <div className={classNames(className, styles.divider)} {...props}/>
+  )
+}
+
+Divider.propTypes = {
+  className: PropTypes.string,
+}
+
+WhiteBox.Divider = Divider
 
 export default WhiteBox
