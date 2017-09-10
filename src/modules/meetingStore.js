@@ -25,27 +25,19 @@ const meetingStore = new SingleValueStore({
   key: 'meet-stored-meetings',
 })
 
-export function addMeeting({meetingId, meetingName, meetingTime}) {
-  if (!meetingId) {
-    throw new TypeError(`Invalid meetingId: '${meetingId}'`)
-  }
-  if (!meetingName) {
-    throw new TypeError(`Invalid meetingName: '${meetingName}'`)
-  }
-  if (!meetingTime) {
-    throw new TypeError(`Invalid meetingTime: '${meetingTime}'`)
-  }
+export function addMeeting(meeting) {
+  argCheck.options('addMeeting', 'meeting', meeting)
+    .string('id')
+    .string('name')
 
   let meetings = meetingStore.load() || {}
 
-  meetings[meetingId] = {
-    name: meetingName,
-    time: meetingTime.toISOString(),
+  meetings[meeting.id] = {
+    name: meeting.name,
+    time: new Date().toISOString(),
   }
 
   meetingStore.store(meetings)
-
-  return meetings
 }
 
 export function removeMeeting(meetingId) {
@@ -59,7 +51,7 @@ export function removeMeeting(meetingId) {
   if (deleted) {
     meetingStore.store(meetings)
   }
-  return deleted ? meetings : null
+  return deleted
 }
 
 // Mutates the meetings array
