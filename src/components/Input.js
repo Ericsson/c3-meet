@@ -14,32 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.container {
-  color: #0F2057;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
+import styles from './Input.css'
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+
+const Input = ({className, ...props}) => (
+  <input className={classNames(className, styles.input)} {...props}/>
+)
+
+Input.propTypes = {
+  className: PropTypes.string,
 }
 
-.title {
-  margin: 0.8em 1.2em 0 1.2em;
-
-  font-size: 2.4em;
-  font-weight: 600;
-  text-align: center;
-}
-
-.input {
-  flex: 0;
-  max-width: 90%;
-  align-self: center;
-  margin: 1.6em 0 1.5em 0;
-
-  font-size: 1.6em;
-  font-weight: 400;
-  text-align: center;
-}
-
-.button {
-  align-self: stretch;
-}
+export default Input

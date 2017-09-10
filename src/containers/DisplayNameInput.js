@@ -23,6 +23,7 @@ import {connect} from 'react-redux'
 import {updateDisplayNameInput, submitDisplayName} from 'actions/client'
 
 import Button from 'components/Button'
+import Input from 'components/Input'
 
 class DisplayNameInput extends Component {
   constructor(props) {
@@ -49,13 +50,13 @@ class DisplayNameInput extends Component {
         <span className={styles.title}>
           Welcome to Ericsson C3 Meet
         </span>
-        <input
+        <Input
           className={styles.input}
-          ref={ref => ref && ref.focus()}
-          size={30}
-          placeholder='Display name'
           value={displayName}
+          size={30}
           required
+          placeholder='Display name'
+          autoFocus={true}
           onChange={this.handleInput}
         />
         <Button className={styles.button} type='submit'>
