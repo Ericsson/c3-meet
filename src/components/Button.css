@@ -14,45 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.container {
-  color: #0F2057;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-}
-
-.title {
-  margin: 0.8em 1.2em 0 1.2em;
-
-  font-size: 2.4em;
-  font-weight: 600;
-  text-align: center;
-}
-
-.input {
-  flex: 0;
-  max-width: 90%;
-  align-self: center;
-  margin: 1.6em 0 1.5em 0;
-
-  background: transparent;
-  outline: none;
-  border: none;
-  border-bottom: 2px solid #0F2057;
-
-  transition: ease-out 200ms all;
-
-  font-size: 1.6em;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #0F2057;
-  text-align: center;
-}
-
-.input:focus {
-  border-bottom: 2px solid #2f62a4;
-}
-
 .button {
-  align-self: stretch;
+  background: #005799;
+  border: none;
+  outline: none;
+  padding: 0.2em 0.3em;
+
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.6em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.button:hover, .button:focus {
+  background: #0066b3;
+}
+
+
+.button:active {
+  background: #005799;
 }

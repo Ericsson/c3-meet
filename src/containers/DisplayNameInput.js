@@ -22,6 +22,8 @@ import {connect} from 'react-redux'
 
 import {updateDisplayNameInput, submitDisplayName} from 'actions/client'
 
+import Button from 'components/Button'
+
 class DisplayNameInput extends Component {
   constructor(props) {
     super(props)
@@ -56,9 +58,9 @@ class DisplayNameInput extends Component {
           required
           onChange={this.handleInput}
         />
-        <button className={styles.button} type='submit'>
+        <Button className={styles.button} type='submit'>
           Continue
-        </button>
+        </Button>
       </form>
     )
   }
