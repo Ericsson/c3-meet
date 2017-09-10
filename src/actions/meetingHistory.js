@@ -31,13 +31,14 @@ export function sortMeetingsList({orderBy = 'name', descending = true} = {}) {
   return {type: SORT_MEETING_LIST, orderBy, descending}
 }
 
-export function addMeeting(options) {
-  let updatedMeetingsList = store.addMeeting(options)
-  return {type: SET_MEETING_LIST, meetings: updatedMeetingsList}
+export function addMeeting(meeting) {
+  store.addMeeting(meeting)
+  let meetings = store.loadMeetingsList()
+  return {type: SET_MEETING_LIST, meetings}
 }
 
-export function removeMeeting(meeringId) {
-  let updatedMeetingsList = store.removeMeeting(meeringId)
+export function removeMeetingById(meetingId) {
+  let updatedMeetingsList = store.removeMeetingById(meetingId)
   if (!updatedMeetingsList) {
     return null
   } else {

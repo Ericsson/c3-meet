@@ -24,6 +24,7 @@ import {
   JOIN_MEETING_COMPLETE,
   JOIN_MEETING_FAILED,
 } from 'actions/constants'
+import {addMeeting} from 'actions/meetingHistory'
 
 import {
   createMeeting as _createMeeting,
@@ -49,6 +50,7 @@ export function createMeeting(meetingName) {
     dispatch({type: CREATE_MEETING_STARTED, meetingName})
 
     _createMeeting({client: client.client, meetingName}).then(meeting => {
+      dispatch(addMeeting(meeting))
       dispatch({type: CREATE_MEETING_COMPLETE, meeting})
     }, error => {
       dispatch({type: CREATE_MEETING_FAILED, error})
@@ -70,6 +72,7 @@ export function joinMeeting(meetingName) {
     dispatch({type: JOIN_MEETING_STARTED, meetingName})
 
     _joinMeeting({client: client.client, meetingName}).then(meeting => {
+      dispatch(addMeeting(meeting))
       dispatch({type: JOIN_MEETING_COMPLETE, meeting})
     }, error => {
       dispatch({type: JOIN_MEETING_FAILED, error})

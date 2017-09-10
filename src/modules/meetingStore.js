@@ -40,7 +40,7 @@ export function addMeeting(meeting) {
   meetingStore.store(meetings)
 }
 
-export function removeMeeting(meetingId) {
+export function removeMeetingById(meetingId) {
   if (!meetingId) {
     throw new TypeError(`Invalid meetingId: '${meetingId}'`)
   }
