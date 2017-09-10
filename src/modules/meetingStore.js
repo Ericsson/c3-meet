@@ -41,6 +41,8 @@ export function addMeeting({meetingId, meetingName, meetingTime}) {
   meetings[meetingId] = {meetingName, meetingTime}
 
   meetingStore.store(meetings)
+
+  return meetings
 }
 
 export function removeMeeting(meetingId) {
@@ -54,35 +56,29 @@ export function removeMeeting(meetingId) {
   if (deleted) {
     meetingStore.store(meetings)
   }
-  return deleted
+  return deleted ? meetings : null
 }
 
-export function listMeetingsByTime(ascending) {
-  let sorted = meetingList.sort((a, b) => {
-    return a.meetingTime - b.meetingTime
+export function listMeetingsByTime(descending) {
+  let order = Math.sign(descending - 0.5)
+  let sorted = listMeetings().sort((a, b) => {
+    return a.meetingTime - b.meetingTime * order
   })
-
-  if (!ascending) {
-    sorted.reverse()
-  }
 
   return sorted
 }
 
-export function listMeetingsByName(ascending) {
-  let sorted = meetingList.sort((a, b) => {
+export function listMeetingsByName(descending) {
+  let order = Math.sign(descending - 0.5)
+  let sorted = listMeetings().sort((a, b) => {
     if (a.meetingName < b.meetingName) {
-      return -1
+      return -1 * order
     }
     if ( a.meetingName > b.meetingName) {
-      return 1
+      return 1 * order
     }
     return 0
   })
-
-  if (!ascending) {
-    sorted.reverse()
-  }
 
   return sorted
 }
@@ -95,6 +91,9 @@ function listMeetings() {
   let obj = meetingStore.load()
   let meetingList = []
 
+  if (typeof(obj) !== 'object' || obj === null) {
+    return meetingList
+  }
   for (let meeting of Object.values(obj)) {
     meetingList.push(meeting)
   }
