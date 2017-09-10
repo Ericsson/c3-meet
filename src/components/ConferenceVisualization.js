@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './ConferenceVisualization.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {devtools} from '@cct/libcct/devtools'
 const {RelayTreeVisualization} = devtools
+
+import styles from './ConferenceVisualization.css'
 
 class ConferenceVisualization extends Component {
   constructor(props) {

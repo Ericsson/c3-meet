@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './RoomPage.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
@@ -44,6 +43,8 @@ import MuteToggle from 'components/MuteToggle'
 import Video from 'components/Video'
 import ConferenceVisualization from 'components/ConferenceVisualization'
 import Thumbnail from 'components/Thumbnail'
+
+import styles from './RoomPage.css'
 
 const THUMBNAIL_BROADCASTER = 'meet_broadcaster_video'
 const AUDIO_BROADCASTER = 'meet_broadcaster_audio'

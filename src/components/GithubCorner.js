@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './GithubCorner.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import GithubLogo from 'images/GitHub-Mark-Light-64px.png'
+
+import styles from './GithubCorner.css'
 
 const TITLE_DEFAULT = 'Fork me on GitHub'
 

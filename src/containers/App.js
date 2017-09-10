@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './App.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
@@ -24,6 +23,8 @@ import BootstrapPage from 'containers/BootstrapPage'
 const StartPage = () => <div>Start</div> // import StartPage from 'containers/StartPage'
 const MeetingPage = () => <div>Meeting</div> // import MeetingPage from 'containers/MeetingPage'
 const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
+
+import styles from './App.css'
 
 const App = ({children}) => (
   <div className={styles.app}>

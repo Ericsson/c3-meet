@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './Thumbnail.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 
 import ConferencePeerConnectionState from 'components/ConferencePeerConnectionState'
 import ElementHolder from 'components/ElementHolder'
+
+import styles from './Thumbnail.css'
 
 const Thumbnail = ({element, peer, userAgent}) => {
   var userAgentText = null

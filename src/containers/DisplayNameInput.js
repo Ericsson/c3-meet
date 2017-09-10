@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './DisplayNameInput.css'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -24,6 +23,8 @@ import {updateDisplayNameInput, submitDisplayName} from 'actions/client'
 
 import Button from 'components/Button'
 import Input from 'components/Input'
+
+import styles from './DisplayNameInput.css'
 
 class DisplayNameInput extends Component {
   constructor(props) {

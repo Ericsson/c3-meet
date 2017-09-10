@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './Jumbotron.css'
 import React from 'react'
 import PropTypes from 'prop-types'
+
+import styles from './Jumbotron.css'
 
 const Jumbotron = ({header, subheader, children}) => (
   <div className={styles.container}>

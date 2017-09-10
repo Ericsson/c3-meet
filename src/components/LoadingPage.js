@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './LoadingPage.css'
 import React from 'react'
 import Spinner from 'react-spinkit'
+
+import styles from './LoadingPage.css'
 
 const LoadingPage = () => (
   <Spinner name='cube-grid' fadeIn='half' className={styles.spinner}/>

@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import styles from './Input.css'
 import React from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+
+import styles from './Input.css'
 
 const Input = ({className, ...props}) => (
   <input className={classNames(className, styles.input)} {...props}/>
