@@ -22,17 +22,20 @@ import {BrowserRouter} from 'react-router-dom'
 import App from 'containers/App'
 import DevTools from 'containers/DevTools'
 import ClientProvider from 'containers/ClientProvider'
+import GlobalDispatchProvider from 'containers/GlobalDispatchProvider'
 
 const Root = ({client, store}) => (
   <Provider store={store}>
-    <ClientProvider client={client}>
-      <BrowserRouter>
-        <div>
-          <App/>
-          <DevTools/>
-        </div>
-      </BrowserRouter>
-    </ClientProvider>
+    <GlobalDispatchProvider>
+      <ClientProvider client={client}>
+        <BrowserRouter>
+          <div>
+            <App/>
+            <DevTools/>
+          </div>
+        </BrowserRouter>
+      </ClientProvider>
+    </GlobalDispatchProvider>
   </Provider>
 )
 
