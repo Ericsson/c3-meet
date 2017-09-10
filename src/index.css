@@ -18,13 +18,6 @@ limitations under the License.
 
 html {
   box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,26 +25,30 @@ body {
   font-size: 20px;
 }
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 @media (max-width: 767px) {
-  body {
-    font-size: 14px;
+  html {
+    font-size: 12px;
   }
 }
 
 @media (min-width: 768px) {
-  body {
+  html {
     font-size: 16px;
   }
 }
 
 @media (min-width: 992px) {
-  body {
+  html {
     font-size: 20px;
   }
 }
 
 @media (min-width: 1201px) {
-  body {
+  html {
     font-size: 24px;
   }
 }
