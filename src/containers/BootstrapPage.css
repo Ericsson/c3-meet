@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.spinner {
-  color: #fff !important;
-  transform: scale(6.0) !important;
+.error {
+  margin: 1.0rem 1.618rem;
+  font-size: 2.0rem;
 }

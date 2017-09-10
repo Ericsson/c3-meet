@@ -26,6 +26,8 @@ import DisplayNameInput from 'containers/DisplayNameInput'
 
 import {authenticateClient} from 'actions/client'
 
+import styles from './BootstrapPage.css'
+
 class BootstrapPage extends Component {
   componentWillMount() {
     this.props.authenticateClient(this.props.client)
@@ -47,13 +49,13 @@ class BootstrapPage extends Component {
     if (props.authenticateError) {
       return (
         <WhiteBox>
-          <ErrorMessage error={props.authenticateError}/>
+          <ErrorMessage error={props.authenticateError} className={styles.error}/>
         </WhiteBox>
       )
     } else if (props.setDisplayNameError) {
       return (
         <WhiteBox>
-          <ErrorMessage error={props.setDisplayNameError}/>
+          <ErrorMessage error={props.setDisplayNameError} className={styles.error}/>
         </WhiteBox>
       )
     }
