@@ -36,7 +36,7 @@ export function addMeeting({meetingId, meetingName, meetingTime}) {
     throw new TypeError(`Invalid meetingTime: '${meetingTime}'`)
   }
 
-  let meetings = meetingStore.load()
+  let meetings = meetingStore.load() || {}
 
   meetings[meetingId] = {
     name: meetingName,
