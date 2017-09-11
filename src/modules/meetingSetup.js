@@ -62,7 +62,7 @@ export function joinMeeting({client, meetingName}) {
   log.debug(LOG_TAG, `joining new meeting with name '${meetingName}'`)
   return client.fetchRoomByAlias(meetingName).then(room => {
     return room.join().catch(error => {
-      log.info(LOG_TAG, `failed to join meeting '${meetingName}'/'${meetingId}', ${error}`)
+      log.info(LOG_TAG, `failed to join meeting '${meetingName}'/'${room.id}', ${error}`)
       if (error.name === 'NotAllowedError') {
         throw new ForbiddenMeetingError(error.message)
       } else {
@@ -79,7 +79,7 @@ export function joinMeeting({client, meetingName}) {
       throw error
     }
   }).then(room => {
-    log.info(LOG_TAG, `joined meeting '${meetingName}'/'${meetingId}'`)
+    log.info(LOG_TAG, `joined meeting '${meetingName}'/'${room.id}'`)
     return room
   })
 }
