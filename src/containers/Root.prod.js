@@ -17,18 +17,19 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
-import GlobalDispatchProvider from 'containers/GlobalDispatchProvider'
+import {ConnectedRouter} from 'react-router-redux'
+
 import App from 'containers/App'
 import ClientProvider from 'containers/ClientProvider'
+import GlobalDispatchProvider from 'containers/GlobalDispatchProvider'
 
-const Root = ({client, store}) => (
+const Root = ({client, store, history}) => (
   <Provider store={store}>
     <GlobalDispatchProvider>
       <ClientProvider client={client}>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
           <App/>
-        </BrowserRouter>
+        </ConnectedRouter>
       </ClientProvider>
     </GlobalDispatchProvider>
   </Provider>

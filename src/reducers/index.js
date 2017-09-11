@@ -18,8 +18,10 @@ import {combineReducers} from 'redux'
 import client from 'reducers/client'
 import meetingHistory from 'reducers/meetingHistory'
 import meetingSetup from 'reducers/meetingSetup'
+import {routerReducer} from 'react-router-redux'
 
 export default combineReducers({
+  router: routerReducer,
   client,
   meetingHistory,
   meetingSetup,

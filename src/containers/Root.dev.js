@@ -17,23 +17,23 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
+import {ConnectedRouter} from 'react-router-redux'
 
 import App from 'containers/App'
 import DevTools from 'containers/DevTools'
 import ClientProvider from 'containers/ClientProvider'
 import GlobalDispatchProvider from 'containers/GlobalDispatchProvider'
 
-const Root = ({client, store}) => (
+const Root = ({client, store, history}) => (
   <Provider store={store}>
     <GlobalDispatchProvider>
       <ClientProvider client={client}>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
           <div>
             <App/>
             <DevTools/>
           </div>
-        </BrowserRouter>
+        </ConnectedRouter>
       </ClientProvider>
     </GlobalDispatchProvider>
   </Provider>

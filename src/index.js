@@ -20,13 +20,15 @@ import 'font-awesome/css/font-awesome.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
+import createBrowserHistory from 'history/createBrowserHistory'
 
 import Root from 'containers/Root'
 
 import configureStore from 'store/configureStore'
 import configureClient from './store/configureClient'
 
-const store = configureStore()
+const history = createBrowserHistory()
+const store = configureStore({history})
 const client = configureClient()
 
 const root = document.createElement('div')
@@ -35,7 +37,7 @@ document.body.appendChild(root)
 const render = Component => {
   let app = (
     <AppContainer>
-      <Component store={store} client={client}/>
+      <Component store={store} client={client} history={history}/>
     </AppContainer>
   )
   ReactDOM.render(app, root)

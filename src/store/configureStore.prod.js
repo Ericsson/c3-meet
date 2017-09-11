@@ -17,12 +17,13 @@ limitations under the License.
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from 'reducers'
+import {routerMiddleware} from 'react-router-redux'
 
-const configureStore = preloadedState => {
+const configureStore = ({preloadedState, history}) => {
   return createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(thunk)
+    applyMiddleware(thunk, routerMiddleware(history))
   )
 }
 
