@@ -33,8 +33,8 @@ const App = ({children}) => (
     <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
     <BootstrapPage>
       <Switch>
-        <Route exact path='/' component={StartPage}/>
-        <Route exact path='/:meetingId' component={MeetingPage}/>
+        <Route exact strict path='/' component={StartPage}/>
+        <Route exact strict path='/:meetingId' component={MeetingPage}/>
         <Route path='/' component={NotFoundPage}/>
       </Switch>
     </BootstrapPage>
