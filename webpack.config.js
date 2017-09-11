@@ -139,7 +139,11 @@ if (isProd) {
 const plugins = []
 
 plugins.push(new webpack.NamedModulesPlugin())
-plugins.push(new HtmlWebpackPlugin({title: 'Ericsson C3 Meet', hash: true}))
+plugins.push(new HtmlWebpackPlugin({
+  title: 'Ericsson C3 Meet',
+  template: path.join(__dirname, 'src', 'index.ejs'),
+  hash: true,
+}))
 plugins.push(new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify(isProd ? 'production' : 'development'),
