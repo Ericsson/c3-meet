@@ -22,7 +22,7 @@ import {Switch, Route, withRouter} from 'react-router-dom'
 import GithubCorner from 'components/GithubCorner'
 
 import BootstrapPage from 'containers/BootstrapPage'
-const StartPage = () => <div>Start</div> // import StartPage from 'containers/StartPage'
+import StartPage from 'containers/StartPage'
 const MeetingPage = () => <div>Meeting</div> // import MeetingPage from 'containers/MeetingPage'
 const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
 
