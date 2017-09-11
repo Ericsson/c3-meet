@@ -20,7 +20,7 @@ import Spinner from 'react-spinkit'
 import styles from './LoadingPage.css'
 
 const LoadingPage = () => (
-  <Spinner name='cube-grid' fadeIn='half' className={styles.spinner}/>
+  <Spinner name='cube-grid' fadeIn='none' className={styles.spinner}/>
 )
 
 export default LoadingPage
