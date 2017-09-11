@@ -1,0 +1,98 @@
+/*
+Copyright 2016 Ericsson AB.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.4rem;
+}
+
+.header {
+  font-size: 1.2rem;
+  font-weight: 400;
+
+  user-select: none;
+  cursor: default;
+}
+
+.item {
+  font-size: 1.1rem;
+
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.item:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.name {
+  flex: 3 0 0px;
+}
+
+.item .name {
+  color: #002664;
+  cursor: pointer;
+}
+
+.item .name .nameText {
+  border-bottom: 1px solid transparent;
+  padding-bottom: -1px;
+  transition: border-bottom ease-in-out 200ms;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item .name:hover .nameText {
+  border-bottom: 1px solid #002664;
+}
+
+.time {
+  flex: 2 0 0px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+
+  user-select: none;
+  cursor: default;
+}
+
+.remove {
+  flex: 0 0 2.0em;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+
+  color: #d66;
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.header .remove {
+  color: transparent;
+  cursor: default;
+}
+
+.button {
+  font-size: 0.8rem;
+}
