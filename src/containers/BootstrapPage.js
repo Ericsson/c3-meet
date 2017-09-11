@@ -83,7 +83,6 @@ const mapStateToProps = state => ({
   storedDisplayName: state.client.storedDisplayName,
   authenticateInProgress: state.client.authenticateInProgress,
   authenticateError: state.client.authenticateClientError,
-  // authenticateError: new Error('derp'),
   setDisplayNameInProgress: state.client.setDisplayNameInProgress,
   setDisplayNameError: state.client.setDisplayNameError,
 })
