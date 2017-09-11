@@ -23,7 +23,7 @@ import GithubCorner from 'components/GithubCorner'
 
 import ClientBootstrapPage from 'containers/ClientBootstrapPage'
 import StartPage from 'containers/StartPage'
-const MeetingPage = () => <div>Meeting</div> // import MeetingPage from 'containers/MeetingPage'
+import MeetingBootstrapPage from 'containers/MeetingBootstrapPage'
 const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
 
 import styles from './App.css'
@@ -34,7 +34,7 @@ const App = ({children}) => (
     <ClientBootstrapPage>
       <Switch>
         <Route exact strict path='/' component={StartPage}/>
-        <Route exact strict path='/:meetingId' component={MeetingPage}/>
+        <Route exact strict path='/:meetingName' component={MeetingBootstrapPage}/>
         <Route path='/' component={NotFoundPage}/>
       </Switch>
     </ClientBootstrapPage>
