@@ -1,7 +1,7 @@
 
 import {
-  JOIN_MEETING_STARTED,
-  JOIN_MEETING_COMPLETE,
+  MEETING_SETUP_STARTED,
+  MEETING_SETUP_COMPLETE,
   LEAVE_MEETING,
 } from 'actions/constants'
 
@@ -21,11 +21,11 @@ function clearState({room, conference}) {
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
-    case JOIN_MEETING_STARTED: {
+    case MEETING_SETUP_STARTED: {
       clearState(state)
       return initialState
     }
-    case JOIN_MEETING_COMPLETE: {
+    case MEETING_SETUP_COMPLETE: {
       let {room, conference} = action
       return {...state, room, conference}
     }

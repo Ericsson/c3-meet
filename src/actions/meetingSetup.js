@@ -20,9 +20,9 @@ import {
   CREATE_MEETING_COMPLETE,
   CREATE_MEETING_FAILED,
   UPDATE_JOIN_MEETING_NAME_INPUT,
-  JOIN_MEETING_STARTED,
-  JOIN_MEETING_COMPLETE,
-  JOIN_MEETING_FAILED,
+  MEETING_SETUP_STARTED,
+  MEETING_SETUP_COMPLETE,
+  MEETING_SETUP_FAILED,
   LEAVE_MEETING,
 } from 'actions/constants'
 
@@ -49,14 +49,14 @@ export function createMeeting(meetingName) {
       return
     }
 
-    dispatch({type: JOIN_MEETING_STARTED, meetingName})
+    dispatch({type: MEETING_SETUP_STARTED, meetingName})
     dispatch(push(`/${meetingName}`))
 
     _createMeeting({client: client.client, meetingName}).then(room => {
       let conference = room.startConference()
-      dispatch({type: JOIN_MEETING_COMPLETE, room, conference})
+      dispatch({type: MEETING_SETUP_COMPLETE, room, conference})
     }, error => {
-      dispatch({type: JOIN_MEETING_FAILED, error})
+      dispatch({type: MEETING_SETUP_FAILED, error})
     })
   }
 }
@@ -78,16 +78,16 @@ export function joinMeeting({meetingName, navigate = false}) {
       return
     }
 
-    dispatch({type: JOIN_MEETING_STARTED, meetingName})
+    dispatch({type: MEETING_SETUP_STARTED, meetingName})
     if (navigate) {
       dispatch(push(`/${meetingName}`))
     }
 
     _joinMeeting({client: client.client, meetingName}).then(room => {
       let conference = room.startConference()
-      dispatch({type: JOIN_MEETING_COMPLETE, room, conference})
+      dispatch({type: MEETING_SETUP_COMPLETE, room, conference})
     }, error => {
-      dispatch({type: JOIN_MEETING_FAILED, error})
+      dispatch({type: MEETING_SETUP_FAILED, error})
     })
   }
 }

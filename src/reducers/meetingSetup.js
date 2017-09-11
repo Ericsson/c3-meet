@@ -5,9 +5,9 @@ import {
   CREATE_MEETING_COMPLETE,
   CREATE_MEETING_FAILED,
   UPDATE_JOIN_MEETING_NAME_INPUT,
-  JOIN_MEETING_STARTED,
-  JOIN_MEETING_COMPLETE,
-  JOIN_MEETING_FAILED,
+  MEETING_SETUP_STARTED,
+  MEETING_SETUP_COMPLETE,
+  MEETING_SETUP_FAILED,
 } from 'actions/constants'
 
 const initialState = {
@@ -28,7 +28,7 @@ export default function meetingHistory(state = initialState, action) {
       let {meetingName} = action
       return {...state, meetingJoinName: meetingName}
     }
-    case JOIN_MEETING_STARTED: {
+    case MEETING_SETUP_STARTED: {
       return {
         ...state,
         joinInProgress: true,
@@ -37,10 +37,10 @@ export default function meetingHistory(state = initialState, action) {
         meetingJoinName: '',
       }
     }
-    case JOIN_MEETING_COMPLETE: {
+    case MEETING_SETUP_COMPLETE: {
       return {...state, joinInProgress: false, joinError: null}
     }
-    case JOIN_MEETING_FAILED: {
+    case MEETING_SETUP_FAILED: {
       let {error} = action
       return {...state, joinInProgress: false, joinError: error}
     }

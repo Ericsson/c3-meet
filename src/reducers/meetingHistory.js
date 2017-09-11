@@ -4,7 +4,7 @@ import {
   SORT_MEETING_LIST,
   REMOVE_MEETING_FROM_LIST,
   CREATE_MEETING_COMPLETE,
-  JOIN_MEETING_COMPLETE,
+  MEETING_SETUP_COMPLETE,
 } from 'actions/constants'
 
 import {loadMeetingsList, sortMeetings, addMeeting, removeMeetingById} from 'modules/meetingStore'
@@ -42,7 +42,7 @@ export default function meetingHistory(state = initialState, action) {
         return {...state}
       }
     }
-    case JOIN_MEETING_COMPLETE: {
+    case MEETING_SETUP_COMPLETE: {
       addMeeting(action.room)
       return {...state, meetings: loadMeetings(state)}
     }
