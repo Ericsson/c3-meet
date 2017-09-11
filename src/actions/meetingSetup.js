@@ -25,6 +25,8 @@ import {
   JOIN_MEETING_FAILED,
 } from 'actions/constants'
 
+import {push} from 'react-router-redux'
+
 import {
   createMeeting as _createMeeting,
   joinMeeting as _joinMeeting,
@@ -47,6 +49,7 @@ export function createMeeting(meetingName) {
     }
 
     dispatch({type: JOIN_MEETING_STARTED, meetingName})
+    dispatch(push(`/${meetingName}`))
 
     _createMeeting({client: client.client, meetingName}).then(meeting => {
       dispatch({type: JOIN_MEETING_COMPLETE, meeting})
@@ -68,6 +71,7 @@ export function joinMeeting(meetingName) {
     }
 
     dispatch({type: JOIN_MEETING_STARTED, meetingName})
+    dispatch(push(`/${meetingName}`))
 
     _joinMeeting({client: client.client, meetingName}).then(meeting => {
       dispatch({type: JOIN_MEETING_COMPLETE, meeting})

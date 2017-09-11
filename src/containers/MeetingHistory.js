@@ -17,7 +17,7 @@ limitations under the License.
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+import {push} from 'react-router-redux'
 import classNames from 'classnames'
 import {X} from 'react-feather'
 
@@ -31,23 +31,9 @@ import {formatRelative} from 'modules/intl'
 import styles from './MeetingHistory.css'
 
 class MeetingHistory extends Component {
-  constructor(props) {
-    super(props)
-    this.handleEnter = this.handleEnter.bind(this)
-  }
-
-  handleEnter(meetingName) {
-    this.props.history.push(`/${meetingName}`)
-  }
-
   render() {
     let {className, ...props} = this.props
-    return (
-      <MeetingList
-        className={classNames(styles.list, className)}
-        onEnter={this.handleEnter}
-        {...props}/>
-    )
+    return <MeetingList className={classNames(styles.list, className)} {...props}/>
   }
 }
 
@@ -64,6 +50,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRemove: meetingId => dispatch(removeMeetingById(meetingId)),
+  onEnter: meetingName => dispatch(push(`/${meetingName}`))
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MeetingHistory))
+export default connect(mapStateToProps, mapDispatchToProps)(MeetingHistory)

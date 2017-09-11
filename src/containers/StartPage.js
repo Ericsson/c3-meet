@@ -18,7 +18,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
-import {withRouter} from 'react-router-dom'
 
 import {authenticateClient} from 'actions/client'
 
@@ -31,13 +30,6 @@ import MeetingHistory from 'containers/MeetingHistory'
 import styles from './StartPage.css'
 
 class StartPage extends Component {
-  componentWillMount() {
-  }
-
-  joinRoom(room) {
-    this.props.history.push(`/${room}`)
-  }
-
   render() {
     return (
       <div className={classNames(styles.page, styles.row)}>
@@ -76,4 +68,4 @@ const mapDispatchToProps = dispatch => ({
   authenticateClient: client => dispatch(authenticateClient(client)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(StartPage))
+export default connect(mapStateToProps, mapDispatchToProps)(StartPage)
