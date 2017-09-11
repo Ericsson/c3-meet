@@ -15,33 +15,21 @@ limitations under the License.
 */
 
 import {
-  SET_MEETING_LIST,
+  LOAD_MEETING_LIST,
   SORT_MEETING_LIST,
+  REMOVE_MEETING_FROM_LIST,
 } from 'actions/constants'
 
 import * as store from 'modules/meetingStore'
 
 export function loadMeetingList() {
-  let meetings = store.loadMeetingsList()
-  return {type: SET_MEETING_LIST, meetings}
+  return {type: LOAD_MEETING_LIST}
 }
 
 export function sortMeetingsList({orderBy, descending}) {
   return {type: SORT_MEETING_LIST, orderBy, descending}
 }
 
-export function addMeeting(meeting) {
-  store.addMeeting(meeting)
-  let meetings = store.loadMeetingsList()
-  return {type: SET_MEETING_LIST, meetings}
-}
-
 export function removeMeetingById(meetingId) {
-  let updated = store.removeMeetingById(meetingId)
-  if (updated) {
-    let meetings = store.loadMeetingsList()
-    return {type: SET_MEETING_LIST, meetings}
-  } else {
-    return null
-  }
+  return {type: REMOVE_MEETING_FROM_LIST, meetingId}
 }

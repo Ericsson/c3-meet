@@ -10,8 +10,6 @@ import {
   JOIN_MEETING_FAILED,
 } from 'actions/constants'
 
-import {addMeeting} from 'modules/meetingStore'
-
 const initialState = {
   meetingCreateName: '',
   meetingJoinName: '',
@@ -31,7 +29,6 @@ export default function meetingHistory(state = initialState, action) {
     }
     case CREATE_MEETING_COMPLETE: {
       let {meeting} = action
-      addMeeting(meeting)
       return {...state, joinInProgress: false, meeting, joinError: null}
     }
     case CREATE_MEETING_FAILED: {
@@ -47,7 +44,6 @@ export default function meetingHistory(state = initialState, action) {
     }
     case JOIN_MEETING_COMPLETE: {
       let {meeting} = action
-      addMeeting(meeting)
       return {...state, joinInProgress: false, meeting, joinError: null}
     }
     case JOIN_MEETING_FAILED: {
