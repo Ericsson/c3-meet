@@ -57,26 +57,29 @@ export function removeMeetingById(meetingId) {
 // Mutates the meetings array
 export function sortMeetings({meetings, orderBy = 'name', descending = true}) {
   if (orderBy === 'name') {
-    return sortMeetingsByName(meetings, descending)
+    sortMeetingsByName(meetings, descending)
   } else if (orderBy === 'time') {
-    return sortMeetingsByTime(meetings, descending)
+    sortMeetingsByTime(meetings, descending)
   } else {
     throw new TypeError(`unknown orderBy parameters for sortMeetings: '${orderBy}'`)
   }
 }
 
 function sortMeetingsByTime(meetings, descending = true) {
-  let order = Math.sign(descending - 0.5)
-  let sorted = meetings.sort((a, b) => {
-    return a.meetingTime.getTime() - b.meetingTime.getTime() * order
-  })
-
-  return sorted
+  if (descending) {
+    meetings.sort((a, b) => {
+      return b.meetingTime.getTime() - a.meetingTime.getTime()
+    })
+  } else {
+    meetings.sort((a, b) => {
+      return a.meetingTime.getTime() - b.meetingTime.getTime()
+    })
+  }
 }
 
 function sortMeetingsByName(meetings, descending = true) {
   let order = Math.sign(descending - 0.5)
-  let sorted = meetings.sort((a, b) => {
+  meetings.sort((a, b) => {
     if (a.meetingName < b.meetingName) {
       return -1 * order
     }
@@ -85,8 +88,6 @@ function sortMeetingsByName(meetings, descending = true) {
     }
     return 0
   })
-
-  return sorted
 }
 
 export function clear() {
