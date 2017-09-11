@@ -27,9 +27,9 @@ import DisplayNameInput from 'containers/DisplayNameInput'
 import {loadMeetingList} from 'actions/meetingHistory'
 import {authenticateClient} from 'actions/client'
 
-import styles from './BootstrapPage.css'
+import styles from './ClientBootstrapPage.css'
 
-class BootstrapPage extends Component {
+class ClientBootstrapPage extends Component {
   componentWillMount() {
     this.props.loadMeetingList()
     this.props.authenticateClient(this.props.client)
@@ -65,7 +65,7 @@ class BootstrapPage extends Component {
   }
 }
 
-BootstrapPage.propTypes = {
+ClientBootstrapPage.propTypes = {
   authenticateClient: PropTypes.func.isRequired,
   client: PropTypes.object.isRequired,
   loadMeetingList: PropTypes.func.isRequired,
@@ -92,4 +92,4 @@ const mapDispatchToProps = dispatch => ({
   loadMeetingList: options => dispatch(loadMeetingList(options)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(BootstrapPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ClientBootstrapPage)

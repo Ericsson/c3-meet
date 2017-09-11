@@ -21,7 +21,7 @@ import {Switch, Route, withRouter} from 'react-router-dom'
 
 import GithubCorner from 'components/GithubCorner'
 
-import BootstrapPage from 'containers/BootstrapPage'
+import ClientBootstrapPage from 'containers/ClientBootstrapPage'
 import StartPage from 'containers/StartPage'
 const MeetingPage = () => <div>Meeting</div> // import MeetingPage from 'containers/MeetingPage'
 const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
@@ -31,13 +31,13 @@ import styles from './App.css'
 const App = ({children}) => (
   <div className={styles.app}>
     <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
-    <BootstrapPage>
+    <ClientBootstrapPage>
       <Switch>
         <Route exact strict path='/' component={StartPage}/>
         <Route exact strict path='/:meetingId' component={MeetingPage}/>
         <Route path='/' component={NotFoundPage}/>
       </Switch>
-    </BootstrapPage>
+    </ClientBootstrapPage>
   </div>
 )
 
