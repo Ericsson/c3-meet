@@ -46,12 +46,12 @@ export function createMeeting(meetingName) {
       return
     }
 
-    dispatch({type: CREATE_MEETING_STARTED, meetingName})
+    dispatch({type: JOIN_MEETING_STARTED, meetingName})
 
     _createMeeting({client: client.client, meetingName}).then(meeting => {
-      dispatch({type: CREATE_MEETING_COMPLETE, meeting})
+      dispatch({type: JOIN_MEETING_COMPLETE, meeting})
     }, error => {
-      dispatch({type: CREATE_MEETING_FAILED, error})
+      dispatch({type: JOIN_MEETING_FAILED, error})
     })
   }
 }
