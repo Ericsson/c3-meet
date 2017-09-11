@@ -85,7 +85,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onUpdate: meetingName => dispatch(updateJoinMeetingNameInput(meetingName)),
-  onSubmit: meetingName => dispatch(joinMeeting(meetingName)),
+  onSubmit: meetingName => dispatch(joinMeeting({meetingName, navigate: true})),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingJoinForm)

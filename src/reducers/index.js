@@ -16,6 +16,7 @@ limitations under the License.
 
 import {combineReducers} from 'redux'
 import client from 'reducers/client'
+import meeting from 'reducers/meeting'
 import meetingHistory from 'reducers/meetingHistory'
 import meetingSetup from 'reducers/meetingSetup'
 import {routerReducer} from 'react-router-redux'
@@ -23,6 +24,7 @@ import {routerReducer} from 'react-router-redux'
 export default combineReducers({
   router: routerReducer,
   client,
+  meeting,
   meetingHistory,
   meetingSetup,
 })

@@ -63,15 +63,23 @@ export function updateJoinMeetingNameInput(meetingName) {
   return {type: UPDATE_JOIN_MEETING_NAME_INPUT, meetingName}
 }
 
-export function joinMeeting(meetingName) {
+export function joinMeeting({meetingName, navigate = false}) {
   return (dispatch, getState) => {
-    let {client, meetingSetup} = getState()
+    let {client, meetingSetup, meeting} = getState()
     if (meetingSetup.joinInProgress) {
+      return
+    }
+    if (meeting.room && meeting.room.name === meetingName) {
+      if (navigate) {
+        dispatch(push(`/${meetingName}`))
+      }
       return
     }
 
     dispatch({type: JOIN_MEETING_STARTED, meetingName})
-    dispatch(push(`/${meetingName}`))
+    if (navigate) {
+      dispatch(push(`/${meetingName}`))
+    }
 
     _joinMeeting({client: client.client, meetingName}).then(meeting => {
       dispatch({type: JOIN_MEETING_COMPLETE, meeting})
