@@ -105,8 +105,8 @@ export function loadMeetingsList() {
   for (let id of Object.keys(obj)) {
     let {name, time} = obj[id]
 
-    let meetingDate = new Date(time)
-    if (isNaN(meetingDate.getTime())) {
+    let meetingTime = new Date(time)
+    if (isNaN(meetingTime.getTime())) {
       log.error(LOG_TAG, `failed to load meeting '${id}'/'${name}', invalid date: '${time}'`)
       continue
     }
@@ -114,7 +114,7 @@ export function loadMeetingsList() {
     meetingList.push({
       meetingId: id,
       meetingName: name,
-      meetingDate,
+      meetingTime,
     })
   }
 
