@@ -87,7 +87,6 @@ class MeetingCreateForm extends Component {
         <Button type='submit' className={styles.button}>
           Create
         </Button>
-        {joinError && <ErrorMessage error={joinError} className={styles.error}/>}
       </form>
     )
   }

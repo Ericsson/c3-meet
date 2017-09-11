@@ -50,10 +50,7 @@ class MeetingJoinForm extends Component {
     delete props.onSubmit
     return (
       <form className={classNames(styles.form, className)} onSubmit={this.handleSubmit} {...props}>
-        <div className={styles.row}>
-          <span className={styles.label}>Enter an existing meeting</span>
-          {joinError && <ErrorMessage error={joinError} className={styles.error}/>}
-        </div>
+        <span className={styles.label}>Enter an existing meeting</span>
         <div className={styles.row}>
           <Input
             className={styles.input}
