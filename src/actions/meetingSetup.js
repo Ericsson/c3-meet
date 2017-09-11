@@ -23,6 +23,7 @@ import {
   JOIN_MEETING_STARTED,
   JOIN_MEETING_COMPLETE,
   JOIN_MEETING_FAILED,
+  LEAVE_MEETING,
 } from 'actions/constants'
 
 import {push} from 'react-router-redux'
@@ -86,5 +87,15 @@ export function joinMeeting({meetingName, navigate = false}) {
     }, error => {
       dispatch({type: JOIN_MEETING_FAILED, error})
     })
+  }
+}
+
+export function leaveMeeting(meetingName) {
+  return (dispatch, getState) => {
+    let {meeting} = getState()
+    if (meeting.room) {
+      meeting.room.leave()
+      dispatch({type: LEAVE_MEETING})
+    }
   }
 }
