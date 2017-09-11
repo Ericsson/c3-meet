@@ -54,7 +54,7 @@ class DisplayNameInput extends Component {
         <Input
           className={styles.input}
           value={displayName}
-          size={30}
+          maxLength={30}
           required
           placeholder='Display name'
           autoFocus={true}
