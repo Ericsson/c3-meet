@@ -21,13 +21,12 @@ import {
 
 import * as store from 'modules/meetingStore'
 
-export function loadMeetingList({orderBy = 'name', descending = true} = {}) {
+export function loadMeetingList() {
   let meetings = store.loadMeetingsList()
-  store.sortMeetings({meetings, orderBy, descending})
   return {type: SET_MEETING_LIST, meetings}
 }
 
-export function sortMeetingsList({orderBy = 'name', descending = true} = {}) {
+export function sortMeetingsList({orderBy, descending}) {
   return {type: SORT_MEETING_LIST, orderBy, descending}
 }
 
@@ -38,10 +37,11 @@ export function addMeeting(meeting) {
 }
 
 export function removeMeetingById(meetingId) {
-  let updatedMeetingsList = store.removeMeetingById(meetingId)
-  if (!updatedMeetingsList) {
-    return null
+  let updated = store.removeMeetingById(meetingId)
+  if (updated) {
+    let meetings = store.loadMeetingsList()
+    return {type: SET_MEETING_LIST, meetings}
   } else {
-    return {type: SET_MEETING_LIST, meetings: updatedMeetingsList}
+    return null
   }
 }
