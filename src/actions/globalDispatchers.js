@@ -14,16 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {BEFORE_UNLOAD} from 'actions/constants'
+import {
+  BEFORE_UNLOAD,
+  LOAD_MEETING_LIST,
+} from 'actions/constants'
+
+import {meetingStore} from 'modules/meetingStore'
 
 export function registerGlobalDispatchers(dispatch) {
   return (dispatch, getState) => {
     registerBeforeUnloadDispatcher(dispatch, getState)
+    registerLocalStorageDispatcher(dispatch, getState)
   }
 }
 
 function registerBeforeUnloadDispatcher(dispatch, getState) {
   window.addEventListener('beforeunload', () => {
     dispatch({type: BEFORE_UNLOAD})
+  })
+}
+
+function registerLocalStorageDispatcher(dispatch, getState) {
+  window.addEventListener('storage', event => {
+    if (meetingStore.matchEvent(event)) {
+      return dispatch({type: LOAD_MEETING_LIST})
+    } else {
+      let {key, oldValue, newValue, storageArea, url} = event
+      dispatch({type: STORAGE_UPDATE, key, oldValue, newValue, storageArea, url})
+    }
   })
 }

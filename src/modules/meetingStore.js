@@ -20,7 +20,7 @@ import argCheck from '@cct/arg-check'
 
 import {SingleValueStore} from 'modules/storage'
 
-const meetingStore = new SingleValueStore({
+export const meetingStore = new SingleValueStore({
   store: localStorage,
   key: 'meet-stored-meetings',
 })

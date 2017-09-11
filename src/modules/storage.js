@@ -57,4 +57,8 @@ export class SingleValueStore {
   clear() {
     this._store.removeItem(this._key)
   }
+
+  matchEvent(event) {
+    return event.storageArea === this._store && event.key === this._key
+  }
 }
