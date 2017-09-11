@@ -38,8 +38,7 @@ export default function meetingHistory(state = initialState, action) {
       }
     }
     case JOIN_MEETING_COMPLETE: {
-      let {meeting} = action
-      return {...state, joinInProgress: false, joinError: null, meeting}
+      return {...state, joinInProgress: false, joinError: null}
     }
     case JOIN_MEETING_FAILED: {
       let {error} = action

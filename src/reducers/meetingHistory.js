@@ -43,7 +43,7 @@ export default function meetingHistory(state = initialState, action) {
       }
     }
     case JOIN_MEETING_COMPLETE: {
-      addMeeting(action.meeting)
+      addMeeting(action.room)
       return {...state, meetings: loadMeetings(state)}
     }
     default:

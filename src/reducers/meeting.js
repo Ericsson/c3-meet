@@ -7,21 +7,31 @@ import {
 
 const initialState = {
   room: null,
+  conference: null,
+}
+
+function clearState({room, conference}) {
+  if (room) {
+    room.leave()
+  }
+  if (conference) {
+    conference.close()
+  }
 }
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case JOIN_MEETING_STARTED: {
-      if (state.room) {
-        state.room.leave()
-      }
-      return {...state, room: null}
+      clearState(state)
+      return initialState
     }
     case JOIN_MEETING_COMPLETE: {
-      return {...state, room: action.meeting}
+      let {room, conference} = action
+      return {...state, room, conference}
     }
     case LEAVE_MEETING: {
-      return {...state, room: null}
+      clearState(state)
+      return initialState
     }
     default:
       return state
