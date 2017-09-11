@@ -22,33 +22,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  font-size: 20px;
+  font-size: 16px;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
-
-@media (max-width: 767px) {
-  html {
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 992px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-@media (min-width: 1201px) {
-  html {
-    font-size: 24px;
-  }
 }
