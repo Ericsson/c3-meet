@@ -32,7 +32,6 @@ class MeetingCreateForm extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleUrlClick = this.handleUrlClick.bind(this)
   }
 
   componentWillMount() {
@@ -46,19 +45,6 @@ class MeetingCreateForm extends Component {
   handleSubmit(event) {
     event.preventDefault()
     this.props.onSubmit(this.props.meetingName)
-  }
-
-  handleUrlClick({target}) {
-    if (!document.createRange || !window.getSelection) {
-      return
-    }
-    let range = document.createRange()
-    range.setStart(target, 0)
-    range.setEnd(target.nextElementSibling, 0)
-
-    let selection = window.getSelection()
-    selection.removeAllRanges()
-    selection.addRange(range)
   }
 
   render() {
