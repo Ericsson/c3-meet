@@ -21,6 +21,7 @@ import classNames from 'classnames'
 
 import {authenticateClient} from 'actions/client'
 
+import GithubCorner from 'components/GithubCorner'
 import WhiteBox from 'components/WhiteBox'
 
 import MeetingCreateForm from 'containers/MeetingCreateForm'
@@ -33,6 +34,7 @@ class StartPage extends Component {
   render() {
     return (
       <div className={classNames(styles.page, styles.row)}>
+        <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
         <div className={styles.column}>
           <WhiteBox>
             <span className={styles.title}>Ericsson C3 Meet</span>

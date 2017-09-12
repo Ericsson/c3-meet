@@ -19,8 +19,6 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Switch, Route, withRouter} from 'react-router-dom'
 
-import GithubCorner from 'components/GithubCorner'
-
 import ClientBootstrapPage from 'containers/ClientBootstrapPage'
 import StartPage from 'containers/StartPage'
 import MeetingBootstrapPage from 'containers/MeetingBootstrapPage'
@@ -30,7 +28,6 @@ import styles from './App.css'
 
 const App = ({children}) => (
   <div className={styles.app}>
-    <GithubCorner url='https://github.com/Ericsson/c3-meet'/>
     <ClientBootstrapPage>
       <Switch>
         <Route exact strict path='/' component={StartPage}/>
