@@ -19,6 +19,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 
+import {acquireMediaDevices} from 'actions/meetingMedia'
 import {joinMeeting, leaveMeeting} from 'actions/meetingSetup'
 
 import ErrorMessage from 'components/ErrorMessage'
@@ -33,6 +34,7 @@ class MeetingBootstrapPage extends Component {
   componentWillMount() {
     let {meetingName} = this.props.match.params
     this.props.joinMeeting({meetingName, navigate: false})
+    this.props.acquireMediaDevices()
   }
 
   render() {
@@ -45,7 +47,14 @@ class MeetingBootstrapPage extends Component {
         </WhiteBox>
       )
     }
-    if (!props.room) {
+    if (props.mediaError) {
+      return (
+        <WhiteBox>
+          <ErrorMessage error={props.mediaError} className={styles.error}/>
+        </WhiteBox>
+      )
+    }
+    if (!props.room || !props.mediaIsReady) {
       return <LoadingPage/>
     }
     return <MeetingPage/>
@@ -63,11 +72,14 @@ const mapStateToProps = state => ({
   joinInProgress: state.meetingSetup.joinInProgress,
   joinError: state.meetingSetup.joinError,
   room: state.meeting.room,
+  mediaError: state.meetingMedia.error,
+  mediaIsReady: state.meetingMedia.ready,
 })
 
 const mapDispatchToProps = dispatch => ({
   joinMeeting: meetingName => dispatch(joinMeeting(meetingName)),
   leaveMeeting: meetingName => dispatch(leaveMeeting(meetingName)),
+  acquireMediaDevices: meetingName => dispatch(acquireMediaDevices(meetingName)),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MeetingBootstrapPage))
