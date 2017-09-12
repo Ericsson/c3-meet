@@ -14,19 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {combineReducers} from 'redux'
-import client from 'reducers/client'
-import meeting from 'reducers/meeting'
-import meetingHistory from 'reducers/meetingHistory'
-import meetingMedia from 'reducers/meetingMedia'
-import meetingSetup from 'reducers/meetingSetup'
-import {routerReducer} from 'react-router-redux'
+import {
+  ACQUIRE_MEETING_MEDIA_STARTED,
+  ACQUIRE_MEETING_MEDIA_COMPLETE,
+  ACQUIRE_MEETING_MEDIA_FAILED,
+} from 'actions/constants'
 
-export default combineReducers({
-  router: routerReducer,
-  client,
-  meeting,
-  meetingHistory,
-  meetingMedia,
-  meetingSetup,
-})
+import {DeviceSource} from '@cct/libcct'
+
+export function acquireMediaDevices() {
+  return (dispatch, getState) => {
+    let source = new DeviceSource({video: true, audio: true})
+    dispatch({type: ACQUIRE_MEETING_MEDIA_STARTED})
+
+    source.promise.then(() => {
+      dispatch({type: ACQUIRE_MEETING_MEDIA_COMPLETE, source})
+    }, error => {
+      dispatch({type: ACQUIRE_MEETING_MEDIA_FAILED, error})
+    })
+  }
+}
