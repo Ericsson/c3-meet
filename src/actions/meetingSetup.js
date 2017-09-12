@@ -54,8 +54,7 @@ export function createMeeting(meetingName) {
     dispatch(push(`/${meetingName}`))
 
     _createMeeting({client: client.client, meetingName}).then(room => {
-      let conference = room.startConference()
-      dispatch({type: MEETING_SETUP_COMPLETE, room, conference})
+      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, getState())})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
     })
@@ -86,8 +85,7 @@ export function joinMeeting({meetingName, navigate = false}) {
     }
 
     _joinMeeting({client: client.client, meetingName}).then(room => {
-      let conference = room.startConference()
-      dispatch({type: MEETING_SETUP_COMPLETE, room, conference})
+      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, getState())})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
     })
@@ -102,4 +100,9 @@ export function leaveMeeting(meetingName) {
       dispatch({type: LEAVE_MEETING})
     }
   }
+}
+
+function initializeConference(room, state) {
+  let conference = room.startConference()
+  return {room, conference}
 }
