@@ -49,6 +49,7 @@ export function createMeeting(meetingName) {
       return
     }
 
+    dispatch({type: LEAVE_MEETING})
     dispatch({type: MEETING_SETUP_STARTED, meetingName})
     dispatch(push(`/${meetingName}`))
 
@@ -78,6 +79,7 @@ export function joinMeeting({meetingName, navigate = false}) {
       return
     }
 
+    dispatch({type: LEAVE_MEETING})
     dispatch({type: MEETING_SETUP_STARTED, meetingName})
     if (navigate) {
       dispatch(push(`/${meetingName}`))

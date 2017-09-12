@@ -21,10 +21,6 @@ function clearState({room, conference}) {
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
-    case MEETING_SETUP_STARTED: {
-      clearState(state)
-      return initialState
-    }
     case MEETING_SETUP_COMPLETE: {
       let {room, conference} = action
       return {...state, room, conference}
