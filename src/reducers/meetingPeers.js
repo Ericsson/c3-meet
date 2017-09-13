@@ -15,9 +15,8 @@ limitations under the License.
 */
 
 import {
-  CONFERENCE_PEER_ADDED,
+  CONFERENCE_PEER_UPSERT,
   CONFERENCE_PEER_REMOVED,
-  CONFERENCE_PEER_UPDATED,
 } from 'actions/constants'
 
 import {loadMeetingsList, sortMeetings, addMeeting, removeMeetingById} from 'modules/meetingStore'
@@ -28,13 +27,13 @@ const initialState = {
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
-    case CONFERENCE_PEER_ADDED: // intentional fallthrough
-    case CONFERENCE_PEER_UPDATED: {
-      let {peerId, connectionState, errorState} = action
-      return {...state, peers: {...state.peers, [peerId]: {connectionState, errorState}}}
+    case CONFERENCE_PEER_UPSERT: {
+      let {peerId, ...config} = action
+      let currentConfig = state.peers[peerId] || {}
+      return {...state, peers: {...state.peers, [peerId]: {...currentConfig, ...config}}}
     }
     case CONFERENCE_PEER_REMOVED: {
-      let {[action.peerId]: removed, ...peers} = state
+      let {[action.peerId]: removed, ...peers} = state.peers
       return {...state, peers}
     }
     default:

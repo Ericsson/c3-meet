@@ -24,8 +24,7 @@ import {
   MEETING_SETUP_COMPLETE,
   MEETING_SETUP_FAILED,
   LEAVE_MEETING,
-  CONFERENCE_PEERS_UPDATED,
-  CONFERENCE_PEER_ADDED,
+  CONFERENCE_PEER_UPSERT,
   CONFERENCE_PEER_REMOVED,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
@@ -113,18 +112,24 @@ function initializeConference(room, dispatch, getState) {
   })
   let {connectionState} = conference
 
-  function onPeerAdded(peerId, {connectionState, errorState}) {
-    const onUpdate = () => dispatch({
-      type: CONFERENCE_PEER_UPDATED,
+  function onPeerAdded(peerId, peer) {
+    const onUpdate = () => {
+      dispatch({
+        type: CONFERENCE_PEER_UPSERT,
+        peerId,
+        errorState: peer.errorState,
+        connectionState: peer.connectionState,
+      })
+    }
+    peer.on('connectionState', onUpdate)
+    peer.on('errorState', onUpdate)
+
+    dispatch({
+      type: CONFERENCE_PEER_UPSERT,
       peerId,
       errorState: peer.errorState,
       connectionState: peer.connectionState,
     })
-
-    peer.on('connectionState', onUpdate)
-    peer.on('errorState', onUpdate)
-
-    dispatch({type: CONFERENCE_PEER_ADDED, peerId, errorState, connectionState})
   }
   function onPeerRemoved(peerId) {
     dispatch({type: CONFERENCE_PEER_REMOVED, peerId})
