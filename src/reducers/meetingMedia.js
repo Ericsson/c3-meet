@@ -21,6 +21,8 @@ import {
   ACQUIRE_MEETING_MEDIA_STARTED,
   ACQUIRE_MEETING_MEDIA_COMPLETE,
   ACQUIRE_MEETING_MEDIA_FAILED,
+  CONFERENCE_PEER_AUDIO_ADDED,
+  CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
   CONFERENCE_THUMBNAILS_REMOVED,
 } from 'actions/constants'
@@ -37,9 +39,10 @@ const initialState = {
   error: null,
   ready: false,
   waiting: false,
-  thumbnailElements: {},
   mutedSelf: false,
   mutedPeers: {},
+  audioSources: {},
+  thumbnailElements: {},
 }
 
 function connectConferenceMedia({conference, source, audioBroadcaster, thumbnailBroadcaster, mutedSelf}) {
@@ -110,6 +113,28 @@ export default function meetingHistory(state = initialState, action) {
       let thumbnailElements = {...state.thumbnailElements}
       action.elements.forEach(({peerId}) => delete(thumbnailElements[peerId]))
       return {...state, thumbnailElements}
+    }
+    case CONFERENCE_PEER_AUDIO_ADDED: {
+      let {sources} = action
+      let {mutedPeers, audioSources} = state
+
+      let addedSources = {}
+      sources.forEach(source => {
+        let audio = new Audio()
+        source.connect(audio)
+        source.muted = !!mutedPeers[source.peerId]
+        addedSources[peerId] = source
+      })
+
+      return {...state, audioSources: {...audioSources, ...addedSources}}
+    }
+    case CONFERENCE_PEER_AUDIO_REMOVED: {
+      let {sources} = action
+      let {...audioSources} = state.audioSources
+
+      sources.forEach(({peerId}) => delete(audioSources[peerId]))
+
+      return {...state, audioSources}
     }
     default:
       return state

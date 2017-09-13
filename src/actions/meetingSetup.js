@@ -28,6 +28,8 @@ import {
   CONFERENCE_PEER_REMOVED,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
+  CONFERENCE_PEER_AUDIO_ADDED,
+  CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
   CONFERENCE_THUMBNAILS_REMOVED,
 } from 'actions/constants'
@@ -162,6 +164,14 @@ function initializeConference(room, dispatch, getState) {
     dispatch({type: CONFERENCE_CONNECTION_ERROR, error})
   }
 
+  function onPeerAudioAdded(sources) {
+    dispatch({type: CONFERENCE_PEER_AUDIO_ADDED, sources})
+  }
+
+  function onPeerAudioRemoved(sources) {
+    dispatch({type: CONFERENCE_PEER_AUDIO_REMOVED, sources})
+  }
+
   function onThumbnailsAdded(elements) {
     dispatch({type: CONFERENCE_THUMBNAILS_ADDED, elements})
   }
@@ -174,6 +184,8 @@ function initializeConference(room, dispatch, getState) {
   conference.peers.on('removed', onPeerRemoved)
   conference.on('connectionState', onConnectionState)
   conference.on('error', onError)
+  audioBroadcaster.on('added', onPeerAudioAdded)
+  audioBroadcaster.on('removed', onPeerAudioRemoved)
   thumbnailRenderer.on('added', onThumbnailsAdded)
   thumbnailRenderer.on('removed', onThumbnailsRemoved)
 
@@ -182,6 +194,8 @@ function initializeConference(room, dispatch, getState) {
     conference.peers.off('removed', onPeerRemoved)
     conference.off('connectionState', onConnectionState)
     conference.off('error', onError)
+    audioBroadcaster.off('added', onPeerAudioAdded)
+    audioBroadcaster.off('removed', onPeerAudioRemoved)
     thumbnailRenderer.off('added', onThumbnailsAdded)
     thumbnailRenderer.off('removed', onThumbnailsRemoved)
   }
