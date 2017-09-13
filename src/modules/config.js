@@ -13,7 +13,7 @@ export const serverUrl = runtimeConfig.readString('SERVER_URL', {defaultValue: `
 export const statsUrl = runtimeConfig.readString('STATS_URL', {defaultValue: null})
 
 // 1: error, 2: warning, 4: info, 8: debug, 16: verbose
-export const logLevel = runtimeConfig.readNumber('LOG_LEVEL', {defaultValue: log.ALL})
+export const logLevel = runtimeConfig.readNumber('LOG_LEVEL', {defaultValue: log.DEBUG})
 export const appLogLevel = runtimeConfig.readNumber('APP_LOG_LEVEL', {defaultValue: log.ALL})
 
 export const iceServers = [{
