@@ -24,6 +24,11 @@ import {
   MEETING_SETUP_COMPLETE,
   MEETING_SETUP_FAILED,
   LEAVE_MEETING,
+  CONFERENCE_PEERS_UPDATED,
+  CONFERENCE_PEER_ADDED,
+  CONFERENCE_PEER_REMOVED,
+  CONFERENCE_CONNECTION_STATE,
+  CONFERENCE_CONNECTION_ERROR,
 } from 'actions/constants'
 
 import {push} from 'react-router-redux'
@@ -54,7 +59,7 @@ export function createMeeting(meetingName) {
     dispatch(push(`/${meetingName}`))
 
     _createMeeting({client: client.client, meetingName}).then(room => {
-      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, getState())})
+      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
     })
@@ -85,7 +90,7 @@ export function joinMeeting({meetingName, navigate = false}) {
     }
 
     _joinMeeting({client: client.client, meetingName}).then(room => {
-      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, getState())})
+      dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
     })
@@ -102,7 +107,48 @@ export function leaveMeeting(meetingName) {
   }
 }
 
-function initializeConference(room, state) {
-  let conference = room.startConference()
-  return {room, conference}
+function initializeConference(room, dispatch, getState) {
+  let conference = room.startConference({
+    switcherMode: 'automatic',
+  })
+  let {connectionState} = conference
+
+  function onPeerAdded(peerId, {connectionState, errorState}) {
+    const onUpdate = () => dispatch({
+      type: CONFERENCE_PEER_UPDATED,
+      peerId,
+      errorState: peer.errorState,
+      connectionState: peer.connectionState,
+    })
+
+    peer.on('connectionState', onUpdate)
+    peer.on('errorState', onUpdate)
+
+    dispatch({type: CONFERENCE_PEER_ADDED, peerId, errorState, connectionState})
+  }
+  function onPeerRemoved(peerId) {
+    dispatch({type: CONFERENCE_PEER_REMOVED, peerId})
+  }
+
+  function onConnectionState(connectionState) {
+    dispatch({type: CONFERENCE_CONNECTION_STATE, connectionState})
+  }
+
+  function onError(error) {
+    log.error(LOG_TAG, `encountered conference error, ${error}`)
+    dispatch({type: CONFERENCE_CONNECTION_ERROR, error})
+  }
+
+  conference.peers.on('added', onPeerAdded)
+  conference.peers.on('removed', onPeerRemoved)
+  conference.on('connectionState', onConnectionState)
+  conference.on('error', onError)
+
+  let unsubscribe = () => {
+    conference.peers.off('added', onPeerAdded)
+    conference.peers.off('removed', onPeerRemoved)
+    conference.off('connectionState', onConnectionState)
+    conference.off('error', onError)
+  }
+  return {room, conference, connectionState, unsubscribe}
 }
