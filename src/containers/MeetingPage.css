@@ -15,4 +15,101 @@ limitations under the License.
 */
 
 .page {
+  flex: 1;
+  align-self: stretch;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+
+  display: flex;
+  align-items: stretch;
+}
+
+@media (orientation: portrait) {
+  .page {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+}
+
+@media not all and (orientation: portrait) {
+  .page {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.thumbnails {
+  flex: 1 0 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+
+  background: #0ff;
+}
+
+@media (orientation: portrait) {
+  .thumbnails {
+    max-height: 24rem;
+
+    justify-content: flex-start;
+
+    overflow-x: auto;
+  }
+}
+
+@media not all and (orientation: portrait) {
+  .thumbnails {
+    max-width: 24rem;
+
+    justify-content: center;
+
+    overflow-y: auto;
+  }
+}
+
+.main {
+  flex: 2 0 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+
+}
+
+@media (orientation: portrait) {
+  .main {
+    max-height: calc(100vw + 3.6rem);
+  }
+}
+
+.mainVideo {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.controls {
+  flex: 0 0 3.6rem;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  background: #0b0b0b;
+}
+
+.controlIcon {
+  margin: 0 0.6rem;
+
+  width: 2rem;
+  height: 2rem;
+
+  color: #fff;
 }

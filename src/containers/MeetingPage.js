@@ -16,20 +16,43 @@ limitations under the License.
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import {connect} from 'react-redux'
+
+import * as icons from 'react-feather'
+
+import ThumbnailContainer from 'components/ThumbnailContainer'
+import Video from 'components/Video'
+
+import Thumbnail from 'containers/Thumbnail'
 
 import styles from './MeetingPage.css'
 
 class MeetingPage extends Component {
-  componentWillMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
   render() {
+    let {className, mainVideo} = this.props
+    let thumbnails = Array(20).fill().map((_, index) => (
+      <Thumbnail key={index}>Thumbnail {index + 1}</Thumbnail>
+    ))
     return (
-      <span>Meeting</span>
+      <div className={classNames(styles.page, className)}>
+        <div className={styles.thumbnails}>
+          <ThumbnailContainer>
+            {thumbnails}
+          </ThumbnailContainer>
+        </div>
+        <div className={styles.main}>
+          <div className={styles.mainVideo}>
+            <Video muted={true} source={mainVideo}/>
+          </div>
+          <div className={styles.controls}>
+            <icons.Mic  className={styles.controlIcon}/>
+            <icons.Video  className={styles.controlIcon}/>
+            <icons.Monitor  className={styles.controlIcon}/>
+            <icons.PhoneOff  className={styles.controlIcon}/>
+          </div>
+        </div>
+      </div>
     )
   }
 }
@@ -38,6 +61,7 @@ MeetingPage.propTypes = {
 }
 
 const mapStateToProps = state => ({
+  mainVideo: state.meetingMedia.remoteSwitcherSource,
 })
 
 const mapDispatchToProps = dispatch => ({
