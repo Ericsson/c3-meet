@@ -21,53 +21,95 @@ import {
   ACQUIRE_MEETING_MEDIA_STARTED,
   ACQUIRE_MEETING_MEDIA_COMPLETE,
   ACQUIRE_MEETING_MEDIA_FAILED,
+  CONFERENCE_THUMBNAILS_ADDED,
+  CONFERENCE_THUMBNAILS_REMOVED,
 } from 'actions/constants'
+
+import {MuteFilter, StreamSplitter} from '@cct/libcct'
 
 const initialState = {
   conference: null,
-  localSwitcherSource: null,
-  remoteSwitcherSource: null,
+  source: null,
+  audioBroadcaster: null,
+  thumbnailBroadcaster: null,
+  remoteVideoSource: null,
+  muteFilter: null,
   error: null,
   ready: false,
   waiting: false,
+  thumbnailElements: {},
+  mutedSelf: false,
+  mutedPeers: {},
+}
+
+function connectConferenceMedia({conference, source, audioBroadcaster, thumbnailBroadcaster, mutedSelf}) {
+  let streamSplitter = new StreamSplitter()
+  let {videoOutput, audioOutput} = streamSplitter
+  let muteFilter = new MuteFilter()
+  muteFilter.muted = mutedSelf
+
+  source.connect(streamSplitter)
+  audioOutput.connect(muteFilter)
+  muteFilter.connect(audioBroadcaster)
+  videoOutput.connect(conference.switcher)
+  videoOutput.connect(thumbnailBroadcaster)
+
+  return {muteFilter}
 }
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case MEETING_SETUP_COMPLETE: {
-      let {conference} = action
-      let remoteSwitcherSource = conference.switcher
+      let {conference, audioBroadcaster, thumbnailBroadcaster} = action
 
-      let {localSwitcherSource} = state
-      if (localSwitcherSource) {
-        localSwitcherSource.connect(conference.switcher)
+      let {source} = state
+      let setupResult = {}
+      if (source) {
+        setupResult = connectConferenceMedia({...state, ...action})
       }
 
-      return {...state, conference, remoteSwitcherSource}
+      let remoteVideoSource = conference.switcher
+
+      return {...state, ...setupResult, conference, audioBroadcaster, thumbnailBroadcaster, remoteVideoSource}
     }
     case LEAVE_MEETING: {
-      return {...state, conference: null, remoteSwitcherSource: null}
+      let {source} = state
+      if (source) {
+        source.stop()
+      }
+      return initialState
     }
     case ACQUIRE_MEETING_MEDIA_STARTED: {
-      let {localSwitcherSource} = state
-      if (localSwitcherSource) {
-        localSwitcherSource.stop()
+      let {source} = state
+      if (source) {
+        source.stop()
       }
-      return {...state, waiting: true, localSwitcherSource: null, ready: false}
+      return {...state, waiting: true, ready: false, source: null, error: null}
     }
     case ACQUIRE_MEETING_MEDIA_COMPLETE: {
-      let localSwitcherSource = action.source
+      let {source} = action
 
       let {conference} = state
+      let setupResult = {}
       if (conference) {
-        localSwitcherSource.connect(conference.switcher)
+        setupResult = connectConferenceMedia({...state, ...action})
       }
 
-      return {...state, waiting: false, localSwitcherSource, ready: true}
+      return {...state, waiting: false, source, ready: true, ...setupResult}
     }
     case ACQUIRE_MEETING_MEDIA_FAILED: {
       let {error} = action
       return {...state, waiting: false, error}
+    }
+    case CONFERENCE_THUMBNAILS_ADDED: {
+      let {elements} = action
+      let addedObj = action.elements.reduce((obj, el) => (obj[el.peerId] = el, obj), {})
+      return {...state, thumbnailElements: {...state.thumbnailElements, ...addedObj}}
+    }
+    case CONFERENCE_THUMBNAILS_REMOVED: {
+      let thumbnailElements = {...state.thumbnailElements}
+      action.elements.forEach(({peerId}) => delete(thumbnailElements[peerId]))
+      return {...state, thumbnailElements}
     }
     default:
       return state

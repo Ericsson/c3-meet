@@ -28,8 +28,11 @@ import {
   CONFERENCE_PEER_REMOVED,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
+  CONFERENCE_THUMBNAILS_ADDED,
+  CONFERENCE_THUMBNAILS_REMOVED,
 } from 'actions/constants'
 
+import {MediaBroadcaster, ThumbnailBroadcaster} from '@cct/libcct'
 import {push} from 'react-router-redux'
 
 import {
@@ -112,6 +115,21 @@ function initializeConference(room, dispatch, getState) {
   })
   let {connectionState} = conference
 
+  let audioBroadcaster = new MediaBroadcaster()
+  conference.attach('audio', audioBroadcaster)
+
+  let thumbnailBroadcaster = new ThumbnailBroadcaster({
+    projectionConfiguration: {
+      width: 100,
+      aspectRatio: 16 / 9,
+      contentMode: 'aspectFill',
+    },
+    videoFrameRate: 10,
+    imageFrameRate: 2,
+  })
+  conference.attach('thumbnails', thumbnailBroadcaster)
+  let thumbnailRenderer = thumbnailBroadcaster.createRenderer(/*{elementClass: '...'}*/)
+
   function onPeerAdded(peerId, peer) {
     const onUpdate = () => {
       dispatch({
@@ -144,16 +162,36 @@ function initializeConference(room, dispatch, getState) {
     dispatch({type: CONFERENCE_CONNECTION_ERROR, error})
   }
 
+  function onThumbnailsAdded(elements) {
+    dispatch({type: CONFERENCE_THUMBNAILS_ADDED, elements})
+  }
+
+  function onThumbnailsRemoved(elements) {
+    dispatch({type: CONFERENCE_THUMBNAILS_REMOVED, elements})
+  }
+
   conference.peers.on('added', onPeerAdded)
   conference.peers.on('removed', onPeerRemoved)
   conference.on('connectionState', onConnectionState)
   conference.on('error', onError)
+  thumbnailRenderer.on('added', onThumbnailsAdded)
+  thumbnailRenderer.on('removed', onThumbnailsRemoved)
 
   let unsubscribe = () => {
     conference.peers.off('added', onPeerAdded)
     conference.peers.off('removed', onPeerRemoved)
     conference.off('connectionState', onConnectionState)
     conference.off('error', onError)
+    thumbnailRenderer.off('added', onThumbnailsAdded)
+    thumbnailRenderer.off('removed', onThumbnailsRemoved)
   }
-  return {room, conference, connectionState, unsubscribe}
+  return {
+    room,
+    conference,
+    audioBroadcaster,
+    thumbnailBroadcaster,
+    thumbnailRenderer,
+    connectionState,
+    unsubscribe,
+  }
 }
