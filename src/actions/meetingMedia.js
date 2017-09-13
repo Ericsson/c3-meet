@@ -20,10 +20,15 @@ import {
   ACQUIRE_MEETING_MEDIA_FAILED,
 } from 'actions/constants'
 
-import {DeviceSource} from '@cct/libcct'
+import {LOG_TAG} from 'modules/config'
+import {log, DeviceSource} from '@cct/libcct'
 
 export function acquireMediaDevices() {
   return (dispatch, getState) => {
+    if (getState().meetingMedia.ready) {
+      log.info(LOG_TAG, 'meeting media is already set up')
+      return
+    }
     let source = new DeviceSource({video: true, audio: true})
     dispatch({type: ACQUIRE_MEETING_MEDIA_STARTED})
 
