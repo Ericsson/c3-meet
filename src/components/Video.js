@@ -16,57 +16,34 @@ limitations under the License.
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import {HtmlSink} from '@cct/libcct'
+
+import styles from './Video.css'
 
 class Video extends Component {
   constructor(props) {
     super(props)
-    this._videoElement = null
-    this._sink = new HtmlSink()
-    this._handleRef = this._handleRef.bind(this)
-    this._handleVideoUpdate = this._handleVideoUpdate.bind(this)
+    this.video = null
+    this.sink = new HtmlSink()
+    this.handleRef = this.handleRef.bind(this)
+    this.handleVideoUpdate = this.handleVideoUpdate.bind(this)
     if (props.source) {
-      props.source.connect(this._sink)
+      props.source.connect(this.sink)
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.source !== this.props.source) {
-      if (newProps.source) {
-        newProps.source.connect(this._sink)
-      } else if (this.source) {
-        this.props.source.disconnect(this._sink)
-      }
-    }
-  }
-
-  _handleRef(ref) {
-    if (this.props.onResize && this._videoElement) {
-      this._videoElement.removeEventListener('loadedmetadata', this._handleVideoUpdate)
-      this._videoElement.removeEventListener('emptied', this._handleVideoUpdate)
-    }
-    this._sink.target = ref
-    this._videoElement = ref
-    if (this.props.onResize) {
-      if (ref) {
-        ref.addEventListener('loadedmetadata', this._handleVideoUpdate)
-        ref.addEventListener('emptied', this._handleVideoUpdate)
-      }
-      this._handleVideoUpdate()
-    }
-  }
-
-  _handleVideoUpdate() {
+  handleVideoUpdate() {
     let width = 0
     let height = 0
     let aspectRatio = 0
 
-    if (this._videoElement) {
-      width = this._videoElement.videoWidth
-      height = this._videoElement.videoHeight
+    if (this.video) {
+      width = this.video.videoWidth
+      height = this.video.videoHeight
 
-      if (height) {
+      if (width) {
         aspectRatio = width / height
       }
     }
@@ -74,12 +51,40 @@ class Video extends Component {
     this.props.onResize({width, height, aspectRatio})
   }
 
+  shouldComponentUpdate(newProps) {
+    return newProps.source !== this.props.source
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.source !== this.props.source) {
+      if (newProps.source) {
+        newProps.source.connect(this.sink)
+      } else if (this.source) {
+        this.props.source.disconnect(this.sink)
+      }
+    }
+  }
+
+  handleRef(ref) {
+    if (this.props.onResize && this.video) {
+      this.video.removeEventListener('loadedmetadata', this.handleVideoUpdate)
+      this.video.removeEventListener('emptied', this.handleVideoUpdate)
+    }
+    this.sink.target = ref
+    this.video = ref
+    if (this.props.onResize) {
+      if (ref) {
+        ref.addEventListener('loadedmetadata', this.handleVideoUpdate)
+        ref.addEventListener('emptied', this.handleVideoUpdate)
+      }
+      this.handleVideoUpdate()
+    }
+  }
+
   render() {
-    let props = Object.assign({}, this.props)
-    delete props.source
-    delete props.onResize
+    let {className, muted} = this.props
     return (
-      <video {...props} ref={this._handleRef} autoPlay/>
+      <video className={classNames(styles.video, className)} ref={this.handleRef} muted={muted} autoPlay/>
     )
   }
 }
@@ -88,7 +93,6 @@ Video.propTypes = {
   className: PropTypes.string,
   muted: PropTypes.bool,
   source: PropTypes.object,
-
   onResize: PropTypes.func,
 }
 
