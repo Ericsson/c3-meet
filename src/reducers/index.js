@@ -19,6 +19,7 @@ import client from 'reducers/client'
 import meeting from 'reducers/meeting'
 import meetingHistory from 'reducers/meetingHistory'
 import meetingMedia from 'reducers/meetingMedia'
+import meetingPeers from 'reducers/meetingPeers'
 import meetingSetup from 'reducers/meetingSetup'
 import {routerReducer} from 'react-router-redux'
 
@@ -28,5 +29,6 @@ export default combineReducers({
   meeting,
   meetingHistory,
   meetingMedia,
+  meetingPeers,
   meetingSetup,
 })
