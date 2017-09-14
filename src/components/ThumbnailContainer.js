@@ -18,6 +18,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import Thumbnail from 'components/Thumbnail'
+
 import styles from './ThumbnailContainer.css'
 
 const ThumbnailContainer = ({className, doubleColumns, children}) => (
@@ -27,6 +29,9 @@ const ThumbnailContainer = ({className, doubleColumns, children}) => (
 )
 
 ThumbnailContainer.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.shape({type: Thumbnail})).isRequired,
+  className: PropTypes.string,
+  doubleColumns: PropTypes.bool,
 }
 
 export default ThumbnailContainer
