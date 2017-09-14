@@ -91,10 +91,10 @@ export function setDisplayName({client, displayName}) {
 
   // Check if name should not be set, or if it is already set
   if (!displayName && !client.user.name) {
-    log.debug(LOG_TAG, `no need to set display name, none was requested and none was set`)
+    log.debug(LOG_TAG, 'no need to set display name, none was requested and none was set')
     return Promise.resolve(client)
   } else if (displayName === client.user.name) {
-    log.debug(LOG_TAG, `no need to set display name, already equal to the requested one`)
+    log.debug(LOG_TAG, 'no need to set display name, already equal to the requested one')
     return Promise.resolve(client)
   } else {
     log.debug(LOG_TAG, `setting display name to ${displayName}, was ${client.user.name}`)

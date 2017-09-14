@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-import IntlRelativeFormat, * as asd from 'intl-relativeformat'
+import IntlRelativeFormat from 'intl-relativeformat'
 
 const relativeFormat = new IntlRelativeFormat('en')
 

@@ -47,7 +47,7 @@ export function removeMeetingById(meetingId) {
 
   let meetings = meetingStore.load()
 
-  let deleted = delete(meetings[meetingId])
+  let deleted = delete meetings[meetingId]
   if (deleted) {
     meetingStore.store(meetings)
   }
@@ -83,7 +83,7 @@ function sortMeetingsByName(meetings, descending = true) {
     if (a.meetingName < b.meetingName) {
       return -1 * order
     }
-    if ( a.meetingName > b.meetingName) {
+    if (a.meetingName > b.meetingName) {
       return 1 * order
     }
     return 0
