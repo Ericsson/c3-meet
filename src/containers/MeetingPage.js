@@ -26,29 +26,24 @@ import {toggleMute} from 'actions/meetingMedia'
 import ThumbnailContainer from 'components/ThumbnailContainer'
 import Video from 'components/Video'
 
+import SelfViewThumbnail from 'containers/SelfViewThumbnail'
 import Thumbnail from 'containers/Thumbnail'
 
 import styles from './MeetingPage.css'
 
 class MeetingPage extends Component {
   render() {
-    let {className, mainVideo, peers, muted, toggleMute} = this.props
-    let thumbnails = Object.entries(peers).map(([peerId, {connectionState, errorState}]) => (
-      <Thumbnail
-        key={peerId}
-        peerId={peerId}
-        connectionState={connectionState}
-        errorState={errorState}
-      >
-        Thumbnail {peerId}
-      </Thumbnail>
-    ))
+    let {className, ownId, peers, muted, mainVideo, toggleMute} = this.props
     let Mic = muted ? icons.MicOff : icons.Mic
     return (
       <div className={classNames(styles.page, className)}>
         <div className={styles.thumbnails}>
           <ThumbnailContainer>
-            {thumbnails}
+            {[ownId, ...Object.keys(peers)].sort().map(peerId => (
+              peerId === ownId
+              ? <SelfViewThumbnail key={peerId}/>
+              : <Thumbnail key={peerId} peerId={peerId}/>
+            ))}
           </ThumbnailContainer>
         </div>
         <div className={styles.main}>
@@ -71,9 +66,10 @@ MeetingPage.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  mainVideo: state.meetingMedia.remoteVideoSource,
+  ownId: state.meeting.ownId,
   peers: state.meetingPeers.peers,
   muted: state.meetingMedia.muted,
+  mainVideo: state.meetingMedia.remoteVideoSource,
 })
 
 const mapDispatchToProps = dispatch => ({
