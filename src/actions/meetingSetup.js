@@ -28,6 +28,7 @@ import {
   CONFERENCE_CONNECTION_ERROR,
   CONFERENCE_PEER_UPSERT,
   CONFERENCE_PEER_REMOVED,
+  CONFERENCE_SPEAKER_CHANGED,
   CONFERENCE_PEER_AUDIO_ADDED,
   CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
@@ -165,6 +166,10 @@ function initializeConference(room, dispatch, getState) {
     dispatch({type: CONFERENCE_PEER_REMOVED, peerId})
   }
 
+  function onSpeakerChanged(speakerId) {
+    dispatch({type: CONFERENCE_SPEAKER_CHANGED, speakerId})
+  }
+
   function onPeerAudioAdded(sources) {
     dispatch({type: CONFERENCE_PEER_AUDIO_ADDED, sources})
   }
@@ -185,6 +190,7 @@ function initializeConference(room, dispatch, getState) {
   conference.on('error', onError)
   conference.peers.on('added', onPeerAdded)
   conference.peers.on('removed', onPeerRemoved)
+  conference.switcher.on('speaker', onSpeakerChanged)
   audioBroadcaster.on('added', onPeerAudioAdded)
   audioBroadcaster.on('removed', onPeerAudioRemoved)
   thumbnailRenderer.on('added', onThumbnailsAdded)
@@ -195,6 +201,7 @@ function initializeConference(room, dispatch, getState) {
     conference.off('error', onError)
     conference.peers.off('added', onPeerAdded)
     conference.peers.off('removed', onPeerRemoved)
+    conference.switcher.off('speaker', onSpeakerChanged)
     audioBroadcaster.off('added', onPeerAudioAdded)
     audioBroadcaster.off('removed', onPeerAudioRemoved)
     thumbnailRenderer.off('added', onThumbnailsAdded)
