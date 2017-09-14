@@ -51,7 +51,7 @@ function connectConferenceMedia({conference, source, audioBroadcaster, thumbnail
   let streamSplitter = new StreamSplitter()
   let {videoOutput, audioOutput} = streamSplitter
   let muteFilter = new MuteFilter()
-  muteFilter.muted = muted
+  muteFilter.mute = muted
 
   source.connect(streamSplitter)
   audioOutput.connect(muteFilter)
@@ -124,7 +124,7 @@ export default function meetingHistory(state = initialState, action) {
       sources.forEach(source => {
         let audio = new Audio()
         source.connect(audio)
-        source.muted = !!mutedPeers[source.peerId]
+        source.mute = !!mutedPeers[source.peerId]
         addedSources[source.peerId] = source
       })
 
@@ -141,7 +141,7 @@ export default function meetingHistory(state = initialState, action) {
     case MEDIA_TOGGLE_MUTE: {
       let {muted = !state.muted} = action
       if (state.muteFilter) {
-        state.muteFilter.muted = muted
+        state.muteFilter.mute = muted
       }
       return {...state, muted}
     }
