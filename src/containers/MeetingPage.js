@@ -26,7 +26,7 @@ import {toggleMute} from 'actions/meetingMedia'
 import ThumbnailContainer from 'components/ThumbnailContainer'
 import Video from 'components/Video'
 
-import SelfViewThumbnail from 'containers/SelfViewThumbnail'
+import OwnThumbnail from 'containers/OwnThumbnail'
 import PeerThumbnail from 'containers/PeerThumbnail'
 
 import styles from './MeetingPage.css'
@@ -41,7 +41,7 @@ class MeetingPage extends Component {
           <ThumbnailContainer>
             {[ownId, ...Object.keys(peers)].sort().map(peerId => (
               peerId === ownId
-              ? <SelfViewThumbnail key={peerId}/>
+              ? <OwnThumbnail key={peerId} peerId={ownId}/>
               : <PeerThumbnail key={peerId} peerId={peerId}/>
             ))}
           </ThumbnailContainer>
