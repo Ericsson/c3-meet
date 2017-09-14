@@ -45,8 +45,6 @@ limitations under the License.
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
-
-  background: #0ff;
 }
 
 @media (orientation: portrait) {
