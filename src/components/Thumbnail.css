@@ -17,6 +17,25 @@ limitations under the License.
 .container {
 }
 
+@media (orientation: portrait) {
+  .container {
+    padding-top: 1vw;
+    padding-left: 1vw;
+
+    flex: 0 0 25%;
+    max-width: 12rem;
+  }
+}
+
+@media not all and (orientation: portrait) {
+  .container {
+    padding-top: 0.5vw;
+    padding-left: 0.5vw;
+
+    flex: 0 0 50%;
+  }
+}
+
 .sizer {
   padding-top: 56.25%;
   position: relative;
@@ -28,6 +47,13 @@ limitations under the License.
   left: 0;
   bottom: 0;
   right: 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .elementHolder {
@@ -47,21 +73,12 @@ limitations under the License.
   object-fit: cover;
 }
 
-@media (orientation: portrait) {
-  .container {
-    padding-top: 1vw;
-    padding-left: 1vw;
-
-    flex: 0 0 25%;
-    max-width: 12rem;
-  }
-}
-
-@media not all and (orientation: portrait) {
-  .container {
-    padding-top: 0.5vw;
-    padding-left: 0.5vw;
-
-    flex: 0 0 50%;
-  }
+.spinner {
+  position: relative;
+  // width: 42.1875%;
+  // height: 75.0%;
+  width: 33.75%;
+  height: 60.0%;
+  // width: 28.125%;
+  // height: 50.0%;
 }
