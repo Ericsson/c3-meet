@@ -123,7 +123,7 @@ function initializeConference(room, dispatch, getState) {
 
   let thumbnailBroadcaster = new ThumbnailBroadcaster({
     projectionConfiguration: {
-      width: 100,
+      width: 160,
       aspectRatio: 16 / 9,
       contentMode: 'aspectFill',
     },
