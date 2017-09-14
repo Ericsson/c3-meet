@@ -52,7 +52,7 @@ limitations under the License.
   animation-direction: reverse;
 }
 
-.fast {
+.fast, .slow {
   animation-timing-function: linear;
   animation-name: rotate-fast;
 }
@@ -63,6 +63,14 @@ limitations under the License.
 
 .inner.fast {
   animation-duration: 600ms;
+}
+
+.outer.slow {
+  animation-duration: 3600ms;
+}
+
+.inner.slow {
+  animation-duration: 1800ms;
 }
 
 @keyframes rotate {

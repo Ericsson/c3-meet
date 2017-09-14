@@ -21,18 +21,25 @@ import classNames from 'classnames'
 import styles from './ConnectionStateSpinner.css'
 
 const ConnectionStateSpinner = ({connectionState, className}) => {
-  if (!connectionState || connectionState === 'connecting') {
+  if (!connectionState || connectionState === 'signaling') {
     return (
       <div className={classNames(styles.spinner, className)}>
         <div className={classNames(styles.circle, styles.inner)}/>
         <div className={classNames(styles.circle, styles.outer)}/>
       </div>
     )
-  } else {
+  } else if (connectionState === 'connecting' || connectionState === 'connected') {
     return (
       <div className={classNames(styles.spinner, className)}>
         <div className={classNames(styles.circle, styles.inner, styles.fast)}/>
         <div className={classNames(styles.circle, styles.outer, styles.fast)}/>
+      </div>
+    )
+  } else if (connectionState === 'reconnecting' || connectionState === 'closed') {
+    return (
+      <div className={classNames(styles.spinner, className)}>
+        <div className={classNames(styles.circle, styles.inner, styles.slow)}/>
+        <div className={classNames(styles.circle, styles.outer, styles.slow)}/>
       </div>
     )
   }
