@@ -24,32 +24,47 @@ class ElementHolder extends Component {
     super(props)
     this._onContainerRef = this._onContainerRef.bind(this)
   }
-  componentDidMount() {
-    this._ref.appendChild(this.props.element)
-    if (this.props.element.play) {
-      this.props.element.play()
-        .catch(error => log('meet', `thumbnail play error, ${error}`))
-    }
-  }
+
   componentWillReceiveProps(nextProps) {
-    this._ref.removeChild(this.props.element)
-    this._ref.appendChild(nextProps.element)
-    if (nextProps.element.play) {
-      nextProps.element.play()
-        .catch(error => log('meet', `thumbnail play error, ${error}`))
+    if (!this._ref) {
+      return
+    }
+
+    let currentElement = this.props.element
+    if (currentElement) {
+      this._ref.removeChild(currentElement)
+    }
+    let nextElement = this.props.nextProps
+    if (nextElement) {
+      this._ref.appendChild(nextElement)
+      if (nextElement.play) {
+        nextElement.play()
+          .catch(error => log('meet', `thumbnail play error, ${error}`))
+      }
     }
   }
+
   shouldComponentUpdate(nextProps) {
     return this.props.element !== nextProps.element
   }
-  componentWillUnmount() {
-    if (this._ref.children.length) {
-      this._ref.removeChild(this.props.element)
-    }
-  }
+
   _onContainerRef(ref) {
     this._ref = ref
+    let {element} = this.props
+    if (!element) {
+      return
+    }
+    if (ref) {
+      ref.appendChild(element)
+      if (element.play) {
+        element.play()
+          .catch(error => log('meet', `thumbnail play error, ${error}`))
+      }
+    } else if (this._ref) {
+      this._ref.removeChild(element)
+    }
   }
+
   render() {
     let {element, ...props} = this.props
     if (element) {
