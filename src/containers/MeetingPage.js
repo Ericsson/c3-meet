@@ -24,7 +24,7 @@ import * as icons from 'react-feather'
 import {toggleMute} from 'actions/meetingMedia'
 
 import ThumbnailContainer from 'components/ThumbnailContainer'
-import Video from 'components/Video'
+import BurnInVideoPlayer from 'components/BurnInVideoPlayer'
 
 import OwnThumbnail from 'containers/OwnThumbnail'
 import PeerThumbnail from 'containers/PeerThumbnail'
@@ -48,7 +48,7 @@ class MeetingPage extends Component {
         </div>
         <div className={styles.main}>
           <div className={styles.mainVideo}>
-            <Video muted={true} source={mainVideo}/>
+            <BurnInVideoPlayer source={mainVideo}/>
           </div>
           <div className={styles.controls}>
             <Mic className={styles.controlIcon} onClick={toggleMute}/>
