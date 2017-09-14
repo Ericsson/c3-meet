@@ -27,11 +27,13 @@ import {
   CONFERENCE_THUMBNAILS_REMOVED,
   MEDIA_TOGGLE_MUTE,
   MEDIA_TOGGLE_PEER_MUTE,
+  MUTE_STATE_SHARE_UPDATE,
 } from 'actions/constants'
 
 import {MuteFilter, StreamSplitter} from '@cct/libcct'
 
 const initialState = {
+  ownId: null,
   conference: null,
   source: null,
   audioBroadcaster: null,
@@ -45,6 +47,8 @@ const initialState = {
   mutedPeers: {},
   audioSources: {},
   thumbnailElements: {},
+  muteStateShare: null,
+  peersWithMute: {},
 }
 
 function connectConferenceMedia({conference, source, audioBroadcaster, thumbnailBroadcaster, muted}) {
@@ -65,7 +69,7 @@ function connectConferenceMedia({conference, source, audioBroadcaster, thumbnail
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case MEETING_SETUP_COMPLETE: {
-      let {conference, audioBroadcaster, thumbnailBroadcaster} = action
+      let {ownId, conference, audioBroadcaster, thumbnailBroadcaster, muteStateShare} = action
 
       let {source} = state
       let setupResult = {}
@@ -75,7 +79,20 @@ export default function meetingHistory(state = initialState, action) {
 
       let remoteVideoSource = conference.switcher
 
-      return {...state, ...setupResult, conference, audioBroadcaster, thumbnailBroadcaster, remoteVideoSource}
+      let peersWithMute = {[ownId]: state.muted}
+      muteStateShare.set(ownId, state.muted)
+      muteStateShare.forEach((value, key) => peersWithMute[key] = value)
+
+      return {
+        ...state,
+        ...setupResult,
+        ownId,
+        conference,
+        audioBroadcaster,
+        thumbnailBroadcaster,
+        muteStateShare,
+        remoteVideoSource,
+      }
     }
     case LEAVE_MEETING: {
       let {source} = state
@@ -139,10 +156,18 @@ export default function meetingHistory(state = initialState, action) {
       return {...state, audioSources}
     }
     case MEDIA_TOGGLE_MUTE: {
+      let {muteFilter, muteStateShare, ownId} = state
       let {muted = !state.muted} = action
-      if (state.muteFilter) {
-        state.muteFilter.mute = muted
+
+      if (muteFilter) {
+        muteFilter.mute = muted
       }
+
+      if (muteStateShare) {
+        // peersWithMute will be updated by the DataShare update event
+        muteStateShare.set(ownId, muted)
+      }
+
       return {...state, muted}
     }
     case MEDIA_TOGGLE_PEER_MUTE: {
@@ -155,6 +180,10 @@ export default function meetingHistory(state = initialState, action) {
         audioSources[peerId].muted = muted
       }
       return {...state, mutedPeers: {...mutedPeers, [peerId]: muted}}
+    }
+    case MUTE_STATE_SHARE_UPDATE: {
+      let {key, value} = action
+      return {...state, peersWithMute: {...state.peersWithMute, [key]: value}}
     }
     default:
       return state
