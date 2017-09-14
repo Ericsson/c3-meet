@@ -31,19 +31,25 @@ import PeerThumbnail from 'containers/PeerThumbnail'
 
 import styles from './MeetingPage.css'
 
+const THUMBNAIL_SINGLE_COLUMN_LIMIT = 6
+
 class MeetingPage extends Component {
   render() {
     let {className, ownId, peers, muted, mainVideo, toggleMute} = this.props
     let Mic = muted ? icons.MicOff : icons.Mic
+
+    let thumbnails = [ownId, ...Object.keys(peers)].sort().map(peerId => (
+      peerId === ownId
+      ? <OwnThumbnail key={peerId} peerId={ownId}/>
+      : <PeerThumbnail key={peerId} peerId={peerId}/>
+    ))
+    let doubleColumns = thumbnails.length > THUMBNAIL_SINGLE_COLUMN_LIMIT
+
     return (
       <div className={classNames(styles.page, className)}>
-        <div className={styles.thumbnails}>
-          <ThumbnailContainer>
-            {[ownId, ...Object.keys(peers)].sort().map(peerId => (
-              peerId === ownId
-              ? <OwnThumbnail key={peerId} peerId={ownId}/>
-              : <PeerThumbnail key={peerId} peerId={peerId}/>
-            ))}
+        <div className={classNames(styles.thumbnails, doubleColumns && styles.doubleColumns)}>
+          <ThumbnailContainer doubleColumns={doubleColumns}>
+            {thumbnails}
           </ThumbnailContainer>
         </div>
         <div className={styles.main}>

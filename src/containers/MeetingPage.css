@@ -59,11 +59,16 @@ limitations under the License.
 
 @media not all and (orientation: portrait) {
   .thumbnails {
-    max-width: 24rem;
+    max-width: 12rem;
 
     justify-content: center;
 
     overflow-y: auto;
+    transition: max-width 500ms ease-in-out;
+  }
+
+  .thumbnails.doubleColumns {
+    max-width: 24rem;
   }
 }
 
