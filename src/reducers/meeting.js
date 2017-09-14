@@ -23,6 +23,7 @@ import {
 
 const initialState = {
   room: null,
+  ownId: null,
   conference: null,
   connectionState: null,
   errors: [],
@@ -43,8 +44,8 @@ function clearState({room, conference, unsubscribe}) {
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case MEETING_SETUP_COMPLETE: {
-      let {room, conference, connectionState, unsubscribe} = action
-      return {...state, room, conference, connectionState, unsubscribe}
+      let {room, ownId, conference, connectionState, unsubscribe} = action
+      return {...state, room, ownId, conference, connectionState, unsubscribe}
     }
     case LEAVE_MEETING: {
       clearState(state)

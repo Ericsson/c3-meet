@@ -116,7 +116,7 @@ function initializeConference(room, dispatch, getState) {
   let conference = room.startConference({
     switcherMode: 'automatic',
   })
-  let {connectionState} = conference
+  let {ownId, connectionState} = conference
 
   let audioBroadcaster = new MediaBroadcaster()
   conference.attach('audio', audioBroadcaster)
@@ -209,6 +209,7 @@ function initializeConference(room, dispatch, getState) {
   }
   return {
     room,
+    ownId,
     conference,
     audioBroadcaster,
     thumbnailBroadcaster,
