@@ -42,6 +42,7 @@ import {
   createMeeting as _createMeeting,
   joinMeeting as _joinMeeting,
 } from 'modules/meetingSetup'
+import {thumbnailConfig} from 'modules/config'
 import namegen from 'modules/namegen'
 
 export function generateCreateMeetingName() {
@@ -121,15 +122,7 @@ function initializeConference(room, dispatch, getState) {
   let audioBroadcaster = new MediaBroadcaster()
   conference.attach('audio', audioBroadcaster)
 
-  let thumbnailBroadcaster = new ThumbnailBroadcaster({
-    projectionConfiguration: {
-      width: 160,
-      aspectRatio: 16 / 9,
-      contentMode: 'aspectFill',
-    },
-    videoFrameRate: 10,
-    imageFrameRate: 2,
-  })
+  let thumbnailBroadcaster = new ThumbnailBroadcaster(thumbnailConfig)
   conference.attach('thumbnails', thumbnailBroadcaster)
   let thumbnailRenderer = thumbnailBroadcaster.createRenderer(/*{elementClass: '...'}*/)
 

@@ -26,4 +26,14 @@ export const iceServers = [{
   credential: 'see-three',
 }]
 
+export const thumbnailConfig = {
+  projectionConfiguration: {
+    width: runtimeConfig.readNumber('THUMBNAIL_WIDTH', {defaultValue: 160}),
+    aspectRatio: 16 / 9,
+    contentMode: 'aspectFill',
+  },
+  videoFrameRate: runtimeConfig.readNumber('THUMBNAIL_VIDEO_FPS', {defaultValue: 10}),
+  imageFrameRate: runtimeConfig.readNumber('THUMBNAIL_IMAGE_FPS', {defaultValue: 2}),
+}
+
 export const LOG_TAG = 'meet'
