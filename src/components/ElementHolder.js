@@ -25,7 +25,7 @@ class ElementHolder extends Component {
     this._onContainerRef = this._onContainerRef.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillUpdate(nextProps) {
     if (!this._ref) {
       return
     }
