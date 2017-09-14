@@ -17,6 +17,7 @@ limitations under the License.
 import {
   BEFORE_UNLOAD,
   LOAD_MEETING_LIST,
+  MEDIA_TOGGLE_MUTE,
 } from 'actions/constants'
 
 import {meetingStore} from 'modules/meetingStore'
@@ -25,6 +26,7 @@ export function registerGlobalDispatchers(dispatch) {
   return (dispatch, getState) => {
     registerBeforeUnloadDispatcher(dispatch, getState)
     registerLocalStorageDispatcher(dispatch, getState)
+    registerKeypressDispatcher(dispatch, getState)
   }
 }
 
@@ -41,6 +43,14 @@ function registerLocalStorageDispatcher(dispatch, getState) {
     } else {
       let {key, oldValue, newValue, storageArea, url} = event
       dispatch({type: STORAGE_UPDATE, key, oldValue, newValue, storageArea, url})
+    }
+  })
+}
+
+function registerKeypressDispatcher(dispatch, getState) {
+  document.addEventListener('keydown', event => {
+    if (event.code === 'KeyM') {
+      dispatch({type: MEDIA_TOGGLE_MUTE})
     }
   })
 }
