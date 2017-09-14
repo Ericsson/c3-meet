@@ -40,9 +40,6 @@ function registerLocalStorageDispatcher(dispatch, getState) {
   window.addEventListener('storage', event => {
     if (meetingStore.matchEvent(event)) {
       return dispatch({type: LOAD_MEETING_LIST})
-    } else {
-      let {key, oldValue, newValue, storageArea, url} = event
-      dispatch({type: STORAGE_UPDATE, key, oldValue, newValue, storageArea, url})
     }
   })
 }

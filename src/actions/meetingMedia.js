@@ -38,7 +38,7 @@ export function acquireMediaDevices() {
       dispatch({type: ACQUIRE_MEETING_MEDIA_COMPLETE, source})
     }, error => {
       dispatch({type: ACQUIRE_MEETING_MEDIA_FAILED, error})
-    })
+    }).catch(error => log.error(LOG_TAG, `acquire media devices threw error, ${error}`))
   }
 }
 

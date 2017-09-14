@@ -16,9 +16,6 @@ limitations under the License.
 
 import {
   UPDATE_CREATE_MEETING_NAME_INPUT,
-  CREATE_MEETING_STARTED,
-  CREATE_MEETING_COMPLETE,
-  CREATE_MEETING_FAILED,
   UPDATE_JOIN_MEETING_NAME_INPUT,
   MEETING_SETUP_STARTED,
   MEETING_SETUP_COMPLETE,
@@ -37,14 +34,14 @@ import {
   MUTE_STATE_SHARE_UPDATE,
 } from 'actions/constants'
 
-import {DataShare, MediaBroadcaster, ThumbnailBroadcaster} from '@cct/libcct'
+import {log, DataShare, MediaBroadcaster, ThumbnailBroadcaster} from '@cct/libcct'
 import {push} from 'react-router-redux'
 
 import {
   createMeeting as _createMeeting,
   joinMeeting as _joinMeeting,
 } from 'modules/meetingSetup'
-import {thumbnailConfig} from 'modules/config'
+import {thumbnailConfig, LOG_TAG} from 'modules/config'
 import namegen from 'modules/namegen'
 
 export function generateCreateMeetingName() {
@@ -70,7 +67,7 @@ export function createMeeting(meetingName) {
       dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
-    })
+    }).catch(error => log.error(LOG_TAG, `create conference initialization threw error, ${error}`))
   }
 }
 
@@ -101,11 +98,11 @@ export function joinMeeting({meetingName, navigate = false}) {
       dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
-    })
+    }).catch(error => log.error(LOG_TAG, `join conference initialization threw error, ${error}`))
   }
 }
 
-export function leaveMeeting(meetingName) {
+export function leaveMeeting() {
   return (dispatch, getState) => {
     let {meeting} = getState()
     if (meeting.room) {
@@ -126,7 +123,7 @@ function initializeConference(room, dispatch, getState) {
 
   let thumbnailBroadcaster = new ThumbnailBroadcaster(thumbnailConfig)
   conference.attach('thumbnails', thumbnailBroadcaster)
-  let thumbnailRenderer = thumbnailBroadcaster.createRenderer(/*{elementClass: '...'}*/)
+  let thumbnailRenderer = thumbnailBroadcaster.createRenderer()
 
   let userAgentShare = new DataShare({ownerId: ownId})
   conference.attach('userAgent', userAgentShare)

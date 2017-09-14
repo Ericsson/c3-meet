@@ -20,8 +20,6 @@ import {
   REMOVE_MEETING_FROM_LIST,
 } from 'actions/constants'
 
-import * as store from 'modules/meetingStore'
-
 export function loadMeetingList() {
   return {type: LOAD_MEETING_LIST}
 }
