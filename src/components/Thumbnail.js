@@ -29,6 +29,7 @@ const Thumbnail = ({className, peerId, connectionState, element}) => (
     <div className={styles.sizer}>
       <div className={styles.thumbnail}>
         <ConnectionStateSpinner connectionState={connectionState} className={styles.spinner}/>
+        <span className={styles.peerId}>{peerId}</span>
         <ElementHolder element={element} className={styles.elementHolder}/>
       </div>
     </div>
