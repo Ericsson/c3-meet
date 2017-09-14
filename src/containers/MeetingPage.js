@@ -19,7 +19,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {connect} from 'react-redux'
 
-import * as icons from 'react-feather'
+import {MicOff, Mic} from 'react-feather'
 
 import {toggleMute} from 'actions/meetingMedia'
 
@@ -36,7 +36,7 @@ const THUMBNAIL_SINGLE_COLUMN_LIMIT = 6
 class MeetingPage extends Component {
   render() {
     let {className, ownId, peers, muted, mainVideo, toggleMute} = this.props
-    let Mic = muted ? icons.MicOff : icons.Mic
+    let MuteButton = muted ? MicOff : Mic
 
     let thumbnails = [ownId, ...Object.keys(peers)].sort().map(peerId => (
       peerId === ownId
@@ -57,10 +57,7 @@ class MeetingPage extends Component {
             <BurnInVideoPlayer source={mainVideo}/>
           </div>
           <div className={styles.controls}>
-            <Mic className={styles.controlIcon} onClick={toggleMute}/>
-            <icons.Video className={styles.controlIcon}/>
-            <icons.Monitor className={styles.controlIcon}/>
-            <icons.PhoneOff className={styles.controlIcon}/>
+            <MuteButton className={styles.controlIcon} onClick={toggleMute}/>
           </div>
         </div>
       </div>
