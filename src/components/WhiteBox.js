@@ -33,7 +33,7 @@ WhiteBox.propTypes = {
   className: PropTypes.string,
 }
 
-const Divider = ({children, className, ...props}) => {
+const Divider = ({className, ...props}) => {
   return (
     <div className={classNames(className, styles.divider)} {...props}/>
   )

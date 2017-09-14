@@ -20,7 +20,7 @@ import classNames from 'classnames'
 
 import styles from './ErrorMessage.css'
 
-const ErrorMessage = ({error, className, ...props}) => {
+const ErrorMessage = ({error, className}) => {
   if (!error) {
     return null
   }
@@ -38,8 +38,8 @@ const ErrorMessage = ({error, className, ...props}) => {
 }
 
 ErrorMessage.propTypes = {
-  error: PropTypes.instanceOf(Error),
   className: PropTypes.string,
+  error: PropTypes.instanceOf(Error),
 }
 
 export default ErrorMessage

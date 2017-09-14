@@ -46,8 +46,8 @@ const ConnectionStateSpinner = ({connectionState, className}) => {
 }
 
 ConnectionStateSpinner.propTypes = {
-  connectionState: PropTypes.string,
   className: PropTypes.string,
+  connectionState: PropTypes.string,
 }
 
 export default ConnectionStateSpinner

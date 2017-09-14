@@ -22,7 +22,7 @@ import styles from './GithubCorner.css'
 
 const TITLE_DEFAULT = 'Fork me on GitHub'
 
-const GithubCorner = ({url, title, size}) => (
+const GithubCorner = ({url, title}) => (
   <a className={styles.container} href={url} target='_blank' title={title || TITLE_DEFAULT}>
     <img src={GithubLogo} className={styles.icon}/>
   </a>
@@ -30,7 +30,6 @@ const GithubCorner = ({url, title, size}) => (
 
 GithubCorner.propTypes = {
   url: PropTypes.string.isRequired,
-  size: PropTypes.number,
   title: PropTypes.string,
 }
 

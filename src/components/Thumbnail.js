@@ -52,11 +52,11 @@ Thumbnail.propTypes = {
   hasMutedSelf: PropTypes.bool.isRequired,
   muted: PropTypes.bool.isRequired,
   peerId: PropTypes.string.isRequired,
-  userAgent: PropTypes.object,
   className: PropTypes.string,
   connectionState: PropTypes.string,
   element: PropTypes.instanceOf(HTMLElement),
   errorState: PropTypes.instanceOf(Error),
+  userAgent: PropTypes.object,
 }
 
 export default Thumbnail

@@ -18,8 +18,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import {HtmlSink} from '@cct/libcct'
-
 import BurnInVideoSink from 'modules/BurnInVideoSink'
 
 import styles from './Video.css'
@@ -39,13 +37,11 @@ class BurnInVideoPlayer extends Component {
     return newProps.source !== this.props.source
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.source !== this.props.source) {
-      if (newProps.source) {
-        newProps.source.connect(this.sink)
-      } else if (this.source) {
-        this.props.source.disconnect(this.sink)
-      }
+  componentWillUpdate(newProps) {
+    if (newProps.source) {
+      newProps.source.connect(this.sink)
+    } else if (this.source) {
+      this.props.source.disconnect(this.sink)
     }
   }
 

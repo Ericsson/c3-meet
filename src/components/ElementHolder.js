@@ -25,6 +25,10 @@ class ElementHolder extends Component {
     this._onContainerRef = this._onContainerRef.bind(this)
   }
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.element !== nextProps.element
+  }
+
   componentWillUpdate(nextProps) {
     if (!this._ref) {
       return
@@ -33,7 +37,7 @@ class ElementHolder extends Component {
     if (this._ref.hasChildNodes()) {
       this._ref.innerHTML = ''
     }
-    let nextElement = this.props.nextProps
+    let nextElement = nextProps.element
     if (nextElement) {
       this._ref.appendChild(nextElement)
       if (nextElement.play) {
@@ -41,10 +45,6 @@ class ElementHolder extends Component {
           .catch(error => log('meet', `thumbnail play error, ${error}`))
       }
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.element !== nextProps.element
   }
 
   _onContainerRef(ref) {

@@ -14,46 +14,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
 import classNames from 'classnames'
 
-import {removeMeeting} from 'actions/meetingHistory'
-
-import Button from 'components/Button'
 import MeetingListItem from 'components/MeetingListItem'
 
 import styles from './MeetingList.css'
 
-class MeetingList extends Component {
-  render() {
-    let {meetings, className, onEnter, onRemove, ...props} = this.props
+const MeetingList = ({meetings, className, onEnter, onRemove, ...props}) => {
+  let meetingRows = meetings.map(itemProps => (
+    <MeetingListItem
+      key={itemProps.meetingId}
+      {...itemProps}
+      onEnter={onEnter}
+      onRemove={onRemove}
+    />
+  ))
 
-    let meetingRows = meetings.map(props => (
-      <MeetingListItem
-        key={props.meetingId}
-        {...props}
-        onEnter={onEnter}
-        onRemove={onRemove}
-        />
-    ))
-
-    if (meetingRows.length === 0) {
-      return (
-        <div className={classNames(styles.empty, className)} {...props}>
-          You haven't joined any meetings yet
-        </div>
-      )
-    }
-
+  if (meetingRows.length === 0) {
     return (
-      <div className={classNames(styles.list, className)} {...props}>
-        <MeetingListItem.Header/>
-        {meetingRows}
+      <div className={classNames(styles.empty, className)} {...props}>
+        {"You haven't joined any meetings yet"}
       </div>
     )
   }
+
+  return (
+    <div className={classNames(styles.list, className)} {...props}>
+      <MeetingListItem.Header/>
+      {meetingRows}
+    </div>
+  )
 }
 
 MeetingList.propTypes = {

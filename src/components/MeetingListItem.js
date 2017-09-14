@@ -14,14 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {X} from 'react-feather'
-
-import {removeMeeting} from 'actions/meetingHistory'
-
-import Button from 'components/Button'
 
 import {formatRelative} from 'modules/intl'
 
