@@ -17,13 +17,14 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import {MicOff} from 'react-feather'
 
 import ConnectionStateSpinner from 'components/ConnectionStateSpinner'
 import ElementHolder from 'components/ElementHolder'
 
 import styles from './Thumbnail.css'
 
-const Thumbnail = ({className, peerId, userAgent, connectionState, element}) => {
+const Thumbnail = ({className, peerId, hasMutedSelf, userAgent, connectionState, element}) => {
   let userAgentDescription = ''
   if (userAgent) {
     let {browser, version, platform, device} = userAgent
@@ -36,6 +37,7 @@ const Thumbnail = ({className, peerId, userAgent, connectionState, element}) => 
           <ConnectionStateSpinner connectionState={connectionState} className={styles.spinner}/>
           <span className={styles.peerId}>{peerId}</span>
           <ElementHolder element={element} className={styles.elementHolder}/>
+          {hasMutedSelf && <MicOff className={styles.selfMuteIndicator}/>}
           <div className={styles.overlay}>
             <span className={styles.peerId}>{peerId}</span>
             <span className={styles.userAgent}>{userAgentDescription}</span>
@@ -47,6 +49,7 @@ const Thumbnail = ({className, peerId, userAgent, connectionState, element}) => 
 }
 
 Thumbnail.propTypes = {
+  hasMutedSelf: PropTypes.bool.isRequired,
   muted: PropTypes.bool.isRequired,
   peerId: PropTypes.string.isRequired,
   userAgent: PropTypes.object,

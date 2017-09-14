@@ -30,6 +30,7 @@ const mapStateToProps = ({meeting, meetingMedia, meetingPeers}, {peerId}) => {
     connectionState: peer ? peer.connectionState : null,
     errorState: peer ? peer.errorState : null,
     userAgent: meeting.peerUserAgents[peerId] || null,
+    hasMutedSelf: !!meetingMedia.peersWithMute[peerId],
   }
 }
 

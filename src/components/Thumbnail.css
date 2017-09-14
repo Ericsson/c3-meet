@@ -65,6 +65,18 @@ limitations under the License.
   // height: 50.0%;
 }
 
+.selfMuteIndicator {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #C90013;
+  padding: 0.2rem;
+
+  background: rgba(0, 0, 0, 0.3);
+}
+
 .peerId, .userAgent {
   position: absolute;
 
