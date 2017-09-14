@@ -17,7 +17,6 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Spinner from 'react-spinkit'
 
 import ConnectionStateSpinner from 'components/ConnectionStateSpinner'
 import ElementHolder from 'components/ElementHolder'
