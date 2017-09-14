@@ -24,21 +24,33 @@ import ElementHolder from 'components/ElementHolder'
 
 import styles from './Thumbnail.css'
 
-const Thumbnail = ({className, peerId, connectionState, element}) => (
-  <div className={classNames(styles.container, className)}>
-    <div className={styles.sizer}>
-      <div className={styles.thumbnail}>
-        <ConnectionStateSpinner connectionState={connectionState} className={styles.spinner}/>
-        <span className={styles.peerId}>{peerId}</span>
-        <ElementHolder element={element} className={styles.elementHolder}/>
+const Thumbnail = ({className, peerId, userAgent, connectionState, element}) => {
+  let userAgentDescription = ''
+  if (userAgent) {
+    let {browser, version, platform, device} = userAgent
+    userAgentDescription = `${browser} ${version}, ${device} ${platform}`
+  }
+  return (
+    <div className={classNames(styles.container, className)}>
+      <div className={styles.sizer}>
+        <div className={styles.thumbnail}>
+          <ConnectionStateSpinner connectionState={connectionState} className={styles.spinner}/>
+          <span className={styles.peerId}>{peerId}</span>
+          <ElementHolder element={element} className={styles.elementHolder}/>
+          <div className={styles.overlay}>
+            <span className={styles.peerId}>{peerId}</span>
+            <span className={styles.userAgent}>{userAgentDescription}</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 Thumbnail.propTypes = {
   muted: PropTypes.bool.isRequired,
   peerId: PropTypes.string.isRequired,
+  userAgent: PropTypes.object,
   className: PropTypes.string,
   connectionState: PropTypes.string,
   element: PropTypes.instanceOf(HTMLElement),

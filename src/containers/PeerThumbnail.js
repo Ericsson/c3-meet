@@ -22,13 +22,14 @@ import {togglePeerMute} from 'actions/meetingMedia'
 
 import Thumbnail from 'components/Thumbnail'
 
-const mapStateToProps = ({meetingMedia, meetingPeers}, {peerId}) => {
+const mapStateToProps = ({meeting, meetingMedia, meetingPeers}, {peerId}) => {
   let peer = meetingPeers.peers[peerId] || null
   return {
     muted: !!meetingMedia.mutedPeers[peerId],
     element: meetingMedia.thumbnailElements[peerId] || null,
     connectionState: peer ? peer.connectionState : null,
     errorState: peer ? peer.errorState : null,
+    userAgent: meeting.peerUserAgents[peerId] || null,
   }
 }
 

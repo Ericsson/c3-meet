@@ -45,7 +45,6 @@ limitations under the License.
   bottom: 0;
   right: 0;
 
-  z-index: 200;
   overflow: hidden;
 }
 
@@ -66,32 +65,43 @@ limitations under the License.
   // height: 50.0%;
 }
 
-.peerId {
+.peerId, .userAgent {
   position: absolute;
-  left: 0.2rem;
-  bottom: 0;
 
   font-size: 1vw;
   font-weight: 400;
   color: #fff;
   text-shadow: 0 0px 1px #000,  0 1px 2px #000;
+}
 
-  z-index: 100;
+.peerId {
+  left: 0.2rem;
+  bottom: 0;
+}
+
+.userAgent {
+  left: 0.2rem;
+  top: 0;
 }
 
 @media (orientation: portrait) {
-  .peerId {
+  .peerId, .userAgent {
     font-size: 2vw;
   }
 }
 
 @media not all and (orientation: portrait) {
-  .peerId {
+  .peerId, .userAgent {
     font-size: 1.1rem;
   }
 }
 
-.thumbnail:hover .peerId {
-  z-index: 300;
+.overlay {
+  opacity: 0;
+  transition: opacity 100ms ease-in-out;
+}
+
+.thumbnail:hover .overlay {
+  opacity: 1;
 }
 
