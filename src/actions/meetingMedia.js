@@ -18,6 +18,8 @@ import {
   ACQUIRE_MEETING_MEDIA_STARTED,
   ACQUIRE_MEETING_MEDIA_COMPLETE,
   ACQUIRE_MEETING_MEDIA_FAILED,
+  MEDIA_TOGGLE_MUTE,
+  MEDIA_TOGGLE_PEER_MUTE,
 } from 'actions/constants'
 
 import {LOG_TAG} from 'modules/config'
@@ -38,4 +40,12 @@ export function acquireMediaDevices() {
       dispatch({type: ACQUIRE_MEETING_MEDIA_FAILED, error})
     })
   }
+}
+
+export function toggleMute(muted) {
+  return {type: MEDIA_TOGGLE_MUTE, muted}
+}
+
+export function togglePeerMute({peerId, muted}) {
+  return {type: MEDIA_TOGGLE_PEER_MUTE, peerId, muted}
 }

@@ -25,6 +25,8 @@ import {
   CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
   CONFERENCE_THUMBNAILS_REMOVED,
+  MEDIA_TOGGLE_MUTE,
+  MEDIA_TOGGLE_PEER_MUTE,
 } from 'actions/constants'
 
 import {MuteFilter, StreamSplitter} from '@cct/libcct'
@@ -39,17 +41,17 @@ const initialState = {
   error: null,
   ready: false,
   waiting: false,
-  mutedSelf: false,
+  muted: false,
   mutedPeers: {},
   audioSources: {},
   thumbnailElements: {},
 }
 
-function connectConferenceMedia({conference, source, audioBroadcaster, thumbnailBroadcaster, mutedSelf}) {
+function connectConferenceMedia({conference, source, audioBroadcaster, thumbnailBroadcaster, muted}) {
   let streamSplitter = new StreamSplitter()
   let {videoOutput, audioOutput} = streamSplitter
   let muteFilter = new MuteFilter()
-  muteFilter.muted = mutedSelf
+  muteFilter.muted = muted
 
   source.connect(streamSplitter)
   audioOutput.connect(muteFilter)
@@ -135,6 +137,24 @@ export default function meetingHistory(state = initialState, action) {
       sources.forEach(({peerId}) => delete(audioSources[peerId]))
 
       return {...state, audioSources}
+    }
+    case MEDIA_TOGGLE_MUTE: {
+      let {muted = !state.muted} = action
+      if (state.muteFilter) {
+        state.muteFilter.muted = muted
+      }
+      return {...state, muted}
+    }
+    case MEDIA_TOGGLE_PEER_MUTE: {
+      let {peerId} = action
+      let {mutedPeers, audioSources} = state
+      let currentlyMuted = mutedPeers[peerId]
+      let {muted = !mutedPeers[peerId]} = action
+
+      if (audioSources[peerId]) {
+        audioSources[peerId].muted = muted
+      }
+      return {...state, mutedPeers: {...mutedPeers, [peerId]: muted}}
     }
     default:
       return state
