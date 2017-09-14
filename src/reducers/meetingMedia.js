@@ -125,7 +125,7 @@ export default function meetingHistory(state = initialState, action) {
         let audio = new Audio()
         source.connect(audio)
         source.muted = !!mutedPeers[source.peerId]
-        addedSources[peerId] = source
+        addedSources[source.peerId] = source
       })
 
       return {...state, audioSources: {...audioSources, ...addedSources}}
