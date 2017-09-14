@@ -54,7 +54,7 @@ export default function meetingHistory(state = initialState, action) {
       let userAgent = parseUa(navigator.userAgent)
       userAgentShare.set(ownId, userAgent)
       let peerUserAgents = {}
-      userAgentShare.forEach((value, key) => peerUserAgents[key] = value)
+      userAgentShare.forEach((value, key) => (peerUserAgents[key] = value))
 
       return {...state, room, ownId, conference, connectionState, userAgentShare, peerUserAgents, unsubscribe}
     }

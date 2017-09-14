@@ -19,8 +19,6 @@ import {
   CONFERENCE_PEER_REMOVED,
 } from 'actions/constants'
 
-import {loadMeetingsList, sortMeetings, addMeeting, removeMeetingById} from 'modules/meetingStore'
-
 const initialState = {
   peers: {},
 }
@@ -28,12 +26,12 @@ const initialState = {
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case CONFERENCE_PEER_UPSERT: {
-      let {type, peerId, ...config} = action
+      let {type: ignored, peerId, ...config} = action
       let currentConfig = state.peers[peerId] || {}
       return {...state, peers: {...state.peers, [peerId]: {...currentConfig, ...config}}}
     }
     case CONFERENCE_PEER_REMOVED: {
-      let {[action.peerId]: removed, ...peers} = state.peers
+      let {[action.peerId]: ignored, ...peers} = state.peers
       return {...state, peers}
     }
     default:

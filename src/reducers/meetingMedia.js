@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import {
-  MEETING_SETUP_STARTED,
   MEETING_SETUP_COMPLETE,
   LEAVE_MEETING,
   ACQUIRE_MEETING_MEDIA_STARTED,
@@ -81,7 +80,7 @@ export default function meetingHistory(state = initialState, action) {
 
       let peersWithMute = {[ownId]: state.muted}
       muteStateShare.set(ownId, state.muted)
-      muteStateShare.forEach((value, key) => peersWithMute[key] = value)
+      muteStateShare.forEach((value, key) => (peersWithMute[key] = value))
 
       return {
         ...state,
@@ -124,13 +123,15 @@ export default function meetingHistory(state = initialState, action) {
       return {...state, waiting: false, error}
     }
     case CONFERENCE_THUMBNAILS_ADDED: {
-      let {elements} = action
-      let addedObj = action.elements.reduce((obj, el) => (obj[el.peerId] = el, obj), {})
+      let addedObj = action.elements.reduce((obj, el) => {
+        obj[el.peerId] = el
+        return obj
+      }, {})
       return {...state, thumbnailElements: {...state.thumbnailElements, ...addedObj}}
     }
     case CONFERENCE_THUMBNAILS_REMOVED: {
       let thumbnailElements = {...state.thumbnailElements}
-      action.elements.forEach(({peerId}) => delete(thumbnailElements[peerId]))
+      action.elements.forEach(({peerId}) => delete thumbnailElements[peerId])
       return {...state, thumbnailElements}
     }
     case CONFERENCE_PEER_AUDIO_ADDED: {
@@ -151,7 +152,7 @@ export default function meetingHistory(state = initialState, action) {
       let {sources} = action
       let {...audioSources} = state.audioSources
 
-      sources.forEach(({peerId}) => delete(audioSources[peerId]))
+      sources.forEach(({peerId}) => delete audioSources[peerId])
 
       return {...state, audioSources}
     }
@@ -173,7 +174,6 @@ export default function meetingHistory(state = initialState, action) {
     case MEDIA_TOGGLE_PEER_MUTE: {
       let {peerId} = action
       let {mutedPeers, audioSources} = state
-      let currentlyMuted = mutedPeers[peerId]
       let {muted = !mutedPeers[peerId]} = action
 
       if (audioSources[peerId]) {
