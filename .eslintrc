@@ -115,7 +115,7 @@
     "no-unexpected-multiline": 2,
     "no-unneeded-ternary": [2, { "defaultAssignment": false }],
     "no-unreachable": 2,
-    "no-unused-vars": [2, { "vars": "all", "args": "none" }],
+    "no-unused-vars": [2, { "vars": "all", "varsIgnorePattern": "(?:ignored|unused)[0-9]*", "args": "none" }],
     "no-useless-call": 2,
     "no-useless-constructor": 2,
     "no-with": 2,
