@@ -30,9 +30,8 @@ class ElementHolder extends Component {
       return
     }
 
-    let currentElement = this.props.element
-    if (currentElement) {
-      this._ref.removeChild(currentElement)
+    if (this._ref.hasChildNodes()) {
+      this._ref.innerHTML = ''
     }
     let nextElement = this.props.nextProps
     if (nextElement) {
@@ -51,17 +50,12 @@ class ElementHolder extends Component {
   _onContainerRef(ref) {
     this._ref = ref
     let {element} = this.props
-    if (!element) {
-      return
-    }
-    if (ref) {
+    if (element && ref) {
       ref.appendChild(element)
       if (element.play) {
         element.play()
           .catch(error => log('meet', `thumbnail play error, ${error}`))
       }
-    } else if (this._ref) {
-      this._ref.removeChild(element)
     }
   }
 
