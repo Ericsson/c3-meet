@@ -8,7 +8,8 @@
     "build": "NODE_ENV=production webpack --progress",
     "serve": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0",
     "serve:demo": "APP_CONFIG_SERVER_URL=https://demo.cct.ericsson.net webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0",
-    "serve:https": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0 --https"
+    "serve:https": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0 --https",
+    "serve:https:demo": "APP_CONFIG_SERVER_URL=https://demo.cct.ericsson.net webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0 --https"
   },
   "author": "Andreas Hallberg <andreas.hallberg@ericsson.com>",
   "license": "Apache-2.0",
