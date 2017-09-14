@@ -20,8 +20,8 @@ import classNames from 'classnames'
 
 import styles from './ThumbnailContainer.css'
 
-const ThumbnailContainer = ({className, children}) => (
-  <div className={classNames(styles.container, className)}>
+const ThumbnailContainer = ({className, doubleColumns, children}) => (
+  <div className={classNames(styles.container, doubleColumns && styles.doubleColumns, className)}>
     {children}
   </div>
 )

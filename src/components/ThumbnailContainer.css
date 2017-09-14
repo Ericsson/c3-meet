@@ -49,9 +49,13 @@ limitations under the License.
   }
 
   .container > * {
-    flex: 0 0 50%;
+    flex: 0 0 100%;
 
     padding-top: 0.5vw;
     padding-left: 0.5vw;
+  }
+
+  .container.doubleColumns > * {
+    flex: 0 0 50%;
   }
 }
