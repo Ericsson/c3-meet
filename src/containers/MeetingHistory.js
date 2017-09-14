@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import classNames from 'classnames'
@@ -31,14 +30,11 @@ const MeetingHistory = ({className, ...props}) => (
 )
 
 MeetingHistory.propTypes = {
-  history: PropTypes.object.isRequired,
   ...MeetingList.propTypes,
 }
 
 const mapStateToProps = state => ({
   meetings: state.meetingHistory.meetings,
-  orderBy: state.meetingHistory.orderBy,
-  descending: state.meetingHistory.descending,
 })
 
 const mapDispatchToProps = dispatch => ({
