@@ -24,10 +24,10 @@ import {
   MEETING_SETUP_COMPLETE,
   MEETING_SETUP_FAILED,
   LEAVE_MEETING,
-  CONFERENCE_PEER_UPSERT,
-  CONFERENCE_PEER_REMOVED,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
+  CONFERENCE_PEER_UPSERT,
+  CONFERENCE_PEER_REMOVED,
   CONFERENCE_PEER_AUDIO_ADDED,
   CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
@@ -132,6 +132,15 @@ function initializeConference(room, dispatch, getState) {
   conference.attach('thumbnails', thumbnailBroadcaster)
   let thumbnailRenderer = thumbnailBroadcaster.createRenderer(/*{elementClass: '...'}*/)
 
+  function onConnectionState(connectionState) {
+    dispatch({type: CONFERENCE_CONNECTION_STATE, connectionState})
+  }
+
+  function onError(error) {
+    log.error(LOG_TAG, `encountered conference error, ${error}`)
+    dispatch({type: CONFERENCE_CONNECTION_ERROR, error})
+  }
+
   function onPeerAdded(peerId, peer) {
     const onUpdate = () => {
       dispatch({
@@ -151,17 +160,9 @@ function initializeConference(room, dispatch, getState) {
       connectionState: peer.connectionState,
     })
   }
+
   function onPeerRemoved(peerId) {
     dispatch({type: CONFERENCE_PEER_REMOVED, peerId})
-  }
-
-  function onConnectionState(connectionState) {
-    dispatch({type: CONFERENCE_CONNECTION_STATE, connectionState})
-  }
-
-  function onError(error) {
-    log.error(LOG_TAG, `encountered conference error, ${error}`)
-    dispatch({type: CONFERENCE_CONNECTION_ERROR, error})
   }
 
   function onPeerAudioAdded(sources) {
@@ -180,20 +181,20 @@ function initializeConference(room, dispatch, getState) {
     dispatch({type: CONFERENCE_THUMBNAILS_REMOVED, elements})
   }
 
-  conference.peers.on('added', onPeerAdded)
-  conference.peers.on('removed', onPeerRemoved)
   conference.on('connectionState', onConnectionState)
   conference.on('error', onError)
+  conference.peers.on('added', onPeerAdded)
+  conference.peers.on('removed', onPeerRemoved)
   audioBroadcaster.on('added', onPeerAudioAdded)
   audioBroadcaster.on('removed', onPeerAudioRemoved)
   thumbnailRenderer.on('added', onThumbnailsAdded)
   thumbnailRenderer.on('removed', onThumbnailsRemoved)
 
   let unsubscribe = () => {
-    conference.peers.off('added', onPeerAdded)
-    conference.peers.off('removed', onPeerRemoved)
     conference.off('connectionState', onConnectionState)
     conference.off('error', onError)
+    conference.peers.off('added', onPeerAdded)
+    conference.peers.off('removed', onPeerRemoved)
     audioBroadcaster.off('added', onPeerAudioAdded)
     audioBroadcaster.off('removed', onPeerAudioRemoved)
     thumbnailRenderer.off('added', onThumbnailsAdded)
