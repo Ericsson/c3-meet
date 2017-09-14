@@ -16,7 +16,6 @@ limitations under the License.
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
 import classNames from 'classnames'
 
 import {removeMeetingById} from 'actions/meetingHistory'
@@ -39,7 +38,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRemove: meetingId => dispatch(removeMeetingById(meetingId)),
-  onEnter: meetingName => dispatch(push(`/${meetingName}`)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingHistory)

@@ -45,21 +45,19 @@ limitations under the License.
   flex: 3 0 0px;
 }
 
-.item .name {
-  color: #002664;
-  cursor: pointer;
-}
-
-.item .name .nameText {
+.link {
   border-bottom: 1px solid transparent;
   padding-bottom: -1px;
   transition: border-bottom ease-in-out 200ms;
 
+  cursor: pointer;
+  color: #002664;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
 }
 
-.item .name:hover .nameText {
+.link:hover {
   border-bottom: 1px solid #002664;
 }
 

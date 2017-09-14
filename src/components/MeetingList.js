@@ -22,12 +22,11 @@ import MeetingListItem from 'components/MeetingListItem'
 
 import styles from './MeetingList.css'
 
-const MeetingList = ({meetings, className, onEnter, onRemove, ...props}) => {
+const MeetingList = ({meetings, className, onRemove, ...props}) => {
   let meetingRows = meetings.map(itemProps => (
     <MeetingListItem
       key={itemProps.meetingId}
       {...itemProps}
-      onEnter={onEnter}
       onRemove={onRemove}
     />
   ))
@@ -50,7 +49,6 @@ const MeetingList = ({meetings, className, onEnter, onRemove, ...props}) => {
 
 MeetingList.propTypes = {
   meetings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEnter: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 
   className: PropTypes.string,

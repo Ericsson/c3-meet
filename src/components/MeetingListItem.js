@@ -17,16 +17,17 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import {Link} from 'react-router-dom'
 import {X} from 'react-feather'
 
 import {formatRelative} from 'modules/intl'
 
 import styles from './MeetingListItem.css'
 
-const MeetingListItem = ({meetingId, meetingName, meetingTime, onEnter, onRemove, className, ...props}) => (
+const MeetingListItem = ({meetingId, meetingName, meetingTime, onRemove, className, ...props}) => (
   <div className={classNames(styles.row, styles.item, className)} {...props}>
-    <span className={styles.name} onClick={() => onEnter(meetingName)}>
-      <span className={styles.nameText}>{meetingName}</span>
+    <span className={styles.name}>
+      <Link className={styles.link} to={`/${meetingName}`}>{meetingName}</Link>
     </span>
     <span className={styles.time}>{formatRelative(meetingTime)}</span>
     <span className={styles.remove} onClick={() => onRemove(meetingId)}><X/></span>
@@ -37,7 +38,6 @@ MeetingListItem.propTypes = {
   meetingId: PropTypes.string.isRequired,
   meetingName: PropTypes.string.isRequired,
   meetingTime: PropTypes.instanceOf(Date).isRequired,
-  onEnter: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   className: PropTypes.string,
 }
