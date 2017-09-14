@@ -21,15 +21,20 @@ import {connect} from 'react-redux'
 
 import {togglePeerMute} from 'actions/meetingMedia'
 
+import ElementHolder from 'components/ElementHolder'
+
 import styles from './Thumbnail.css'
 
 class Thumbnail extends Component {
   render() {
-    let {className, peerId} = this.props
+    let {className, peerId, element} = this.props
     return (
       <div className={classNames(styles.container, className)}>
         <div className={styles.sizer}>
-          <div className={styles.thumbnail}>{peerId}</div>
+          <div className={styles.thumbnail}>
+            <ElementHolder element={element} className={styles.elementHolder}/>
+            {peerId}
+          </div>
         </div>
       </div>
     )
