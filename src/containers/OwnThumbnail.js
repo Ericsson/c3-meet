@@ -25,6 +25,8 @@ import Thumbnail from 'components/Thumbnail'
 const mapStateToProps = props => ({
   ownId: props.meeting.ownId,
   element: props.meetingMedia.thumbnailElements[props.meeting.ownId] || null,
+  connectionState: 'connected',
+  errorState: null,
 })
 
 const mapDispatchToProps = (dispatch) => ({
