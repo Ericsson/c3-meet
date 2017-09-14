@@ -51,14 +51,17 @@ class ElementHolder extends Component {
     this._ref = ref
   }
   render() {
-    let props = Object.assign({}, this.props)
-    delete props.element
-    return <div {...props} ref={this._onContainerRef}/>
+    let {element, ...props} = this.props
+    if (element) {
+      return <div {...props} ref={this._onContainerRef}/>
+    } else {
+      return null
+    }
   }
 }
 
 ElementHolder.propTypes = {
-  element: PropTypes.instanceOf(HTMLElement).isRequired,
+  element: PropTypes.instanceOf(HTMLElement),
 }
 
 export default ElementHolder
