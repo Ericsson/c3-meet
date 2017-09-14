@@ -117,6 +117,7 @@ function initializeConference(room, dispatch, getState) {
     switcherMode: 'automatic',
   })
   let {ownId, connectionState} = conference
+  let hasUnsubscribed = false
 
   let audioBroadcaster = new MediaBroadcaster()
   conference.attach('audio', audioBroadcaster)
@@ -142,6 +143,9 @@ function initializeConference(room, dispatch, getState) {
 
   function onPeerAdded(peerId, peer) {
     const onUpdate = () => {
+      if (hasUnsubscribed) {
+        return
+      }
       dispatch({
         type: CONFERENCE_PEER_UPSERT,
         peerId,
@@ -215,6 +219,7 @@ function initializeConference(room, dispatch, getState) {
     thumbnailRenderer.off('removed', onThumbnailsRemoved)
     userAgentShare.off('update', onUserAgentShareUpdate)
     muteStateShare.off('update', onMuteStateShareUpdate)
+    hasUnsubscribed = true
   }
   return {
     room,

@@ -35,14 +35,14 @@ const initialState = {
 }
 
 function clearState({room, conference, unsubscribe}) {
+  if (unsubscribe) {
+    unsubscribe()
+  }
   if (room) {
     room.leave()
   }
   if (conference) {
     conference.close()
-  }
-  if (unsubscribe) {
-    unsubscribe()
   }
 }
 
