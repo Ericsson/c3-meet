@@ -28,7 +28,7 @@ const initialState = {
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case CONFERENCE_PEER_UPSERT: {
-      let {peerId, ...config} = action
+      let {type, peerId, ...config} = action
       let currentConfig = state.peers[peerId] || {}
       return {...state, peers: {...state.peers, [peerId]: {...currentConfig, ...config}}}
     }
