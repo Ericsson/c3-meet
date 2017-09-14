@@ -36,4 +36,6 @@ export const thumbnailConfig = {
   imageFrameRate: runtimeConfig.readNumber('THUMBNAIL_IMAGE_FPS', {defaultValue: 2}),
 }
 
+export const title = runtimeConfig.readString('TITLE', {defaultValue: 'Ericsson C3 Meet'})
+
 export const LOG_TAG = 'meet'

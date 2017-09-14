@@ -20,17 +20,20 @@ import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'react-router-redux'
 
 import App from 'containers/App'
+import TitleProvider from 'containers/TitleProvider'
 import ClientProvider from 'containers/ClientProvider'
 import GlobalDispatchProvider from 'containers/GlobalDispatchProvider'
 
 const Root = ({client, store, history}) => (
   <Provider store={store}>
     <GlobalDispatchProvider>
-      <ClientProvider client={client}>
-        <ConnectedRouter history={history}>
-          <App/>
-        </ConnectedRouter>
-      </ClientProvider>
+      <TitleProvider>
+        <ClientProvider client={client}>
+          <ConnectedRouter history={history}>
+            <App/>
+          </ConnectedRouter>
+        </ClientProvider>
+      </TitleProvider>
     </GlobalDispatchProvider>
   </Provider>
 )
