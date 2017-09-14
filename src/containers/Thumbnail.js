@@ -19,15 +19,17 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {connect} from 'react-redux'
 
+import {togglePeerMute} from 'actions/meetingMedia'
+
 import styles from './Thumbnail.css'
 
 class Thumbnail extends Component {
   render() {
-    let {className, children} = this.props
+    let {className, peerId} = this.props
     return (
       <div className={classNames(styles.container, className)}>
         <div className={styles.sizer}>
-          <div className={styles.thumbnail}>{children}</div>
+          <div className={styles.thumbnail}>{peerId}</div>
         </div>
       </div>
     )
@@ -35,12 +37,25 @@ class Thumbnail extends Component {
 }
 
 Thumbnail.propTypes = {
+  peerId: PropTypes.string.isRequired,
+  muted: PropTypes.bool.isRequired,
+  element: PropTypes.instanceOf(HTMLElement),
+  connectionState: PropTypes.string,
+  errorState: PropTypes.instanceOf(Error),
 }
 
-const mapStateToProps = state => ({
-})
+const mapStateToProps = ({meetingMedia, meetingPeers}, {peerId}) => {
+  let peer = meetingPeers.peers[peerId] || null
+  return {
+    muted: !!meetingMedia.mutedPeers[peerId],
+    element: meetingMedia.thumbnailElements[peerId] || null,
+    connectionState: peer ? peer.connectionState : null,
+    errorState: peer ? peer.errorState : null,
+  }
+}
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, {peerId}) => ({
+  toggleMute: () => dispatch(togglePeerMute({peerId})),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Thumbnail)
