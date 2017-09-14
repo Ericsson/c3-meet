@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 .container {
-  margin-right: 1vmin;
-  margin-bottom: 1vmin;
+  margin-right: 1vw;
+  margin-bottom: 1vw;
 
   display: flex;
   flex-flow: row wrap;
@@ -26,12 +26,18 @@ limitations under the License.
 
 @media (orientation: portrait) {
   .container {
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+
     justify-content: center;
   }
 }
 
 @media not all and (orientation: portrait) {
   .container {
+    margin-right: 0.5vw;
+    margin-bottom: 0.5vw;
+
     justify-content: flex-start;
   }
 }

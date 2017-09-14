@@ -15,9 +15,6 @@ limitations under the License.
 */
 
 .container {
-  padding-top: 1vmin;
-  padding-left: 1vmin;
-
   background: #0f8;
 }
 
@@ -40,6 +37,9 @@ limitations under the License.
 
 @media (orientation: portrait) {
   .container {
+    padding-top: 1vw;
+    padding-left: 1vw;
+
     flex: 0 0 25%;
     max-width: 12rem;
   }
@@ -47,6 +47,9 @@ limitations under the License.
 
 @media not all and (orientation: portrait) {
   .container {
+    padding-top: 0.5vw;
+    padding-left: 0.5vw;
+
     flex: 0 0 50%;
   }
 }
