@@ -27,6 +27,7 @@ import WhiteBox from 'components/WhiteBox'
 import MeetingCreateForm from 'containers/MeetingCreateForm'
 import MeetingJoinForm from 'containers/MeetingJoinForm'
 import MeetingHistory from 'containers/MeetingHistory'
+import OngoingMeetingBox from 'containers/OngoingMeetingBox'
 
 import styles from './StartPage.css'
 
@@ -44,6 +45,7 @@ const StartPage = () => (
       </WhiteBox>
     </div>
     <div className={styles.column}>
+      <OngoingMeetingBox/>
       <WhiteBox>
         <span className={styles.header}>Meeting history</span>
         <MeetingHistory/>
