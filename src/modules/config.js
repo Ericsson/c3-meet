@@ -29,6 +29,7 @@ export const iceServers = [{
 export const mediaConstraints = {
   video: {
     aspectRatio: 16 / 9,
+    height: {ideal: 720},
   },
   audio: true,
 }
