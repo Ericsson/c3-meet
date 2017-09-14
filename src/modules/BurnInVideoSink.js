@@ -58,7 +58,7 @@ export default class BurnInVideoSink extends MediaNode.connectMixin() {
 
   set target(canvas) {
     this._canvas = canvas
-    this._context = canvas.getContext('2d')
+    this._context = canvas ? canvas.getContext('2d') : null
   }
 
   stop() {
