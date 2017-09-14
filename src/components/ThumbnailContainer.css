@@ -31,6 +31,13 @@ limitations under the License.
 
     justify-content: center;
   }
+
+  .container > * {
+    padding-top: 1vw;
+    padding-left: 1vw;
+
+    flex: 0 0 25%;
+  }
 }
 
 @media not all and (orientation: portrait) {
@@ -39,5 +46,12 @@ limitations under the License.
     margin-bottom: 0.5vw;
 
     justify-content: flex-start;
+  }
+
+  .container > * {
+    flex: 0 0 50%;
+
+    padding-top: 0.5vw;
+    padding-left: 0.5vw;
   }
 }
