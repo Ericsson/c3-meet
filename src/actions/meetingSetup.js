@@ -33,9 +33,11 @@ import {
   CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
   CONFERENCE_THUMBNAILS_REMOVED,
+  USER_AGENT_SHARE_UPDATE,
+  MUTE_STATE_SHARE_UPDATE,
 } from 'actions/constants'
 
-import {MediaBroadcaster, ThumbnailBroadcaster} from '@cct/libcct'
+import {DataShare, MediaBroadcaster, ThumbnailBroadcaster} from '@cct/libcct'
 import {push} from 'react-router-redux'
 
 import {
@@ -126,6 +128,12 @@ function initializeConference(room, dispatch, getState) {
   conference.attach('thumbnails', thumbnailBroadcaster)
   let thumbnailRenderer = thumbnailBroadcaster.createRenderer(/*{elementClass: '...'}*/)
 
+  let userAgentShare = new DataShare({ownerId: ownId})
+  conference.attach('userAgent', userAgentShare)
+
+  let muteStateShare = new DataShare({ownerId: ownId})
+  conference.attach('muteState', muteStateShare)
+
   function onConnectionState(connectionState) {
     dispatch({type: CONFERENCE_CONNECTION_STATE, connectionState})
   }
@@ -179,6 +187,13 @@ function initializeConference(room, dispatch, getState) {
     dispatch({type: CONFERENCE_THUMBNAILS_REMOVED, elements})
   }
 
+  function onUserAgentShareUpdate(update) {
+    dispatch({type: USER_AGENT_SHARE_UPDATE, ...update})
+  }
+  function onMuteStateShareUpdate(update) {
+    dispatch({type: MUTE_STATE_SHARE_UPDATE, ...update})
+  }
+
   conference.on('connectionState', onConnectionState)
   conference.on('error', onError)
   conference.peers.on('added', onPeerAdded)
@@ -188,6 +203,8 @@ function initializeConference(room, dispatch, getState) {
   audioBroadcaster.on('removed', onPeerAudioRemoved)
   thumbnailRenderer.on('added', onThumbnailsAdded)
   thumbnailRenderer.on('removed', onThumbnailsRemoved)
+  userAgentShare.on('update', onUserAgentShareUpdate)
+  muteStateShare.on('update', onMuteStateShareUpdate)
 
   let unsubscribe = () => {
     conference.off('connectionState', onConnectionState)
@@ -199,6 +216,8 @@ function initializeConference(room, dispatch, getState) {
     audioBroadcaster.off('removed', onPeerAudioRemoved)
     thumbnailRenderer.off('added', onThumbnailsAdded)
     thumbnailRenderer.off('removed', onThumbnailsRemoved)
+    userAgentShare.off('update', onUserAgentShareUpdate)
+    muteStateShare.off('update', onMuteStateShareUpdate)
   }
   return {
     room,
@@ -208,6 +227,8 @@ function initializeConference(room, dispatch, getState) {
     thumbnailBroadcaster,
     thumbnailRenderer,
     connectionState,
+    userAgentShare,
+    muteStateShare,
     unsubscribe,
   }
 }
