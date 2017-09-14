@@ -14,33 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {connect} from 'react-redux'
 
 import {togglePeerMute} from 'actions/meetingMedia'
 
-import styles from './SelfViewThumbnail.css'
-
-class SelfViewThumbnail extends Component {
-  render() {
-    let {className, ownId} = this.props
-    return (
-      <div className={classNames(styles.container, className)}>
-        <div className={styles.sizer}>
-          <div className={styles.thumbnail}>Me: {ownId}</div>
-        </div>
-      </div>
-    )
-  }
-}
-
-SelfViewThumbnail.propTypes = {
-  element: PropTypes.instanceOf(HTMLElement),
-  connectionState: PropTypes.string,
-  errorState: PropTypes.instanceOf(Error),
-}
+import Thumbnail from 'components/Thumbnail'
 
 const mapStateToProps = props => ({
   ownId: props.meeting.ownId,
@@ -50,4 +30,4 @@ const mapStateToProps = props => ({
 const mapDispatchToProps = (dispatch) => ({
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelfViewThumbnail)
+export default connect(mapStateToProps, mapDispatchToProps)(Thumbnail)

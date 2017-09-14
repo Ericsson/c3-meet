@@ -16,37 +16,30 @@ limitations under the License.
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
-import ConferencePeerConnectionState from 'components/ConferencePeerConnectionState'
 import ElementHolder from 'components/ElementHolder'
 
 import styles from './Thumbnail.css'
 
-const Thumbnail = ({element, peer, userAgent}) => {
-  var userAgentText = null
-  if (userAgent) {
-    let {browser, version, platform, device} = userAgent
-    userAgentText = (
-      <div className={styles.userAgent}>
-        {`${browser} ${version}, ${device} ${platform}`}
+const Thumbnail = ({className, peerId, element}) => (
+  <div className={classNames(styles.container, className)}>
+    <div className={styles.sizer}>
+      <div className={styles.thumbnail}>
+        <ElementHolder element={element} className={styles.elementHolder}/>
+        {peerId}
       </div>
-    )
-  }
-
-  return (
-    <div className={styles.container}>
-      {peer && <ConferencePeerConnectionState peer={peer}/>}
-      {element && <ElementHolder className={styles.holder} element={element}/>}
-      {element && <div className={styles.userId}>{element.peerId}</div>}
-      {userAgentText}
     </div>
-  )
-}
+  </div>
+)
 
 Thumbnail.propTypes = {
-  element: PropTypes.object,
-  peer: PropTypes.object,
-  userAgent: PropTypes.object,
+  muted: PropTypes.bool.isRequired,
+  peerId: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  connectionState: PropTypes.string,
+  element: PropTypes.instanceOf(HTMLElement),
+  errorState: PropTypes.instanceOf(Error),
 }
 
 export default Thumbnail

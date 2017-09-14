@@ -27,7 +27,7 @@ import ThumbnailContainer from 'components/ThumbnailContainer'
 import Video from 'components/Video'
 
 import SelfViewThumbnail from 'containers/SelfViewThumbnail'
-import Thumbnail from 'containers/Thumbnail'
+import PeerThumbnail from 'containers/PeerThumbnail'
 
 import styles from './MeetingPage.css'
 
@@ -42,7 +42,7 @@ class MeetingPage extends Component {
             {[ownId, ...Object.keys(peers)].sort().map(peerId => (
               peerId === ownId
               ? <SelfViewThumbnail key={peerId}/>
-              : <Thumbnail key={peerId} peerId={peerId}/>
+              : <PeerThumbnail key={peerId} peerId={peerId}/>
             ))}
           </ThumbnailContainer>
         </div>

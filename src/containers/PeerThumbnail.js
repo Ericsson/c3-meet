@@ -14,40 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {connect} from 'react-redux'
 
 import {togglePeerMute} from 'actions/meetingMedia'
 
-import ElementHolder from 'components/ElementHolder'
-
-import styles from './Thumbnail.css'
-
-class Thumbnail extends Component {
-  render() {
-    let {className, peerId, element} = this.props
-    return (
-      <div className={classNames(styles.container, className)}>
-        <div className={styles.sizer}>
-          <div className={styles.thumbnail}>
-            <ElementHolder element={element} className={styles.elementHolder}/>
-            {peerId}
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
-
-Thumbnail.propTypes = {
-  peerId: PropTypes.string.isRequired,
-  muted: PropTypes.bool.isRequired,
-  element: PropTypes.instanceOf(HTMLElement),
-  connectionState: PropTypes.string,
-  errorState: PropTypes.instanceOf(Error),
-}
+import Thumbnail from 'components/Thumbnail'
 
 const mapStateToProps = ({meetingMedia, meetingPeers}, {peerId}) => {
   let peer = meetingPeers.peers[peerId] || null
