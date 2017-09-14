@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import {connect} from 'react-redux'
 
 import styles from './ThumbnailContainer.css'
 
@@ -30,10 +29,4 @@ const ThumbnailContainer = ({className, children}) => (
 ThumbnailContainer.propTypes = {
 }
 
-const mapStateToProps = state => ({
-})
-
-const mapDispatchToProps = dispatch => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ThumbnailContainer)
+export default ThumbnailContainer
