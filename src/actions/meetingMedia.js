@@ -22,7 +22,7 @@ import {
   MEDIA_TOGGLE_PEER_MUTE,
 } from 'actions/constants'
 
-import {LOG_TAG} from 'modules/config'
+import {LOG_TAG, mediaConstraints} from 'modules/config'
 import {log, DeviceSource} from '@cct/libcct'
 
 export function acquireMediaDevices() {
@@ -31,7 +31,7 @@ export function acquireMediaDevices() {
       log.info(LOG_TAG, 'meeting media is already set up')
       return
     }
-    let source = new DeviceSource({video: true, audio: true})
+    let source = new DeviceSource(mediaConstraints)
     dispatch({type: ACQUIRE_MEETING_MEDIA_STARTED})
 
     source.promise.then(() => {

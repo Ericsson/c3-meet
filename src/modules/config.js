@@ -26,6 +26,13 @@ export const iceServers = [{
   credential: 'see-three',
 }]
 
+export const mediaConstraints = {
+  video: {
+    aspectRatio: 16 / 9,
+  },
+  audio: true,
+}
+
 export const thumbnailConfig = {
   projectionConfiguration: {
     width: runtimeConfig.readNumber('THUMBNAIL_WIDTH', {defaultValue: 160}),
