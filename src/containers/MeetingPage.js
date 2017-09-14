@@ -21,6 +21,8 @@ import {connect} from 'react-redux'
 
 import * as icons from 'react-feather'
 
+import {toggleMute} from 'actions/meetingMedia'
+
 import ThumbnailContainer from 'components/ThumbnailContainer'
 import Video from 'components/Video'
 
@@ -30,10 +32,18 @@ import styles from './MeetingPage.css'
 
 class MeetingPage extends Component {
   render() {
-    let {className, mainVideo} = this.props
-    let thumbnails = Array(20).fill().map((_, index) => (
-      <Thumbnail key={index}>Thumbnail {index + 1}</Thumbnail>
+    let {className, mainVideo, peers, muted, toggleMute} = this.props
+    let thumbnails = Object.entries(peers).map(([peerId, {connectionState, errorState}]) => (
+      <Thumbnail
+        key={peerId}
+        peerId={peerId}
+        connectionState={connectionState}
+        errorState={errorState}
+      >
+        Thumbnail {peerId}
+      </Thumbnail>
     ))
+    let Mic = muted ? icons.MicOff : icons.Mic
     return (
       <div className={classNames(styles.page, className)}>
         <div className={styles.thumbnails}>
@@ -46,10 +56,10 @@ class MeetingPage extends Component {
             <Video muted={true} source={mainVideo}/>
           </div>
           <div className={styles.controls}>
-            <icons.Mic  className={styles.controlIcon}/>
-            <icons.Video  className={styles.controlIcon}/>
-            <icons.Monitor  className={styles.controlIcon}/>
-            <icons.PhoneOff  className={styles.controlIcon}/>
+            <Mic className={styles.controlIcon} onClick={toggleMute}/>
+            <icons.Video className={styles.controlIcon}/>
+            <icons.Monitor className={styles.controlIcon}/>
+            <icons.PhoneOff className={styles.controlIcon}/>
           </div>
         </div>
       </div>
@@ -61,10 +71,13 @@ MeetingPage.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  mainVideo: state.meetingMedia.remoteSwitcherSource,
+  mainVideo: state.meetingMedia.remoteVideoSource,
+  peers: state.meetingPeers.peers,
+  muted: state.meetingMedia.muted,
 })
 
 const mapDispatchToProps = dispatch => ({
+  toggleMute: () => dispatch(toggleMute()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingPage)
