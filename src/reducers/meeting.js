@@ -19,7 +19,10 @@ import {
   LEAVE_MEETING,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
+  USER_AGENT_SHARE_UPDATE,
 } from 'actions/constants'
+
+import parseUa from 'vigour-ua'
 
 const initialState = {
   room: null,
@@ -27,6 +30,8 @@ const initialState = {
   conference: null,
   connectionState: null,
   errors: [],
+  userAgentShare: null,
+  peerUserAgents: {},
 }
 
 function clearState({room, conference, unsubscribe}) {
@@ -44,8 +49,14 @@ function clearState({room, conference, unsubscribe}) {
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
     case MEETING_SETUP_COMPLETE: {
-      let {room, ownId, conference, connectionState, unsubscribe} = action
-      return {...state, room, ownId, conference, connectionState, unsubscribe}
+      let {room, ownId, conference, connectionState, userAgentShare, unsubscribe} = action
+
+      let userAgent = parseUa(navigator.userAgent)
+      userAgentShare.set(ownId, userAgent)
+      let peerUserAgents = {}
+      userAgentShare.forEach((value, key) => peerUserAgents[key] = value)
+
+      return {...state, room, ownId, conference, connectionState, userAgentShare, peerUserAgents, unsubscribe}
     }
     case LEAVE_MEETING: {
       clearState(state)
@@ -58,6 +69,10 @@ export default function meetingHistory(state = initialState, action) {
     case CONFERENCE_CONNECTION_ERROR: {
       let {error} = action
       return {...state, errors: [...state.errors, error]}
+    }
+    case USER_AGENT_SHARE_UPDATE: {
+      let {key, value} = action
+      return {...state, peerUserAgents: {...state.peerUserAgents, [key]: value}}
     }
     default:
       return state
