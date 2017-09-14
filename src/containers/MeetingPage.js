@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {connect} from 'react-redux'
@@ -33,39 +33,42 @@ import styles from './MeetingPage.css'
 
 const THUMBNAIL_SINGLE_COLUMN_LIMIT = 6
 
-class MeetingPage extends Component {
-  render() {
-    let {className, ownId, peers, muted, mainVideo, toggleMute} = this.props
-    let MuteButton = muted ? MicOff : Mic
+const MeetingPage = ({className, ownId, peers, muted, mainVideo, toggleMute}) => {
+  let MuteButton = muted ? MicOff : Mic
 
-    let thumbnails = [ownId, ...Object.keys(peers)].sort().map(peerId => (
-      peerId === ownId
+  let thumbnails = [ownId, ...Object.keys(peers)].sort().map(peerId => (
+    peerId === ownId
       ? <OwnThumbnail key={peerId} peerId={ownId}/>
       : <PeerThumbnail key={peerId} peerId={peerId}/>
-    ))
-    let doubleColumns = thumbnails.length > THUMBNAIL_SINGLE_COLUMN_LIMIT
+  ))
+  let doubleColumns = thumbnails.length > THUMBNAIL_SINGLE_COLUMN_LIMIT
 
-    return (
-      <div className={classNames(styles.page, className)}>
-        <div className={classNames(styles.thumbnails, doubleColumns && styles.doubleColumns)}>
-          <ThumbnailContainer doubleColumns={doubleColumns}>
-            {thumbnails}
-          </ThumbnailContainer>
+  return (
+    <div className={classNames(styles.page, className)}>
+      <div className={classNames(styles.thumbnails, doubleColumns && styles.doubleColumns)}>
+        <ThumbnailContainer doubleColumns={doubleColumns}>
+          {thumbnails}
+        </ThumbnailContainer>
+      </div>
+      <div className={styles.main}>
+        <div className={styles.mainVideo}>
+          <BurnInVideoPlayer source={mainVideo}/>
         </div>
-        <div className={styles.main}>
-          <div className={styles.mainVideo}>
-            <BurnInVideoPlayer source={mainVideo}/>
-          </div>
-          <div className={styles.controls}>
-            <MuteButton className={styles.controlIcon} onClick={toggleMute}/>
-          </div>
+        <div className={styles.controls}>
+          <MuteButton className={styles.controlIcon} onClick={toggleMute}/>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 MeetingPage.propTypes = {
+  muted: PropTypes.bool.isRequired,
+  ownId: PropTypes.string.isRequired,
+  peers: PropTypes.object.isRequired,
+  toggleMute: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  mainVideo: PropTypes.object,
 }
 
 const mapStateToProps = state => ({

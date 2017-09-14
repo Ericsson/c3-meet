@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import {connect} from 'react-redux'
 
 import {togglePeerMute} from 'actions/meetingMedia'

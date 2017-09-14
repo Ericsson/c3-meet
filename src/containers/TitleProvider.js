@@ -47,7 +47,6 @@ ClientProvider.propTypes = {
   roomName: PropTypes.string,
 }
 
-
 const mapStateToProps = ({meeting}) => ({
   roomName: meeting.room && meeting.room.name,
 })

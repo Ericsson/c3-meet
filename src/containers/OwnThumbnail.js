@@ -14,11 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import {connect} from 'react-redux'
-
-import {togglePeerMute} from 'actions/meetingMedia'
 
 import Thumbnail from 'components/Thumbnail'
 
@@ -31,7 +27,4 @@ const mapStateToProps = ({meeting, meetingMedia}) => ({
   hasMutedSelf: !!meetingMedia.peersWithMute[meeting.ownId],
 })
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Thumbnail)
+export default connect(mapStateToProps)(Thumbnail)
