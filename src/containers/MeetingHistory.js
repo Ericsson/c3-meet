@@ -14,28 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import classNames from 'classnames'
-import {X} from 'react-feather'
 
 import {removeMeetingById} from 'actions/meetingHistory'
 
-import Button from 'components/Button'
 import MeetingList from 'components/MeetingList'
-
-import {formatRelative} from 'modules/intl'
 
 import styles from './MeetingHistory.css'
 
-class MeetingHistory extends Component {
-  render() {
-    let {className, ...props} = this.props
-    return <MeetingList className={classNames(styles.list, className)} {...props}/>
-  }
-}
+const MeetingHistory = ({className, ...props}) => (
+  <MeetingList className={classNames(styles.list, className)} {...props}/>
+)
 
 MeetingHistory.propTypes = {
   history: PropTypes.object.isRequired,
@@ -50,7 +43,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRemove: meetingId => dispatch(removeMeetingById(meetingId)),
-  onEnter: meetingName => dispatch(push(`/${meetingName}`))
+  onEnter: meetingName => dispatch(push(`/${meetingName}`)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingHistory)

@@ -17,6 +17,7 @@ class GlobalDispatchProvider extends Component {
 
 GlobalDispatchProvider.propTypes = {
   children: PropTypes.element.isRequired,
+  register: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = dispatch => ({

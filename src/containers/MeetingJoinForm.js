@@ -22,7 +22,6 @@ import {connect} from 'react-redux'
 import {updateJoinMeetingNameInput, joinMeeting} from 'actions/meetingSetup'
 
 import Button from 'components/Button'
-import ErrorMessage from 'components/ErrorMessage'
 import Input from 'components/Input'
 
 import styles from './MeetingJoinForm.css'
@@ -45,7 +44,7 @@ class MeetingJoinForm extends Component {
   }
 
   render() {
-    let {className, meetingName, joinError, ...props} = this.props
+    let {className, meetingName, ...props} = this.props
     delete props.onUpdate
     delete props.onSubmit
     return (
@@ -75,12 +74,12 @@ class MeetingJoinForm extends Component {
 MeetingJoinForm.propTypes = {
   meetingName: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  joinError: PropTypes.object,
+  onUpdate: PropTypes.func.isRequired,
+  className: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
   meetingName: state.meetingSetup.meetingJoinName,
-  joinError: state.meetingSetup.joinError,
 })
 
 const mapDispatchToProps = dispatch => ({

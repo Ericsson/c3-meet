@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Switch, Route, withRouter} from 'react-router-dom'
 
@@ -26,7 +25,7 @@ const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'con
 
 import styles from './App.css'
 
-const App = ({children}) => (
+const App = () => (
   <div className={styles.app}>
     <ClientBootstrapPage>
       <Switch>
@@ -39,7 +38,6 @@ const App = ({children}) => (
 )
 
 App.propTypes = {
-  children: PropTypes.node,
 }
 
 const mapStateToProps = state => {

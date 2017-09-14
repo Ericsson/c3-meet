@@ -57,7 +57,6 @@ class ClientProvider extends Component {
   }
 
   handleNameChange() {
-    let {user} = this.props.client
     this.props.updateClient(this.props.client)
   }
 

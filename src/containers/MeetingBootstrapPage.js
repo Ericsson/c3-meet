@@ -62,9 +62,10 @@ class MeetingBootstrapPage extends Component {
 }
 
 MeetingBootstrapPage.propTypes = {
+  acquireMediaDevices: PropTypes.func.isRequired,
   joinInProgress: PropTypes.bool.isRequired,
   joinMeeting: PropTypes.func.isRequired,
-
+  match: PropTypes.object.isRequired,
   joinError: PropTypes.object,
 }
 
