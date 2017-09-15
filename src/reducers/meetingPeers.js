@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import {
+  LEAVE_MEETING,
+  MEETING_SETUP_COMPLETE,
   CONFERENCE_PEER_UPSERT,
   CONFERENCE_PEER_REMOVED,
 } from 'actions/constants'
@@ -25,6 +27,10 @@ const initialState = {
 
 export default function meetingHistory(state = initialState, action) {
   switch (action.type) {
+    case LEAVE_MEETING: // intentional fallthough
+    case MEETING_SETUP_COMPLETE: {
+      return initialState
+    }
     case CONFERENCE_PEER_UPSERT: {
       let {type: ignored, peerId, ...config} = action
       let currentConfig = state.peers[peerId] || {}
