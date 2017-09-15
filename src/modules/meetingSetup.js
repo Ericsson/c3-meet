@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {LOG_TAG} from 'modules/config'
 import {log} from '@cct/libcct'
-import argCheck from '@cct/arg-check'
 
+import {LOG_TAG} from 'modules/config'
 import {
   ForbiddenMeetingError,
   InvalidMeetingNameError,
@@ -27,9 +26,6 @@ import {
 } from 'modules/errors'
 
 export function createMeeting({client, meetingName}) {
-  argCheck.object('createMeeting', 'options.client', client)
-  argCheck.string('createMeeting', 'options.meetingName', meetingName)
-
   log.debug(LOG_TAG, `creating new meeting with name '${meetingName}'`)
   return client.createRoom({
     name: meetingName,
@@ -56,9 +52,6 @@ export function createMeeting({client, meetingName}) {
 }
 
 export function joinMeeting({client, meetingName}) {
-  argCheck.object('createMeeting', 'options.client', client)
-  argCheck.string('createMeeting', 'options.meetingName', meetingName)
-
   log.debug(LOG_TAG, `joining new meeting with name '${meetingName}'`)
   return client.fetchRoomByAlias(meetingName).then(room => {
     return room.join().catch(error => {

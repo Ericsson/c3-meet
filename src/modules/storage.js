@@ -16,15 +16,10 @@ limitations under the License.
 
 import {LOG_TAG} from 'modules/config'
 import {log} from '@cct/libcct'
-import argCheck from '@cct/arg-check'
 
 export class SingleValueStore {
   // sessionStorage or localStorage
   constructor(options) {
-    argCheck.options('storeObject', 'options', options)
-      .string('key')
-      .object('store')
-
     this._key = options.key
     this._store = options.store
   }

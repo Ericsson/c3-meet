@@ -16,7 +16,6 @@ limitations under the License.
 
 import {LOG_TAG} from 'modules/config'
 import {log} from '@cct/libcct'
-import argCheck from '@cct/arg-check'
 
 import {SingleValueStore} from 'modules/storage'
 
@@ -26,10 +25,6 @@ export const meetingStore = new SingleValueStore({
 })
 
 export function addMeeting(meeting) {
-  argCheck.options('addMeeting', 'meeting', meeting)
-    .string('id')
-    .string('name')
-
   let meetings = meetingStore.load() || {}
 
   meetings[meeting.id] = {

@@ -16,7 +16,6 @@ limitations under the License.
 
 import {serverUrl, LOG_TAG} from 'modules/config'
 import {log, Auth} from '@cct/libcct'
-import argCheck from '@cct/arg-check'
 
 import {
   AnonymousAuthError,
@@ -87,8 +86,6 @@ export function clientAnonymousAuth({client}) {
 
 // Client should be authenticated when this is called
 export function setDisplayName({client, displayName}) {
-  argCheck.optString('setDisplayName', 'displayName', displayName)
-
   // Check if name should not be set, or if it is already set
   if (!displayName && !client.user.name) {
     log.debug(LOG_TAG, 'no need to set display name, none was requested and none was set')
@@ -118,7 +115,6 @@ export function getStoredDisplayName() {
 }
 
 export function logout(client) {
-  argCheck.object('logout', 'client', client)
   if (client.user) {
     log.info(LOG_TAG, `logging out user: '${client.user.id}'`)
   } else {
