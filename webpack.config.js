@@ -129,7 +129,7 @@ if (isProd) {
   })
   rules.push({
     test: /\.css$/,
-    use: ExtractTextPlugin.extract({loader: 'css-loader'}),
+    use: ExtractTextPlugin.extract('css-loader'),
     exclude: path.join(__dirname, 'src'),
   })
 }
