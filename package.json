@@ -5,7 +5,7 @@
   "description": "Meetings with the C3 SDK",
   "scripts": {
     "fix": "eslint --fix .",
-    "build": "NODE_ENV=production webpack --progress",
+    "build": "rm -rf dist; NODE_ENV=production webpack --progress",
     "serve": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0",
     "serve:demo": "APP_CONFIG_SERVER_URL=https://demo.cct.ericsson.net webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0",
     "serve:https": "webpack-dev-server --progress --colors --history-api-fallback --host 0.0.0.0 --https",
@@ -48,7 +48,6 @@
   "dependencies": {
     "@cct/arg-check": "^1.0.0",
     "@cct/libcct": "0.19.8",
-    "font-awesome": "^4.7.0",
     "intl-relativeformat": "^2.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
