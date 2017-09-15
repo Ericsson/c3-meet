@@ -14,7 +14,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.spinner {
-  color: #fff !important;
-  transform: scale(6.0) !important;
+.container {
+  width: 20rem;
+  height: 20rem;
+
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  align-items: stretch;
+}
+
+.row {
+  flex: 1;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+}
+
+.cube {
+  flex: 1;
+
+  background: #fff;
+  animation: bounce 1500ms infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 70%, 100% {
+      transform: scale(1.0, 1.0);
+  }
+
+  30%, 35% {
+      transform: scale(0.0, 0.0);
+  }
 }

@@ -15,12 +15,36 @@ limitations under the License.
 */
 
 import React from 'react'
-import Spinner from 'react-spinkit'
+import PropTypes from 'prop-types'
 
 import styles from './LoadingPage.css'
 
-const LoadingPage = () => (
-  <Spinner name='cube-grid' fadeIn='none' className={styles.spinner}/>
-)
+const LoadingPage = ({size = 4, durationFactor = 450, delayFactor = 90, initialDelay = 500}) => {
+  let animationDuration = `${size * durationFactor}ms`
+  let indices = Array(size).fill().map((ignore, index) => index)
+  let rows = indices.map(outerIndex => (
+    <div key={outerIndex} className={styles.row}>
+      {indices.map(innerIndex => {
+        let style = {
+          animationDuration,
+          animationDelay: `${initialDelay + ((outerIndex + innerIndex) * delayFactor)}ms`,
+        }
+        return <div key={innerIndex} className={styles.cube} style={style}/>
+      })}
+    </div>
+  ))
+  return (
+    <div className={styles.container}>
+      {rows}
+    </div>
+  )
+}
+
+LoadingPage.propTypes = {
+  delayFactor: PropTypes.number,
+  durationFactor: PropTypes.number,
+  initialDelay: PropTypes.number,
+  size: PropTypes.number,
+}
 
 export default LoadingPage
