@@ -25,8 +25,9 @@ limitations under the License.
 
 .icon {
   flex: 0 0 auto;
-  margin-right: 0.2em;
-  font-size: 0.7em;
+  margin-right: 0.5em;
+  width: 1.5em;
+  height: 1.5em;
 
   color: #C90013;
 }

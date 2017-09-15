@@ -17,6 +17,7 @@ limitations under the License.
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import {AlertOctagon} from 'react-feather'
 
 import styles from './ErrorMessage.css'
 
@@ -26,10 +27,7 @@ const ErrorMessage = ({error, className}) => {
   }
   return (
     <span className={classNames(className, styles.message)}>
-      <span className={`${styles.icon} fa-stack`}>
-        <i className='fa fa-circle fa-stack-2x'/>
-        <i className='fa fa-stack-1x fa-exclamation fa-inverse'/>
-      </span>
+      <AlertOctagon className={styles.icon}/>
       <span className={styles.text}>
         {error.displayMessage || error.message || ('' + error)}
       </span>
