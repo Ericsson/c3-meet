@@ -21,7 +21,8 @@ import {Switch, Route, withRouter} from 'react-router-dom'
 import ClientBootstrapPage from 'containers/ClientBootstrapPage'
 import StartPage from 'containers/StartPage'
 import MeetingBootstrapPage from 'containers/MeetingBootstrapPage'
-const NotFoundPage = () => <div>Not Found</div> // import NotFoundPage from 'containers/NotFoundPage'
+
+import NotFoundPage from 'components/NotFoundPage'
 
 import styles from './App.css'
 
