@@ -120,17 +120,13 @@ function initializeConference(room, dispatch, getState) {
   let hasUnsubscribed = false
 
   let audioBroadcaster = new MediaBroadcaster()
-  conference.attach('audio', audioBroadcaster)
 
   let thumbnailBroadcaster = new ThumbnailBroadcaster(thumbnailConfig)
-  conference.attach('thumbnails', thumbnailBroadcaster)
   let thumbnailRenderer = thumbnailBroadcaster.createRenderer()
 
   let userAgentShare = new DataShare({ownerId: ownId})
-  conference.attach('userAgent', userAgentShare)
 
   let muteStateShare = new DataShare({ownerId: ownId})
-  conference.attach('muteState', muteStateShare)
 
   function onConnectionState(connectionState) {
     dispatch({type: CONFERENCE_CONNECTION_STATE, connectionState})
@@ -221,6 +217,12 @@ function initializeConference(room, dispatch, getState) {
     muteStateShare.off('update', onMuteStateShareUpdate)
     hasUnsubscribed = true
   }
+
+  conference.attach('audio', audioBroadcaster)
+  conference.attach('thumbnails', thumbnailBroadcaster)
+  conference.attach('userAgent', userAgentShare)
+  conference.attach('muteState', muteStateShare)
+
   return {
     room,
     ownId,
