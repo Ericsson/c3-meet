@@ -24,7 +24,7 @@ import {MicOff, Mic} from 'react-feather'
 import {toggleMute} from 'actions/meetingMedia'
 
 import ThumbnailContainer from 'components/ThumbnailContainer'
-import BurnInVideoPlayer from 'components/BurnInVideoPlayer'
+import PersistenceVideoPlayer from 'components/PersistenceVideoPlayer'
 
 import OwnThumbnail from 'containers/OwnThumbnail'
 import PeerThumbnail from 'containers/PeerThumbnail'
@@ -52,7 +52,7 @@ const MeetingPage = ({className, ownId, peers, muted, mainVideo, toggleMute}) =>
       </div>
       <div className={styles.main}>
         <div className={styles.mainVideo}>
-          <BurnInVideoPlayer source={mainVideo}/>
+          <PersistenceVideoPlayer source={mainVideo}/>
         </div>
         <div className={styles.controls}>
           <MuteButton className={styles.controlIcon} onClick={toggleMute}/>

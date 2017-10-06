@@ -17,17 +17,16 @@ limitations under the License.
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-
-import BurnInVideoSink from 'modules/BurnInVideoSink'
+import {PersistenceSink} from '@cct/libcct'
 
 import styles from './Video.css'
 
-class BurnInVideoPlayer extends Component {
+class PersistenceVideoPlayer extends Component {
   constructor(props) {
     super(props)
     this.handleRef = this.handleRef.bind(this)
 
-    this.sink = new BurnInVideoSink()
+    this.sink = new PersistenceSink()
     if (props.source) {
       props.source.connect(this.sink)
     }
@@ -61,9 +60,9 @@ class BurnInVideoPlayer extends Component {
   }
 }
 
-BurnInVideoPlayer.propTypes = {
+PersistenceVideoPlayer.propTypes = {
   className: PropTypes.string,
   source: PropTypes.object,
 }
 
-export default BurnInVideoPlayer
+export default PersistenceVideoPlayer
