@@ -16,6 +16,7 @@ limitations under the License.
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import {devtools} from '@cct/libcct/devtools'
 const {RelayTreeVisualization} = devtools
 
@@ -24,35 +25,38 @@ import styles from './ConferenceVisualization.css'
 class ConferenceVisualization extends Component {
   constructor(props) {
     super(props)
-    this._onSvgRef = this._onSvgRef.bind(this)
-    this._onRelayLinksUpdate = this._onRelayLinksUpdate.bind(this)
+    this._handleSvgRef = this._handleSvgRef.bind(this)
+    this._handleRelayLinksUpdate = this._handleRelayLinksUpdate.bind(this)
   }
 
-  _onSvgRef(svg) {
+  _handleSvgRef(svg) {
+    let {switcher} = this.props
     if (svg) {
       this._visualization = new RelayTreeVisualization({width: 400, height: 400, svg})
-      this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
+      this._visualization.setRelayLinks(switcher._relayLinks)
       this._visualization.start()
-      this.props.conference.switcher.on('_relayLinks', this._onRelayLinksUpdate)
+      switcher.on('_relayLinks', this._handleRelayLinksUpdate)
       window.visualization = this._visualization
     } else {
-      this.props.conference.switcher.off('_relayLinks', this._onRelayLinksUpdate)
+      switcher.off('_relayLinks', this._handleRelayLinksUpdate)
       this._visualization.setRelayLinks({ids: [], parents: []})
       window.visualization = null
     }
   }
 
-  _onRelayLinksUpdate() {
-    this._visualization.setRelayLinks(this.props.conference.switcher._relayLinks)
+  _handleRelayLinksUpdate() {
+    this._visualization.setRelayLinks(this.props.switcher._relayLinks)
   }
 
   render() {
-    return <svg className={styles.main} ref={this._onSvgRef}/>
+    let {className} = this.props
+    return <svg className={classNames(styles.main, className)} ref={this._handleSvgRef}/>
   }
 }
 
 ConferenceVisualization.propTypes = {
-  conference: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  switcher: PropTypes.object.isRequired,
 }
 
 export default ConferenceVisualization

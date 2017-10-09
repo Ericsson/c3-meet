@@ -25,6 +25,7 @@ import {toggleMute} from 'actions/meetingMedia'
 
 import ThumbnailContainer from 'components/ThumbnailContainer'
 import PersistenceVideoPlayer from 'components/PersistenceVideoPlayer'
+import ConferenceVisualization from 'components/ConferenceVisualization'
 
 import OwnThumbnail from 'containers/OwnThumbnail'
 import PeerThumbnail from 'containers/PeerThumbnail'
@@ -33,7 +34,8 @@ import styles from './MeetingPage.css'
 
 const THUMBNAIL_SINGLE_COLUMN_LIMIT = 6
 
-const MeetingPage = ({className, ownId, peers, muted, mainVideo, toggleMute}) => {
+const MeetingPage = props => {
+  let {className, ownId, peers, muted, mainVideo, showVisualization, switcher, toggleMute} = props
   let MuteButton = muted ? MicOff : Mic
 
   let thumbnails = [ownId, ...Object.keys(peers)].sort().map(peerId => (
@@ -53,6 +55,9 @@ const MeetingPage = ({className, ownId, peers, muted, mainVideo, toggleMute}) =>
       <div className={styles.main}>
         <div className={styles.mainVideo}>
           <PersistenceVideoPlayer source={mainVideo}/>
+          {showVisualization && (
+            <ConferenceVisualization switcher={switcher} className={styles.visualization}/>
+          )}
         </div>
         <div className={styles.controls}>
           <MuteButton className={styles.controlIcon} onClick={toggleMute}/>
@@ -67,6 +72,7 @@ MeetingPage.propTypes = {
   ownId: PropTypes.string.isRequired,
   peers: PropTypes.object.isRequired,
   toggleMute: PropTypes.func.isRequired,
+  showVisualization: PropTypes.bool.isRequired,
   className: PropTypes.string,
   mainVideo: PropTypes.object,
 }
@@ -76,6 +82,8 @@ const mapStateToProps = state => ({
   peers: state.meetingPeers.peers,
   muted: state.meetingMedia.muted,
   mainVideo: state.meetingMedia.remoteVideoSource,
+  showVisualization: state.devtools.showVisualization,
+  switcher: state.meeting.conference.switcher,
 })
 
 const mapDispatchToProps = dispatch => ({

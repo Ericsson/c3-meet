@@ -88,6 +88,8 @@ limitations under the License.
 }
 
 .mainVideo {
+  position: relative;
+
   flex: 1 1 auto;
   display: flex;
   flex-flow: column nowrap;
@@ -95,6 +97,12 @@ limitations under the License.
   justify-content: center;
 
   overflow: hidden;
+}
+
+.visualization {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .controls {

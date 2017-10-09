@@ -18,6 +18,7 @@ import {
   BEFORE_UNLOAD,
   LOAD_MEETING_LIST,
   MEDIA_TOGGLE_MUTE,
+  DEVTOOLS_TOGGLE_VISUALIZATION,
 } from 'actions/constants'
 
 import {meetingStore} from 'modules/meetingStore'
@@ -48,6 +49,9 @@ function registerKeypressDispatcher(dispatch, getState) {
   document.addEventListener('keydown', event => {
     if (event.code === 'KeyM') {
       dispatch({type: MEDIA_TOGGLE_MUTE})
+    }
+    if (event.code === 'KeyV') {
+      dispatch({type: DEVTOOLS_TOGGLE_VISUALIZATION})
     }
   })
 }
