@@ -42,7 +42,7 @@ class ElementHolder extends Component {
       this._ref.appendChild(nextElement)
       if (nextElement.play) {
         nextElement.play()
-          .catch(error => log('meet', `thumbnail play error, ${error}`))
+          .catch(error => log.warning('meet', `thumbnail play error, ${error}`))
       }
     }
   }
@@ -54,7 +54,7 @@ class ElementHolder extends Component {
       ref.appendChild(element)
       if (element.play) {
         element.play()
-          .catch(error => log('meet', `thumbnail play error, ${error}`))
+          .catch(error => log.warning('meet', `thumbnail play error, ${error}`))
       }
     }
   }
