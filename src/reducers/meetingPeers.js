@@ -51,9 +51,9 @@ export default function meetingHistory(state = initialState, action) {
         })
       }
       if (offline) {
-          offline.forEach(user => {
-            delete onlineMembers[user.id]
-          })
+        offline.forEach(user => {
+          delete onlineMembers[user.id]
+        })
       }
       return {...state, onlineMembers}
     }
