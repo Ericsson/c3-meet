@@ -21,9 +21,7 @@ import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
 import createBrowserHistory from 'history/createBrowserHistory'
 
-if (process.env.NODE_ENV === 'development') {
-  window.cct = require('@cct/libcct')
-}
+window.cct = require('@cct/libcct')
 
 import Root from 'containers/Root'
 
