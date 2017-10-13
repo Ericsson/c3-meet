@@ -100,7 +100,7 @@ export function joinMeeting({meetingName, navigate = false}) {
 
       let online = []
       let offline = []
-      room.otherMembers.forEach(user => {
+      room.members.forEach(user => {
         if (user.presence === 'offline') {
           offline.push(user)
         } else {
@@ -119,7 +119,7 @@ export function leaveMeeting() {
     let {meeting} = getState()
     if (meeting.room) {
       meeting.room.leave()
-      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [meeting.room.otherMembers]})
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [meeting.room.members]})
       dispatch({type: LEAVE_MEETING})
     }
   }
