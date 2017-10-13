@@ -56,10 +56,16 @@ export default function meetingHistory(state = initialState, action) {
       let peerUserAgents = {}
       userAgentShare.forEach((value, key) => (peerUserAgents[key] = value))
 
+      window.conference = conference
+      window.room = room
+      window.ownId = ownId
       return {...state, room, ownId, conference, connectionState, userAgentShare, peerUserAgents, unsubscribe}
     }
     case LEAVE_MEETING: {
       clearState(state)
+      window.conference = null
+      window.room = null
+      window.ownId = null
       return initialState
     }
     case CONFERENCE_CONNECTION_STATE: {

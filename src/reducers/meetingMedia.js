@@ -97,6 +97,7 @@ export default function meetingHistory(state = initialState, action) {
       let {source} = state
       if (source) {
         source.stop()
+        window.deviceSource = null
       }
       return initialState
     }
@@ -104,11 +105,13 @@ export default function meetingHistory(state = initialState, action) {
       let {source} = state
       if (source) {
         source.stop()
+        window.deviceSource = null
       }
       return {...state, waiting: true, ready: false, source: null, error: null}
     }
     case ACQUIRE_MEETING_MEDIA_COMPLETE: {
       let {source} = action
+      window.deviceSource = source
 
       let {conference} = state
       let setupResult = {}
