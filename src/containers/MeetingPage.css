@@ -124,3 +124,11 @@ limitations under the License.
 
   color: #fff;
 }
+
+.controlButton {
+  cursor: pointer;
+}
+
+.controlButton:hover {
+  color: #ccf;
+}

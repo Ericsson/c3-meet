@@ -29,6 +29,7 @@ import ConferenceVisualization from 'components/ConferenceVisualization'
 
 import OwnThumbnail from 'containers/OwnThumbnail'
 import PeerThumbnail from 'containers/PeerThumbnail'
+import MemberListPopup from 'containers/MemberListPopup'
 
 import styles from './MeetingPage.css'
 
@@ -60,7 +61,8 @@ const MeetingPage = props => {
           )}
         </div>
         <div className={styles.controls}>
-          <MuteButton className={styles.controlIcon} onClick={toggleMute}/>
+          <MuteButton className={classNames(styles.controlIcon, styles.controlButton)} onClick={toggleMute}/>
+          <MemberListPopup className={styles.controlIcon}/>
         </div>
       </div>
     </div>
