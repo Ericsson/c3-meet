@@ -19,7 +19,7 @@ import {
 } from 'actions/constants'
 
 const initialState = {
-  showVisualization: null,
+  showVisualization: false,
 }
 
 export default function client(state = initialState, action) {
