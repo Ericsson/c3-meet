@@ -24,7 +24,7 @@ import ElementHolder from 'components/ElementHolder'
 
 import styles from './Thumbnail.css'
 
-const Thumbnail = ({className, peerId, hasMutedSelf, userAgent, connectionState, element}) => {
+const Thumbnail = ({className, peerId, displayName, hasMutedSelf, userAgent, connectionState, element}) => {
   let userAgentDescription = ''
   if (userAgent) {
     let {browser, version, platform, device} = userAgent
@@ -39,7 +39,7 @@ const Thumbnail = ({className, peerId, hasMutedSelf, userAgent, connectionState,
           <ElementHolder element={element} className={styles.elementHolder}/>
           {hasMutedSelf && <MicOff className={styles.selfMuteIndicator}/>}
           <div className={styles.overlay}>
-            <span className={styles.peerId}>{peerId}</span>
+            <span className={styles.peerId}>{displayName} ({peerId})</span>
             <span className={styles.userAgent}>{userAgentDescription}</span>
           </div>
         </div>

@@ -18,13 +18,14 @@ import {connect} from 'react-redux'
 
 import Thumbnail from 'components/Thumbnail'
 
-const mapStateToProps = ({meeting, meetingMedia}) => ({
+const mapStateToProps = ({client, meeting, meetingMedia}) => ({
   muted: meetingMedia.muted,
   peerId: meeting.ownId,
   element: meetingMedia.thumbnailElements[meeting.ownId] || null,
   connectionState: 'connected',
   errorState: null,
   hasMutedSelf: !!meetingMedia.peersWithMute[meeting.ownId],
+  displayName: client.client.user.name || '',
 })
 
 export default connect(mapStateToProps)(Thumbnail)

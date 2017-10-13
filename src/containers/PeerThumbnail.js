@@ -22,7 +22,9 @@ import Thumbnail from 'components/Thumbnail'
 
 const mapStateToProps = ({meeting, meetingMedia, meetingPeers}, {peerId}) => {
   let peer = meetingPeers.peers[peerId] || null
+  let user = meetingPeers.onlineMembers[peerId]
   return {
+    displayName: user ? user.name : '',
     muted: !!meetingMedia.mutedPeers[peerId],
     element: meetingMedia.thumbnailElements[peerId] || null,
     connectionState: peer ? peer.connectionState : null,
