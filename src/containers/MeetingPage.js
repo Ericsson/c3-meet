@@ -71,6 +71,7 @@ MeetingPage.propTypes = {
   muted: PropTypes.bool.isRequired,
   ownId: PropTypes.string.isRequired,
   peers: PropTypes.object.isRequired,
+  switcher: PropTypes.object.isRequired,
   toggleMute: PropTypes.func.isRequired,
   showVisualization: PropTypes.bool.isRequired,
   className: PropTypes.string,
@@ -78,10 +79,10 @@ MeetingPage.propTypes = {
 }
 
 const mapStateToProps = state => ({
+  mainVideo: state.meetingMedia.remoteVideoSource,
+  muted: state.meetingMedia.muted,
   ownId: state.meeting.ownId,
   peers: state.meetingPeers.peers,
-  muted: state.meetingMedia.muted,
-  mainVideo: state.meetingMedia.remoteVideoSource,
   showVisualization: state.devtools.showVisualization,
   switcher: state.meeting.conference.switcher,
 })
