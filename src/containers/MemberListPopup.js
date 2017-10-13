@@ -24,8 +24,8 @@ import styles from './MemberListPopup.css'
 
 const MemberListPopup = ({className, onlineMembers}) => {
   return (
-    <div className={styles.container}>
-      <Users className={classNames(styles.button, className)}/>
+    <div className={classNames(styles.container, className)}>
+      <Users className={styles.button}/>
       <div className={styles.popup}>
         {Object.keys(onlineMembers).map(userId => (
           <span key={userId} className={styles.popupText}>
