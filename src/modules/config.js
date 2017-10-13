@@ -17,11 +17,11 @@ export const logLevel = runtimeConfig.readNumber('LOG_LEVEL', {defaultValue: log
 export const appLogLevel = runtimeConfig.readNumber('APP_LOG_LEVEL', {defaultValue: log.ALL})
 
 export const iceServers = [{
-  url: 'turn:turn.demo.c3.ericsson.net:443?transport=tcp',
+  urls: 'turn:turn.demo.c3.ericsson.net:443?transport=tcp',
   username: 'c3-turn',
   credential: 'see-three',
 }, {
-  url: 'turn:turn.demo.c3.ericsson.net:443?transport=udp',
+  urls: 'turn:turn.demo.c3.ericsson.net:443?transport=udp',
   username: 'c3-turn',
   credential: 'see-three',
 }]
