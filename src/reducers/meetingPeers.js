@@ -17,12 +17,14 @@ limitations under the License.
 import {
   LEAVE_MEETING,
   MEETING_SETUP_COMPLETE,
+  ROOM_MEMBER_PRESENCE_CHANGES,
   CONFERENCE_PEER_UPSERT,
   CONFERENCE_PEER_REMOVED,
 } from 'actions/constants'
 
 const initialState = {
   peers: {},
+  onlineMembers: {},
 }
 
 export default function meetingHistory(state = initialState, action) {
@@ -39,6 +41,21 @@ export default function meetingHistory(state = initialState, action) {
     case CONFERENCE_PEER_REMOVED: {
       let {[action.peerId]: ignored, ...peers} = state.peers
       return {...state, peers}
+    }
+    case ROOM_MEMBER_PRESENCE_CHANGES: {
+      let {online, offline} = action
+      let onlineMembers = {...state.onlineMembers}
+      if (online) {
+        online.forEach(user => {
+          onlineMembers[user.id] = user
+        })
+      }
+      if (offline) {
+          offline.forEach(user => {
+            delete onlineMembers[user.id]
+          })
+      }
+      return {...state, onlineMembers}
     }
     default:
       return state

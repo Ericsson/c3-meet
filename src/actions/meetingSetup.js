@@ -21,6 +21,7 @@ import {
   MEETING_SETUP_COMPLETE,
   MEETING_SETUP_FAILED,
   LEAVE_MEETING,
+  ROOM_MEMBER_PRESENCE_CHANGES,
   CONFERENCE_CONNECTION_STATE,
   CONFERENCE_CONNECTION_ERROR,
   CONFERENCE_PEER_UPSERT,
@@ -96,6 +97,17 @@ export function joinMeeting({meetingName, navigate = false}) {
 
     _joinMeeting({client: client.client, meetingName}).then(room => {
       dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
+
+      let online = []
+      let offline = []
+      room.otherMembers.forEach(user => {
+        if (user.presence === 'offline') {
+          offline.push(user)
+        } else {
+          online.push(user)
+        }
+      })
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, online, offline})
     }, error => {
       dispatch({type: MEETING_SETUP_FAILED, error})
     }).catch(error => log.error(LOG_TAG, `join conference initialization threw error, ${error}`))
@@ -107,6 +119,7 @@ export function leaveMeeting() {
     let {meeting} = getState()
     if (meeting.room) {
       meeting.room.leave()
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [meeting.room.otherMembers]})
       dispatch({type: LEAVE_MEETING})
     }
   }
@@ -160,6 +173,30 @@ function initializeConference(room, dispatch, getState) {
     })
   }
 
+  function onRoomMemberPresence(presence) {
+    let user = this
+    if (presence === 'offline') {
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [user]})
+    } else {
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, online: [user]})
+    }
+  }
+
+  function onRoomMemberJoined(user) {
+    user.on('presence', onRoomMemberPresence)
+
+    if (user.presence === 'offline') {
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [user]})
+    } else {
+      dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, online: [user]})
+    }
+  }
+
+  function onRoomMemberLeft(user) {
+    user.off('presence', onRoomMemberPresence)
+    dispatch({type: ROOM_MEMBER_PRESENCE_CHANGES, offline: [user]})
+  }
+
   function onPeerRemoved(peerId) {
     dispatch({type: CONFERENCE_PEER_REMOVED, peerId})
   }
@@ -202,8 +239,12 @@ function initializeConference(room, dispatch, getState) {
   thumbnailRenderer.on('removed', onThumbnailsRemoved)
   userAgentShare.on('update', onUserAgentShareUpdate)
   muteStateShare.on('update', onMuteStateShareUpdate)
+  room.on('join', onRoomMemberJoined)
+  room.on('leave', onRoomMemberLeft)
 
   let unsubscribe = () => {
+    room.off('join', onRoomMemberJoined)
+    room.off('leave', onRoomMemberLeft)
     conference.off('connectionState', onConnectionState)
     conference.off('error', onError)
     conference.peers.off('added', onPeerAdded)
