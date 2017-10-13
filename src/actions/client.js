@@ -49,14 +49,14 @@ export function authenticateClient(client) {
     dispatch({type: AUTHENTICATE_CLIENT_STARTED})
 
     clientAnonymousAuth({client}).then(() => {
-      dispatch({type: AUTHENTICATE_CLIENT_COMPLETE})
-
       // If we had a stored display name or it was set before we got here, then we can
       // set it directly, otherwise we let submitDisplayName be called elsewhere.
       let {storedDisplayName} = getState().client
       if (storedDisplayName) {
         submitDisplayName(storedDisplayName)(dispatch, getState)
       }
+
+      dispatch({type: AUTHENTICATE_CLIENT_COMPLETE})
     }).catch(error => {
       dispatch({type: AUTHENTICATE_CLIENT_FAILED, error})
     })
