@@ -55,8 +55,8 @@ class ConferenceVisualization extends Component {
 }
 
 ConferenceVisualization.propTypes = {
-  className: PropTypes.string,
   switcher: PropTypes.object.isRequired,
+  className: PropTypes.string,
 }
 
 export default ConferenceVisualization
