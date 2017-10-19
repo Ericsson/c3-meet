@@ -87,14 +87,14 @@ export class UserMediaError extends CustomError {
 }
 UserMediaError.displayMessage = 'Failed to access microphone or webcam'
 
-class NotAllowedUserMediaError extends UserMediaError {}
+export class NotAllowedUserMediaError extends UserMediaError {}
 NotAllowedUserMediaError.displayMessage = 'Please allow access to your media devices and try again.'
 
-class NotFoundUserMediaError extends UserMediaError {}
+export class NotFoundUserMediaError extends UserMediaError {}
 NotFoundUserMediaError.displayMessage = 'Could not find the requested media devices, ' +
   'please make sure they are connected and try again.'
 
-class ConstraintUserMediaError extends UserMediaError {
+export class ConstraintUserMediaError extends UserMediaError {
   constructor(constraint) {
     super(`User media could not satify constraint ${constraint}`, {constraint})
   }
