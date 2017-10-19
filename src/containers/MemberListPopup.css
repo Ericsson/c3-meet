@@ -31,6 +31,7 @@ limitations under the License.
   flex-flow: column nowrap;
   padding-bottom: 4px;
   padding-right: 6px;
+  user-select: none;
 
   background: #0b0b0b;
   bottom: calc(100% + 1rem);
@@ -43,6 +44,10 @@ limitations under the License.
   color: #fff;
   font-size: 1.2em;
   white-space: nowrap;
+}
+
+.ownPopupText {
+  color: #bbf;
 }
 
 .container:hover .popup {

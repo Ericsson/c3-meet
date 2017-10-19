@@ -22,13 +22,13 @@ import {Users} from 'react-feather'
 
 import styles from './MemberListPopup.css'
 
-const MemberListPopup = ({className, onlineMembers}) => {
+const MemberListPopup = ({className, ownId, onlineMembers}) => {
   return (
     <div className={classNames(styles.container, className)}>
       <Users className={styles.button}/>
       <div className={styles.popup}>
         {Object.keys(onlineMembers).map(userId => (
-          <span key={userId} className={styles.popupText}>
+          <span key={userId} className={classNames(styles.popupText, ownId === userId && styles.ownPopupText)}>
             {onlineMembers[userId].name} ({userId})
           </span>
         ))}
@@ -42,6 +42,7 @@ MemberListPopup.propTypes = {
 
 const mapStateToProps = state => ({
   onlineMembers: state.meetingPeers.onlineMembers,
+  ownId: state.client.client.user.id,
 })
 
 const mapDispatchToProps = dispatch => ({
