@@ -29,7 +29,7 @@ limitations under the License.
 }
 
 .input {
-  flex: 0;
+  flex: 0 0 auto;
   max-width: 90%;
   align-self: center;
   margin: 2.5rem 0 2.4rem 0;
@@ -40,6 +40,7 @@ limitations under the License.
 }
 
 .button {
+  flex: 0 0 auto;
   align-self: stretch;
   border-radius: 0;
 }
