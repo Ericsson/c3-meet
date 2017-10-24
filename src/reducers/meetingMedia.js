@@ -20,9 +20,6 @@ import {
   ACQUIRE_MEETING_MEDIA_STARTED,
   ACQUIRE_MEETING_MEDIA_COMPLETE,
   ACQUIRE_MEETING_MEDIA_FAILED,
-  MEDIA_PERMISSION_STARTED,
-  MEDIA_PERMISSION_COMPLETE,
-  MEDIA_PERMISSION_FAILED,
   CONFERENCE_PEER_AUDIO_ADDED,
   CONFERENCE_PEER_AUDIO_REMOVED,
   CONFERENCE_THUMBNAILS_ADDED,
@@ -37,9 +34,6 @@ import {MuteFilter, StreamSplitter} from '@cct/libcct'
 const initialState = {
   ownId: null,
   conference: null,
-  permissions: null,
-  havePermissions: false,
-  permissionError: null,
   source: null,
   audioBroadcaster: null,
   thumbnailBroadcaster: null,
@@ -130,17 +124,6 @@ export default function meetingHistory(state = initialState, action) {
     case ACQUIRE_MEETING_MEDIA_FAILED: {
       let {error} = action
       return {...state, waiting: false, error}
-    }
-    case MEDIA_PERMISSION_STARTED: {
-      return {...state, permissions: null, permissionError: null, havePermissions: false}
-    }
-    case MEDIA_PERMISSION_COMPLETE: {
-      let {permissions} = action
-      return {...state, permissions, permissionError: null, havePermissions: true}
-    }
-    case MEDIA_PERMISSION_FAILED: {
-      let {error} = action
-      return {...state, permissions: null, permissionError: error, havePermissions: false}
     }
     case CONFERENCE_THUMBNAILS_ADDED: {
       let addedObj = action.elements.reduce((obj, el) => {

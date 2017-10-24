@@ -18,9 +18,6 @@ import {
   ACQUIRE_MEETING_MEDIA_STARTED,
   ACQUIRE_MEETING_MEDIA_COMPLETE,
   ACQUIRE_MEETING_MEDIA_FAILED,
-  MEDIA_PERMISSION_STARTED,
-  MEDIA_PERMISSION_COMPLETE,
-  MEDIA_PERMISSION_FAILED,
   MEDIA_TOGGLE_MUTE,
   MEDIA_TOGGLE_PEER_MUTE,
 } from 'actions/constants'
@@ -28,32 +25,19 @@ import {
 import {log, DeviceSource} from '@cct/libcct'
 
 import {LOG_TAG, mediaConstraints} from 'modules/config'
-import {NotAllowedUserMediaError} from 'modules/errors'
-
-export function requestMediaPermissions() {
-  return dispatch => {
-    dispatch({type: MEDIA_PERMISSION_STARTED})
-
-    DeviceSource.requestPermissions({audio: true, video: true}).then(permissions => {
-      let {audio, video} = permissions
-      if (audio === 'forbidden' || video === 'forbidden') {
-        throw new NotAllowedUserMediaError(`Device permissions request was not fully accepted`)
-      } else {
-        dispatch({type: MEDIA_PERMISSION_COMPLETE, permissions})
-      }
-    }).catch(error => {
-      dispatch({type: MEDIA_PERMISSION_FAILED, error})
-    })
-  }
-}
 
 export function acquireMediaDevices() {
   return (dispatch, getState) => {
-    if (getState().meetingMedia.ready) {
+    let state = getState()
+    if (state.meetingMedia.ready) {
       log.info(LOG_TAG, 'meeting media is already set up')
       return
     }
-    let source = new DeviceSource(mediaConstraints)
+    let {selectedAudioDevice, selectedVideoDevice} = state.mediaSettings
+    let source = new DeviceSource({
+      audio: {...mediaConstraints.audio, device: {exact: selectedAudioDevice}},
+      video: {...mediaConstraints.video, device: {exact: selectedVideoDevice}},
+    })
     dispatch({type: ACQUIRE_MEETING_MEDIA_STARTED})
 
     source.promise.then(() => {

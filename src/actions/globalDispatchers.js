@@ -19,7 +19,10 @@ import {
   LOAD_MEETING_LIST,
   MEDIA_TOGGLE_MUTE,
   DEVTOOLS_TOGGLE_VISUALIZATION,
+  SET_AVAILABLE_DEVICES,
 } from 'actions/constants'
+
+import {DeviceSource} from '@cct/libcct'
 
 import {meetingStore} from 'modules/meetingStore'
 
@@ -28,6 +31,7 @@ export function registerGlobalDispatchers(dispatch) {
     registerBeforeUnloadDispatcher(dispatch, getState)
     registerLocalStorageDispatcher(dispatch, getState)
     registerKeypressDispatcher(dispatch, getState)
+    registerMediaDeviceChangeDispatcher(dispatch, getState)
   }
 }
 
@@ -52,6 +56,17 @@ function registerKeypressDispatcher(dispatch, getState) {
     }
     if (event.code === 'KeyV') {
       dispatch({type: DEVTOOLS_TOGGLE_VISUALIZATION})
+    }
+  })
+}
+
+function registerMediaDeviceChangeDispatcher(dispatch, getState) {
+  DeviceSource.observeDeviceChanges(() => {
+    let {meetingMedia} = getState()
+    if (meetingMedia.haveEnumeratedDevices) {
+      DeviceSource.enumerateDevices().then(devices => {
+        dispatch({type: SET_AVAILABLE_DEVICES, devices})
+      })
     }
   })
 }

@@ -17,6 +17,7 @@ limitations under the License.
 import {combineReducers} from 'redux'
 import client from 'reducers/client'
 import devtools from 'reducers/devtools'
+import mediaSettings from 'reducers/mediaSettings'
 import meeting from 'reducers/meeting'
 import meetingHistory from 'reducers/meetingHistory'
 import meetingMedia from 'reducers/meetingMedia'
@@ -28,6 +29,7 @@ export default combineReducers({
   router: routerReducer,
   client,
   devtools,
+  mediaSettings,
   meeting,
   meetingHistory,
   meetingMedia,
