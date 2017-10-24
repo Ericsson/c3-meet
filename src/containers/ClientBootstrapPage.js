@@ -23,9 +23,12 @@ import LoadingPage from 'components/LoadingPage'
 import WhiteBox from 'components/WhiteBox'
 
 import DisplayNameInput from 'containers/DisplayNameInput'
+import DeviceSelectionPage from 'containers/DeviceSelectionPage'
+import DevicePermissionPage from 'containers/DevicePermissionPage'
 
 import {loadMeetingList} from 'actions/meetingHistory'
 import {authenticateClient} from 'actions/client'
+import {checkMediaPermissions} from 'actions/mediaSettings'
 
 import styles from './ClientBootstrapPage.css'
 
@@ -33,6 +36,7 @@ class ClientBootstrapPage extends Component {
   componentWillMount() {
     this.props.loadMeetingList()
     this.props.authenticateClient(this.props.client)
+    this.props.checkMediaPermissions()
   }
 
   render() {
@@ -45,6 +49,15 @@ class ClientBootstrapPage extends Component {
         </WhiteBox>
       )
     }
+
+    if (!props.havePermissions) {
+      return <DevicePermissionPage/>
+    }
+
+    if (!props.haveSelectedMediaDevices) {
+      return <DeviceSelectionPage/>
+    }
+
     if (props.authenticateError) {
       return (
         <WhiteBox>
@@ -70,6 +83,8 @@ ClientBootstrapPage.propTypes = {
   client: PropTypes.object.isRequired,
   loadMeetingList: PropTypes.func.isRequired,
   storedDisplayName: PropTypes.string.isRequired,
+  havePermissions: PropTypes.bool.isRequired,
+  haveSelectedMediaDevices: PropTypes.bool.isRequired,
 
   children: PropTypes.element,
   connectionState: PropTypes.string,
@@ -79,6 +94,8 @@ ClientBootstrapPage.propTypes = {
 const mapStateToProps = state => ({
   client: state.client.client,
   connectionState: state.client.connectionState,
+  havePermissions: state.mediaSettings.havePermissions,
+  haveSelectedMediaDevices: state.mediaSettings.haveSelectedMediaDevices,
   displayName: state.client.displayName,
   storedDisplayName: state.client.storedDisplayName,
   authenticateInProgress: state.client.authenticateInProgress,
@@ -90,6 +107,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   authenticateClient: client => dispatch(authenticateClient(client)),
   loadMeetingList: options => dispatch(loadMeetingList(options)),
+  checkMediaPermissions: options => dispatch(checkMediaPermissions()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientBootstrapPage)
