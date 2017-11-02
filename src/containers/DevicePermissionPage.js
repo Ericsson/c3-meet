@@ -23,8 +23,6 @@ import {requestMediaPermissions} from 'actions/mediaSettings'
 
 import Button from 'components/Button'
 import ErrorMessage from 'components/ErrorMessage'
-import RadioButton from 'components/RadioButton'
-import Video from 'components/Video'
 import WhiteBox from 'components/WhiteBox'
 
 import styles from './DevicePermissionPage.css'
@@ -53,7 +51,7 @@ class DevicePermissionPage extends Component {
             You are about to enter a video meeting and need to allow access your media devices.
           </div>
           {browserInfo.browser === 'firefox' && <div className={styles.detail}>
-            Please select "Remember this decision", as it is needed to list available
+            Please select &quot;Remember this decision&quot;, as it is needed to list available
             devices, and to avoid additional dialogs.
           </div>}
           <Button className={styles.button} onClick={this.handleAccessClick}>Allow media device access</Button>
@@ -65,6 +63,9 @@ class DevicePermissionPage extends Component {
 }
 
 DevicePermissionPage.propTypes = {
+  requestMediaPermissions: PropTypes.func.isRequired,
+  error: PropTypes.object,
+  havePermissions: PropTypes.bool,
 }
 
 const mapStateToProps = ({mediaSettings}) => ({

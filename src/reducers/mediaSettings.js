@@ -46,7 +46,7 @@ export default function meetingHistory(state = initialState, action) {
       let {permissions} = action
 
       if (permissions.audio === 'forbidden' || permissions.video === 'forbidden') {
-        let permissionError = new NotAllowedUserMediaError(`Device permissions request was not fully accepted`)
+        let permissionError = new NotAllowedUserMediaError('Device permissions request was not fully accepted')
         return {...state, permissions: null, permissionError, havePermissions: false}
       } else {
         return {...state, permissions, permissionError: null, havePermissions: true}

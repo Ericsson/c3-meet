@@ -38,15 +38,15 @@ class AudioDevicePreview extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.stopPreview()
-  }
-
   componentWillReceiveProps(newProps) {
     if (browserInfo.browser === 'firefox' && this.props.checked !== newProps.checked) {
       this.stopPreview()
       this.componentWillMount(newProps)
     }
+  }
+
+  componentWillUnmount() {
+    this.stopPreview()
   }
 
   startPreview(device) {
@@ -82,6 +82,11 @@ class AudioDevicePreview extends Component {
   render() {
     return <canvas className={styles.waveform} ref={this.handleCanvasRef}/>
   }
+}
+
+AudioDevicePreview.propTypes = {
+  checked: PropTypes.bool,
+  device: PropTypes.object,
 }
 
 export default AudioDevicePreview

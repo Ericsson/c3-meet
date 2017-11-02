@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 
@@ -38,6 +39,10 @@ const MemberListPopup = ({className, ownId, onlineMembers}) => {
 }
 
 MemberListPopup.propTypes = {
+  onlineMembers: PropTypes.object.isRequired,
+  ownId: PropTypes.string.isRequired,
+
+  className: PropTypes.string,
 }
 
 const mapStateToProps = state => ({

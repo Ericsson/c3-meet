@@ -54,6 +54,7 @@ Thumbnail.propTypes = {
   peerId: PropTypes.string.isRequired,
   className: PropTypes.string,
   connectionState: PropTypes.string,
+  displayName: PropTypes.string,
   element: PropTypes.instanceOf(HTMLElement),
   errorState: PropTypes.instanceOf(Error),
   userAgent: PropTypes.object,

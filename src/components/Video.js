@@ -34,6 +34,20 @@ class Video extends Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.source !== this.props.source) {
+      if (newProps.source) {
+        newProps.source.connect(this.sink)
+      } else if (this.source) {
+        this.props.source.disconnect(this.sink)
+      }
+    }
+  }
+
+  shouldComponentUpdate(newProps) {
+    return newProps.source !== this.props.source
+  }
+
   handleVideoUpdate() {
     let width = 0
     let height = 0
@@ -49,20 +63,6 @@ class Video extends Component {
     }
 
     this.props.onResize({width, height, aspectRatio})
-  }
-
-  shouldComponentUpdate(newProps) {
-    return newProps.source !== this.props.source
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.source !== this.props.source) {
-      if (newProps.source) {
-        newProps.source.connect(this.sink)
-      } else if (this.source) {
-        this.props.source.disconnect(this.sink)
-      }
-    }
   }
 
   handleRef(ref) {

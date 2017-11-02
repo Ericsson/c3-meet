@@ -80,11 +80,12 @@ class ClientBootstrapPage extends Component {
 
 ClientBootstrapPage.propTypes = {
   authenticateClient: PropTypes.func.isRequired,
+  checkMediaPermissions: PropTypes.func.isRequired,
   client: PropTypes.object.isRequired,
-  loadMeetingList: PropTypes.func.isRequired,
-  storedDisplayName: PropTypes.string.isRequired,
   havePermissions: PropTypes.bool.isRequired,
   haveSelectedMediaDevices: PropTypes.bool.isRequired,
+  loadMeetingList: PropTypes.func.isRequired,
+  storedDisplayName: PropTypes.string.isRequired,
 
   children: PropTypes.element,
   connectionState: PropTypes.string,

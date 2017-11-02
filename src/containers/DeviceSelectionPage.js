@@ -17,13 +17,11 @@ limitations under the License.
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {DeviceSource, WaveformView, browserInfo} from '@cct/libcct'
 
 import AudioDevicePreview from 'components/AudioDevicePreview'
 import VideoDevicePreview from 'components/VideoDevicePreview'
 import Button from 'components/Button'
 import RadioButton from 'components/RadioButton'
-import Video from 'components/Video'
 import WhiteBox from 'components/WhiteBox'
 
 import {
@@ -38,13 +36,20 @@ const DeviceListItem = ({label, checked, onChange, children}) => (
   <label className={styles.device}>
     <RadioButton
       className={styles.radio}
-        checked={checked}
-        onChange={onChange}
-        />
+      checked={checked}
+      onChange={onChange}
+    />
     <span className={styles.label}>{label}</span>
     {children}
   </label>
 )
+
+DeviceListItem.propTypes = {
+  checked: PropTypes.bool,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+}
 
 class DeviceSelectionPage extends Component {
   componentWillMount() {
@@ -73,7 +78,8 @@ class DeviceSelectionPage extends Component {
                 key={device ? device.deviceId : 0}
                 onChange={() => this.props.selectMediaDevices({audio: device})}
                 checked={device === selectedAudioDevice}
-                label={device.label}>
+                label={device.label}
+              >
                 <AudioDevicePreview device={device} checked={device === selectedAudioDevice}/>
               </DeviceListItem>
 
@@ -86,12 +92,13 @@ class DeviceSelectionPage extends Component {
                 key={device ? device.deviceId : 0}
                 onChange={() => this.props.selectMediaDevices({video: device})}
                 checked={device === selectedVideoDevice}
-                label={device.label}>
+                label={device.label}
+              >
                 <VideoDevicePreview device={device}/>
               </DeviceListItem>
             ))}
           </div>
-          <Button className={styles.continue} onClick={this.props.confirmMediaDeviceSelection}>
+          <Button className={styles.continue} onClick={this.props.handleDeviceSelected}>
             Continue
           </Button>
         </div>
@@ -102,8 +109,8 @@ class DeviceSelectionPage extends Component {
 
 DeviceSelectionPage.propTypes = {
   audioInputDevices: PropTypes.array.isRequired,
-  confirmMediaDeviceSelection: PropTypes.func.isRequired,
   enumerateDevices: PropTypes.func.isRequired,
+  handleDeviceSelected: PropTypes.func.isRequired,
   haveEnumeratedDevices: PropTypes.bool.isRequired,
   selectMediaDevices: PropTypes.func.isRequired,
   videoInputDevices: PropTypes.array.isRequired,
@@ -120,7 +127,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  confirmMediaDeviceSelection: () => dispatch(confirmMediaDeviceSelection()),
+  handleDeviceSelected: () => dispatch(confirmMediaDeviceSelection()),
   enumerateDevices: () => dispatch(enumerateDevices()),
   selectMediaDevices: devices => dispatch(selectMediaDevices(devices)),
 })

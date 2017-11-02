@@ -73,9 +73,9 @@ MeetingPage.propTypes = {
   muted: PropTypes.bool.isRequired,
   ownId: PropTypes.string.isRequired,
   peers: PropTypes.object.isRequired,
+  showVisualization: PropTypes.bool.isRequired,
   switcher: PropTypes.object.isRequired,
   toggleMute: PropTypes.func.isRequired,
-  showVisualization: PropTypes.bool.isRequired,
   className: PropTypes.string,
   mainVideo: PropTypes.object,
 }

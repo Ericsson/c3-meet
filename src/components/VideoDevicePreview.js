@@ -26,7 +26,7 @@ class VideoDevicePreview extends Component {
   componentWillMount() {
     this.source = new DeviceSource({video: {
       device: {exact: this.props.device},
-      aspectRatio: 16/9,
+      aspectRatio: 16 / 9,
       width: 160,
       height: 90,
     }})
@@ -40,6 +40,10 @@ class VideoDevicePreview extends Component {
   render() {
     return <Video className={styles.video} source={this.source}/>
   }
+}
+
+VideoDevicePreview.propTypes = {
+  device: PropTypes.object,
 }
 
 export default VideoDevicePreview

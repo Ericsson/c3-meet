@@ -30,8 +30,8 @@ const RadioButton = ({style, className, ...props}) => {
 }
 
 RadioButton.propTypes = {
-  name: PropTypes.string,
   className: PropTypes.string,
+  name: PropTypes.string,
   style: PropTypes.object,
 }
 

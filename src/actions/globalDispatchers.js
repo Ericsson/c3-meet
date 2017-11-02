@@ -22,8 +22,9 @@ import {
   SET_AVAILABLE_DEVICES,
 } from 'actions/constants'
 
-import {DeviceSource} from '@cct/libcct'
+import {log, DeviceSource} from '@cct/libcct'
 
+import {LOG_TAG} from 'modules/config'
 import {meetingStore} from 'modules/meetingStore'
 
 export function registerGlobalDispatchers(dispatch) {
@@ -66,6 +67,8 @@ function registerMediaDeviceChangeDispatcher(dispatch, getState) {
     if (meetingMedia.haveEnumeratedDevices) {
       DeviceSource.enumerateDevices().then(devices => {
         dispatch({type: SET_AVAILABLE_DEVICES, devices})
+      }).catch(error => {
+        log.error(LOG_TAG, `failed to list available devices, ${error}`)
       })
     }
   })

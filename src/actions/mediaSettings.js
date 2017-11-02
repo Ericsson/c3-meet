@@ -56,6 +56,8 @@ export function enumerateDevices() {
   return dispatch => {
     DeviceSource.enumerateDevices().then(devices => {
       dispatch({type: SET_AVAILABLE_DEVICES, devices})
+    }).catch(error => {
+      log.error(LOG_TAG, `failed to list available devices, ${error}`)
     })
   }
 }
