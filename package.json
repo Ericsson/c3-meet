@@ -46,7 +46,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
-    "@cct/libcct": "0.20.0-experimental.5",
+    "@cct/libcct": "0.20.0-experimental.6",
     "intl-relativeformat": "^2.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
