@@ -30,9 +30,14 @@ class ConferenceVisualization extends Component {
   }
 
   _handleSvgRef(svg) {
-    let {switcher} = this.props
+    let {switcher, ownId} = this.props
     if (svg) {
-      this._visualization = new RelayTreeVisualization({width: 400, height: 400, svg})
+      this._visualization = new RelayTreeVisualization({
+        width: 400,
+        height: 400,
+        svg,
+        ownId,
+      })
       this._visualization.setRelayLinks(switcher._relayLinks)
       this._visualization.start()
       switcher.on('_relayLinks', this._handleRelayLinksUpdate)
@@ -55,6 +60,7 @@ class ConferenceVisualization extends Component {
 }
 
 ConferenceVisualization.propTypes = {
+  ownId: PropTypes.string.isRequired,
   switcher: PropTypes.object.isRequired,
   className: PropTypes.string,
 }

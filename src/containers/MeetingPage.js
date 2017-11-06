@@ -57,7 +57,7 @@ const MeetingPage = props => {
         <div className={styles.mainVideo}>
           <PersistenceVideoPlayer source={mainVideo}/>
           {showVisualization && (
-            <ConferenceVisualization switcher={switcher} className={styles.visualization}/>
+            <ConferenceVisualization switcher={switcher} ownId={ownId} className={styles.visualization}/>
           )}
         </div>
         <div className={styles.controls}>
