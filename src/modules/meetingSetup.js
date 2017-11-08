@@ -51,7 +51,7 @@ export function createMeeting({client, meetingName}) {
   })
 }
 
-export function joinMeeting({client, meetingName}) {
+export function joinMeetingByName({client, meetingName}) {
   log.debug(LOG_TAG, `joining new meeting with name '${meetingName}'`)
   return client.fetchRoomByAlias(meetingName).then(room => {
     return room.join().catch(error => {
@@ -73,6 +73,25 @@ export function joinMeeting({client, meetingName}) {
     }
   }).then(room => {
     log.info(LOG_TAG, `joined meeting '${meetingName}'/'${room.id}'`)
+    return room
+  })
+}
+
+export function joinMeetingById({client, meetingId}) {
+  log.debug(LOG_TAG, `joining new meeting with id '${meetingId}'`)
+  return client.getRoom(meetingId).join().catch(error => {
+    log.info(LOG_TAG, `failed to join meeting '${meetingId}', ${error}`)
+    if (error.name === 'NotFoundError') {
+      throw new MeetingNotFoundError(error.message)
+    } else if (error.name === 'AuthenticationError') {
+      throw new SessionLostError(error.message)
+    } if (error.name === 'NotAllowedError' || error.name === 'GuestAccessError') {
+      throw new ForbiddenMeetingError(error.message)
+    } else {
+      throw error
+    }
+  }).then(room => {
+    log.info(LOG_TAG, `joined meeting '${meetingId}'`)
     return room
   })
 }

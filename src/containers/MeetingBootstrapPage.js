@@ -32,8 +32,8 @@ import styles from './MeetingBootstrapPage.css'
 
 class MeetingBootstrapPage extends Component {
   componentWillMount() {
-    let {meetingName} = this.props.match.params
-    this.props.joinMeeting({meetingName, navigate: false})
+    let {meetingName, meetingId} = this.props.match.params
+    this.props.joinMeeting({meetingName, meetingId, navigate: false})
     this.props.acquireMediaDevices()
   }
 

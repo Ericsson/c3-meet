@@ -40,7 +40,8 @@ import {push} from 'react-router-redux'
 
 import {
   createMeeting as _createMeeting,
-  joinMeeting as _joinMeeting,
+  joinMeetingByName,
+  joinMeetingById,
 } from 'modules/meetingSetup'
 import {thumbnailConfig, LOG_TAG} from 'modules/config'
 import namegen from 'modules/namegen'
@@ -76,26 +77,46 @@ export function updateJoinMeetingNameInput(meetingName) {
   return {type: UPDATE_JOIN_MEETING_NAME_INPUT, meetingName}
 }
 
-export function joinMeeting({meetingName, navigate = false}) {
+export function joinMeeting({meetingName = null, meetingId = null, navigate = false}) {
   return (dispatch, getState) => {
     let {client, meetingSetup, meeting} = getState()
     if (meetingSetup.joinInProgress) {
       return
     }
-    if (meeting.room && meeting.room.name === meetingName) {
+
+    var roomPromise
+
+    if (meetingId) {
+      if (meeting.room && meeting.room.id === meetingId) {
+        if (navigate) {
+          dispatch(push(`/id/${meetingId}`))
+        }
+        return
+      }
+
+      dispatch({type: LEAVE_MEETING})
+      dispatch({type: MEETING_SETUP_STARTED})
+      if (navigate) {
+        dispatch(push(`/id/${meetingId}`))
+      }
+      roomPromise = joinMeetingById({client: client.client, meetingId})
+    } else {
+      if (meeting.room && meeting.room.name === meetingName) {
+        if (navigate) {
+          dispatch(push(`/${meetingName}`))
+        }
+        return
+      }
+
+      dispatch({type: LEAVE_MEETING})
+      dispatch({type: MEETING_SETUP_STARTED})
       if (navigate) {
         dispatch(push(`/${meetingName}`))
       }
-      return
+      roomPromise = joinMeetingByName({client: client.client, meetingName})
     }
 
-    dispatch({type: LEAVE_MEETING})
-    dispatch({type: MEETING_SETUP_STARTED, meetingName})
-    if (navigate) {
-      dispatch(push(`/${meetingName}`))
-    }
-
-    _joinMeeting({client: client.client, meetingName}).then(room => {
+    roomPromise.then(room => {
       dispatch({type: MEETING_SETUP_COMPLETE, ...initializeConference(room, dispatch, getState)})
 
       let online = []

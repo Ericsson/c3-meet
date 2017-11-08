@@ -32,6 +32,7 @@ const App = () => (
       <Switch>
         <Route exact strict path='/' component={StartPage}/>
         <Route exact strict path='/:meetingName' component={MeetingBootstrapPage}/>
+        <Route exact strict path='/id/:meetingId' component={MeetingBootstrapPage}/>
         <Route path='/' component={NotFoundPage}/>
       </Switch>
     </ClientBootstrapPage>
