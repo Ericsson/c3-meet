@@ -62,14 +62,16 @@ function registerKeypressDispatcher(dispatch, getState) {
 }
 
 function registerMediaDeviceChangeDispatcher(dispatch, getState) {
-  DeviceSource.observeDeviceChanges(() => {
-    let {meetingMedia} = getState()
-    if (meetingMedia.haveEnumeratedDevices) {
-      DeviceSource.enumerateDevices().then(devices => {
-        dispatch({type: SET_AVAILABLE_DEVICES, devices})
-      }).catch(error => {
-        log.error(LOG_TAG, `failed to list available devices, ${error}`)
-      })
-    }
-  })
+  if (DeviceSource.canObserveDeviceChanges) {
+    DeviceSource.observeDeviceChanges(() => {
+      let {mediaSettings} = getState()
+      if (mediaSettings.haveEnumeratedDevices) {
+        DeviceSource.enumerateDevices().then(devices => {
+          dispatch({type: SET_AVAILABLE_DEVICES, devices})
+        }).catch(error => {
+          log.error(LOG_TAG, `failed to list available devices, ${error}`)
+        })
+      }
+    })
+  }
 }
