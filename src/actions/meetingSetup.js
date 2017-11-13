@@ -156,6 +156,7 @@ function initializeConference(room, dispatch, getState) {
   let audioBroadcaster = new MediaBroadcaster()
 
   let thumbnailBroadcaster = new ThumbnailBroadcaster(thumbnailConfig)
+  thumbnailBroadcaster._thumbnailMode = 'image'
   let thumbnailRenderer = thumbnailBroadcaster.createRenderer()
 
   let userAgentShare = new DataShare({ownerId: ownId})
