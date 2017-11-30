@@ -1,7 +1,7 @@
 {
   "name": "@cct/meet",
   "private": true,
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Meetings with the C3 SDK",
   "scripts": {
     "fix": "eslint --fix .",
