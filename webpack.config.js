@@ -22,6 +22,7 @@ const AutoPrefixer = require('autoprefixer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin")
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
@@ -158,17 +159,14 @@ if (isDev) {
 
 if (isProd) {
   plugins.push(new ExtractTextPlugin('bundle.css'))
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      screw_ie8: true,
-      warnings: false,
-    },
-    mangle: {
-      screw_ie8: true,
-    },
-    output: {
-      comments: false,
-      screw_ie8: true,
+  plugins.push(new UglifyJsPlugin({
+    uglifyOptions: {
+      compress: {
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
     },
   }))
   plugins.push(new CompressionPlugin({
@@ -183,6 +181,7 @@ if (isProd) {
 module.exports = {
   devtool: isDev ? 'eval-cheap-module-source-map' : false,
   context: __dirname,
+  mode: isProd ? 'production' : 'development',
   entry,
   devServer: {
     hot: true,
