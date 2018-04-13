@@ -16,9 +16,7 @@ export const statsUrl = runtimeConfig.readString('STATS_URL', {defaultValue: nul
 export const logLevel = runtimeConfig.readNumber('LOG_LEVEL', {defaultValue: log.INFO})
 export const appLogLevel = runtimeConfig.readNumber('APP_LOG_LEVEL', {defaultValue: log.ALL})
 
-export const iceServers = runtimeConfig.readTurnServerUri('ICE_SERVER', {
-  defaultValue: 'c3-turn:see-three@turn.demo.c3.ericsson.net:443',
-})
+export const iceServers = runtimeConfig.readTurnServerUri('ICE_SERVER', {defaultValue: null})
 
 export const mediaConstraints = {
   video: {
