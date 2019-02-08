@@ -32,10 +32,10 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.11.0",
     "postcss-loader": "^2.1.5",
     "react-hot-loader": "^3.1.3",
-    "redux-devtools": "^3.4.1",
+    "redux-devtools": "^3.5.0",
     "redux-devtools-dock-monitor": "^1.1.3",
     "redux-devtools-log-monitor": "^1.4.0",
     "sass-loader": "^6.0.7",
@@ -43,9 +43,9 @@
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^0.5.7",
     "vigour-ua": "^3.1.2",
-    "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.3",
-    "webpack-dev-server": "^3.1.4"
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "@cct/libcct": "0.22.0-stats.8",
